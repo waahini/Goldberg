@@ -69,18 +69,52 @@
               <div class="nodon-icon fan"></div>
               <span>팬</span>
             </div>
-            <div class="nodon-item" data-type="button" draggable="true">
-              <div class="nodon-icon button"></div>
-              <span>버튼</span>
+            <div class="nodon-item" data-type="timer" draggable="true">
+              <div class="nodon-icon timer"></div>
+              <span>타이머</span>
+            </div>
+            <div class="nodon-item" data-type="warp-a" draggable="true">
+              <div class="nodon-icon warp-a"></div>
+              <span>포탈 A</span>
+            </div>
+            <div class="nodon-item" data-type="warp-b" draggable="true">
+              <div class="nodon-icon warp-b"></div>
+              <span>포탈 B</span>
+            </div>
+            <div class="nodon-item" data-type="magnet" draggable="true">
+              <div class="nodon-icon magnet"></div>
+              <span>자석</span>
             </div>
           </div>
         </div>
       </aside>
 
       <div id="canvas-container">
-        <!-- Physics Canvas will be injected here -->
+        <!-- Physics Canvas -->
         <div id="physics-canvas"></div>
         <svg id="wiring-layer"></svg>
+        
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="hidden">
+          <div class="panel-header">
+            <span id="node-name">Nodon</span>
+            <button id="node-delete"><i data-lucide="trash-2"></i></button>
+          </div>
+          <div class="panel-body">
+            <div class="prop-group" id="prop-restitution">
+              <label>튕김 정도</label>
+              <input type="range" min="0" max="1" step="0.1" id="input-restitution">
+            </div>
+            <div class="prop-group" id="prop-delay">
+              <label>지연 시간 (초)</label>
+              <input type="number" min="0" max="10" step="0.5" id="input-delay">
+            </div>
+            <div class="prop-group" id="prop-power">
+              <label>세기</label>
+              <input type="range" min="-0.2" max="0.2" step="0.05" id="input-power">
+            </div>
+          </div>
+        </div>
         
         <div id="instructions">
           <p><kbd>드래그</kbd> 배치</p>
