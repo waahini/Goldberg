@@ -12,12 +12,15 @@ class GoldbergApp {
     this.connections = []; // { fromId, toId }
     this.selectedNodon = null;
     this.isWiring = false;
-    this.wireStartPos = null;
+    this.wireStartPort = null; // { nodon, x, y }
+    this.goalReached = false;
 
     this.initCanvas();
     this.initControls();
     this.initDragAndDrop();
     this.initEvents();
+    this.initSuccessUI();
+    
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'r' && this.selectedNodon) {
         const body = this.selectedNodon.body;
@@ -30,6 +33,14 @@ class GoldbergApp {
     });
 
     this.animate();
+  }
+
+  initSuccessUI() {
+    const msg = document.createElement('div');
+    msg.id = 'success-msg';
+    msg.innerHTML = '<h2>골인 성공!</h2><p>환상적인 장치입니다!</p>';
+    document.body.appendChild(msg);
+    this.successMsg = msg;
   }
 
   removeNodon(nodon) {
@@ -80,6 +91,7 @@ class GoldbergApp {
 
     btnPlay.addEventListener('click', () => {
       this.isPlaying = !this.isPlaying;
+      this.goalReached = false;
       btnPlay.innerHTML = this.isPlaying 
         ? '<i data-lucide="pause"></i> 정지' 
         : '<i data-lucide="play"></i> 시작';
@@ -92,7 +104,11 @@ class GoldbergApp {
       }
     });
 
-    btnReset.addEventListener('click', () => this.resetSimulation());
+    btnReset.addEventListener('click', () => {
+      this.resetSimulation();
+      this.goalReached = false;
+      this.successMsg.classList.remove('show');
+    });
     btnClear.addEventListener('click', () => this.clearAll());
   }
 
@@ -117,48 +133,48 @@ class GoldbergApp {
   }
 
   initEvents() {
-    // Collision detection for sensors
+    // Collision detection
     Events.on(this.engine, 'collisionStart', (event) => {
       event.pairs.forEach(pair => {
         const { bodyA, bodyB } = pair;
-        this.triggerNodonLogic(bodyA, bodyB);
-        this.triggerNodonLogic(bodyB, bodyA);
+        this.handleCollisions(bodyA, bodyB);
       });
     });
 
-    // Selection and Wiring
+    // Selection logic
     const canvas = this.render.canvas;
     canvas.addEventListener('mousedown', (e) => {
       if (this.isPlaying) return;
-      
       const mousePos = { x: e.offsetX, y: e.offsetY };
       const clickedBody = Matter.Query.point(Composite.allBodies(this.world), mousePos)[0];
-      
-      if (clickedBody && e.shiftKey) {
-        // Start wiring
-        this.isWiring = true;
-        this.selectedNodon = this.nodons.find(n => n.body === clickedBody);
-        this.wireStartPos = mousePos;
-      } else if (clickedBody) {
+      if (clickedBody) {
         this.selectedNodon = this.nodons.find(n => n.body === clickedBody);
       } else {
-        this.selectedNodon = null;
-      }
-    });
-
-    canvas.addEventListener('mouseup', (e) => {
-      if (this.isWiring) {
-        const mousePos = { x: e.offsetX, y: e.offsetY };
-        const targetBody = Matter.Query.point(Composite.allBodies(this.world), mousePos)[0];
-        const targetNodon = this.nodons.find(n => n.body === targetBody);
-        
-        if (targetNodon && targetNodon !== this.selectedNodon) {
-          this.addConnection(this.selectedNodon, targetNodon);
+        if (!e.target.classList || !e.target.classList.contains('port')) {
+          this.selectedNodon = null;
         }
       }
-      this.isWiring = false;
-      this.wireStartPos = null;
     });
+  }
+
+  handleCollisions(bodyA, bodyB) {
+    this.triggerNodonLogic(bodyA, bodyB);
+    this.triggerNodonLogic(bodyB, bodyA);
+
+    const nodonA = this.nodons.find(n => n.body === bodyA);
+    const nodonB = this.nodons.find(n => n.body === bodyB);
+
+    if ((nodonA?.type === 'goal' && nodonB?.type === 'ball') || 
+        (nodonB?.type === 'goal' && nodonA?.type === 'ball')) {
+      this.reachGoal();
+    }
+  }
+
+  reachGoal() {
+    if (this.goalReached) return;
+    this.goalReached = true;
+    this.successMsg.classList.add('show');
+    setTimeout(() => this.successMsg.classList.remove('show'), 3000);
   }
 
   addNodon(type, x, y) {
@@ -171,7 +187,7 @@ class GoldbergApp {
 
     switch(type) {
       case 'ball':
-        body = Bodies.circle(x, y, 20, { ...options, friction: 0.05, restitution: 0.6 });
+        body = Bodies.circle(x, y, 15, { ...options, friction: 0.005, restitution: 0.5 });
         break;
       case 'ramp':
         body = Bodies.rectangle(x, y, 150, 20, { ...options, angle: Math.PI / 10, isStatic: true });
@@ -181,6 +197,17 @@ class GoldbergApp {
         break;
       case 'floor':
         body = Bodies.rectangle(x, y, 300, 20, { ...options, isStatic: true });
+        break;
+      case 'goal':
+        body = Bodies.rectangle(x, y, 60, 40, { 
+          ...options, 
+          isStatic: true,
+          render: {
+            fillStyle: '#fd9644',
+            strokeStyle: '#fa8231',
+            lineWidth: 4
+          }
+        });
         break;
       case 'fan':
         body = Bodies.circle(x, y, 25, { ...options, isStatic: true });
@@ -197,9 +224,6 @@ class GoldbergApp {
           }
         });
         break;
-      case 'button':
-        body = Bodies.rectangle(x, y, 40, 20, { ...options, isStatic: true });
-        break;
     }
 
     if (body) {
@@ -209,11 +233,8 @@ class GoldbergApp {
   }
 
   addConnection(from, to) {
-    // Only certain types can be "from" (triggers)
     const validTriggers = ['sensor', 'button'];
     if (!validTriggers.includes(from.type)) return;
-
-    // Check if connection already exists
     if (!this.connections.some(c => c.fromId === from.id && c.toId === to.id)) {
       this.connections.push({ fromId: from.id, toId: to.id });
     }
@@ -223,7 +244,6 @@ class GoldbergApp {
     const sensorNodon = this.nodons.find(n => n.body === sensorBody);
     if (!sensorNodon || sensorNodon.type !== 'sensor') return;
 
-    // Find all nodes connected to this sensor
     const connectedNodons = this.connections
       .filter(c => c.fromId === sensorNodon.id)
       .map(c => this.nodons.find(n => n.id === c.toId));
@@ -235,7 +255,6 @@ class GoldbergApp {
 
   applyAction(target, sourceBody) {
     if (target.type === 'fan') {
-      // Fan applies force to the body that triggered the sensor
       const force = 0.05;
       const angle = target.body.angle;
       const forceVector = {
@@ -244,8 +263,6 @@ class GoldbergApp {
       };
       Matter.Body.applyForce(sourceBody, sourceBody.position, forceVector);
     }
-    
-    // Add visual feedback
     const originalColor = target.body.render.fillStyle;
     target.body.render.fillStyle = '#f7d716';
     setTimeout(() => {
@@ -257,7 +274,7 @@ class GoldbergApp {
     const colors = {
       ball: '#ff7675', ramp: '#74b9ff', box: '#fab1a0',
       floor: '#636e72', fan: '#81ecec', sensor: '#55efc4',
-      button: '#fdcb6e'
+      button: '#fdcb6e', goal: '#fd9644'
     };
     return colors[type] || '#dfe6e9';
   }
@@ -279,60 +296,91 @@ class GoldbergApp {
   }
 
   animate() {
+    const svg = document.getElementById('wiring-layer');
+    svg.innerHTML = '';
     this.drawWires();
     this.drawSelectionHighlight();
+    this.drawPorts();
     requestAnimationFrame(() => this.animate());
+  }
+
+  drawPorts() {
+    if (this.isPlaying) return;
+    this.nodons.forEach(nodon => {
+      const { x, y } = nodon.body.position;
+      if (['sensor', 'button'].includes(nodon.type)) {
+        this.createPort(nodon, x + 35, y, 'output');
+      }
+      if (['fan'].includes(nodon.type)) {
+        this.createPort(nodon, x - 35, y, 'input');
+      }
+    });
+  }
+
+  createPort(nodon, x, y, type) {
+    const svg = document.getElementById('wiring-layer');
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
+    circle.setAttribute('r', '8');
+    circle.classList.add('port', type);
+    circle.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+      if (type === 'output') {
+        this.isWiring = true;
+        this.wireStartPort = { nodon, x, y };
+      } else if (this.isWiring && type === 'input') {
+        this.addConnection(this.wireStartPort.nodon, nodon);
+        this.isWiring = false;
+        this.wireStartPort = null;
+      }
+    });
+    svg.appendChild(circle);
+  }
+
+  drawWires() {
+    this.connections.forEach(conn => {
+      const from = this.nodons.find(n => n.id === conn.fromId);
+      const to = this.nodons.find(n => n.id === conn.toId);
+      if (from && to) {
+        const p1 = { x: from.body.position.x + 35, y: from.body.position.y };
+        const p2 = { x: to.body.position.x - 35, y: to.body.position.y };
+        this.createWire(p1, p2, '#4a90e2');
+      }
+    });
+    if (this.isWiring && this.wireStartPort) {
+      const mouse = this.mouseConstraint.mouse.position;
+      this.createWire(this.wireStartPort, mouse, '#ff5e5e', true);
+    }
+  }
+
+  createWire(p1, p2, color, isDashed = false) {
+    const svg = document.getElementById('wiring-layer');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const dx = Math.abs(p2.x - p1.x) * 0.5;
+    const d = `M ${p1.x} ${p1.y} C ${p1.x + dx} ${p1.y}, ${p2.x - dx} ${p2.y}, ${p2.x} ${p2.y}`;
+    path.setAttribute('d', d);
+    path.setAttribute('stroke', color);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke-width', '4');
+    path.setAttribute('stroke-linecap', 'round');
+    if (isDashed) path.setAttribute('stroke-dasharray', '8,8');
+    svg.appendChild(path);
   }
 
   drawSelectionHighlight() {
     if (!this.selectedNodon) return;
     const body = this.selectedNodon.body;
     const svg = document.getElementById('wiring-layer');
-    
-    // Simple circle/rect highlight using SVG
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute('cx', body.position.x);
     circle.setAttribute('cy', body.position.y);
-    circle.setAttribute('r', '30');
+    circle.setAttribute('r', '35');
     circle.setAttribute('fill', 'none');
     circle.setAttribute('stroke', '#ff5e5e');
     circle.setAttribute('stroke-width', '2');
     circle.setAttribute('stroke-dasharray', '4,4');
     svg.appendChild(circle);
-  }
-
-  drawWires() {
-    const svg = document.getElementById('wiring-layer');
-    svg.innerHTML = '';
-
-    // Draw existing connections
-    this.connections.forEach(conn => {
-      const from = this.nodons.find(n => n.id === conn.fromId);
-      const to = this.nodons.find(n => n.id === conn.toId);
-      if (from && to) {
-        this.createWire(from.body.position, to.body.position, '#4a90e2');
-      }
-    });
-
-    // Draw active wire
-    if (this.isWiring && this.wireStartPos) {
-      const mouse = this.mouseConstraint.mouse.position;
-      this.createWire(this.wireStartPos, mouse, '#ff5e5e', true);
-    }
-  }
-
-  createWire(p1, p2, color, isDashed = false) {
-    const svg = document.getElementById('wiring-layer');
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', p1.x);
-    line.setAttribute('y1', p1.y);
-    line.setAttribute('x2', p2.x);
-    line.setAttribute('y2', p2.y);
-    line.setAttribute('stroke', color);
-    line.setAttribute('stroke-width', '4');
-    line.setAttribute('stroke-linecap', 'round');
-    if (isDashed) line.setAttribute('stroke-dasharray', '8,8');
-    svg.appendChild(line);
   }
 }
 
