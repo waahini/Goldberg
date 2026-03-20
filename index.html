@@ -1,14 +1,91 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>골드버그 장치 빌더 (Nodon Style)</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Matter.js for Physics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <!-- Lucide for Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+<body class="theme-nintendo">
+  <div id="app">
+    <header>
+      <div class="logo">
+        <i data-lucide="box"></i>
+        <span>골드버그 노돈</span>
+      </div>
+      <div class="controls">
+        <button id="btn-play" class="btn btn-primary">
+          <i data-lucide="play"></i> 시작
+        </button>
+        <button id="btn-reset" class="btn btn-secondary">
+          <i data-lucide="rotate-ccw"></i> 초기화
+        </button>
+        <button id="btn-clear" class="btn btn-danger">
+          <i data-lucide="trash-2"></i> 모두 삭제
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <aside id="sidebar">
+        <div class="sidebar-section">
+          <h3>물리 노돈</h3>
+          <div class="nodon-palette">
+            <div class="nodon-item" data-type="ball" draggable="true">
+              <div class="nodon-icon ball"></div>
+              <span>공</span>
+            </div>
+            <div class="nodon-item" data-type="ramp" draggable="true">
+              <div class="nodon-icon ramp"></div>
+              <span>경사로</span>
+            </div>
+            <div class="nodon-item" data-type="box" draggable="true">
+              <div class="nodon-icon box"></div>
+              <span>상자</span>
+            </div>
+            <div class="nodon-item" data-type="floor" draggable="true">
+              <div class="nodon-icon floor"></div>
+              <span>바닥</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3>논리 노돈</h3>
+          <div class="nodon-palette">
+            <div class="nodon-item" data-type="sensor" draggable="true">
+              <div class="nodon-icon sensor"></div>
+              <span>센서</span>
+            </div>
+            <div class="nodon-item" data-type="fan" draggable="true">
+              <div class="nodon-icon fan"></div>
+              <span>팬</span>
+            </div>
+            <div class="nodon-item" data-type="button" draggable="true">
+              <div class="nodon-icon button"></div>
+              <span>버튼</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div id="canvas-container">
+        <!-- Physics Canvas will be injected here -->
+        <div id="physics-canvas"></div>
+        <svg id="wiring-layer"></svg>
+        
+        <div id="instructions">
+          <p><kbd>드래그</kbd> 배치</p>
+          <p><kbd>Shift</kbd> + <kbd>드래그</kbd> 연결 (센서 → 팬)</p>
+          <p><kbd>R</kbd> 선택된 노돈 회전</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
