@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>골드버그 장치 빌더 (Nodon Style)</title>
+  <title>골드버그 노돈 빌더</title>
   <link rel="stylesheet" href="style.css">
   <!-- Matter.js for Physics -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
@@ -14,8 +14,8 @@
   <div id="app">
     <header>
       <div class="logo">
-        <i data-lucide="box"></i>
-        <span data-lang="app_title">골드버그 노돈</span>
+        <i data-lucide="gamepad-2"></i>
+        <span data-lang="app_title">골드버그 노돈 빌더</span>
       </div>
       <div class="controls">
         <button id="btn-play" class="btn btn-primary">
@@ -27,6 +27,9 @@
         <button id="btn-clear" class="btn btn-danger">
           <i data-lucide="trash-2"></i> <span data-lang="btn_clear">모두 삭제</span>
         </button>
+        <button id="btn-manual" class="btn btn-accent">
+          <i data-lucide="book-open"></i> <span data-lang="btn_manual">설명서</span>
+        </button>
         <button id="btn-settings" class="btn">
           <i data-lucide="settings"></i>
         </button>
@@ -36,7 +39,7 @@
     <main>
       <aside id="sidebar">
         <div class="sidebar-section">
-          <h3 data-lang="cat_phys">물리 노돈</h3>
+          <h3 data-lang="cat_phys">물리 노돈 (움직이는 물체)</h3>
           <div class="nodon-palette">
             <div class="nodon-item" data-type="ball" draggable="true">
               <div class="nodon-icon ball"></div>
@@ -58,11 +61,27 @@
               <div class="nodon-icon goal"></div>
               <span data-lang="nodon_goal">골인</span>
             </div>
+            <div class="nodon-item" data-type="spring" draggable="true">
+              <div class="nodon-icon spring"></div>
+              <span data-lang="nodon_spring">스프링</span>
+            </div>
+            <div class="nodon-item" data-type="treadmill" draggable="true">
+              <div class="nodon-icon treadmill"></div>
+              <span data-lang="nodon_treadmill">컨베이어</span>
+            </div>
+            <div class="nodon-item" data-type="breakable" draggable="true">
+              <div class="nodon-icon breakable"></div>
+              <span data-lang="nodon_breakable">부서지는 상자</span>
+            </div>
+            <div class="nodon-item" data-type="balloon" draggable="true">
+              <div class="nodon-icon balloon"></div>
+              <span data-lang="nodon_balloon">풍선</span>
+            </div>
           </div>
         </div>
 
         <div class="sidebar-section">
-          <h3 data-lang="cat_logic">논리 노돈</h3>
+          <h3 data-lang="cat_logic">논리 노돈 (명령하는 물체)</h3>
           <div class="nodon-palette">
             <div class="nodon-item" data-type="sensor" draggable="true">
               <div class="nodon-icon sensor"></div>
@@ -88,6 +107,10 @@
               <div class="nodon-icon magnet"></div>
               <span data-lang="nodon_magnet">자석</span>
             </div>
+            <div class="nodon-item" data-type="counter" draggable="true">
+              <div class="nodon-icon counter"></div>
+              <span data-lang="nodon_counter">카운터</span>
+            </div>
           </div>
         </div>
       </aside>
@@ -99,41 +122,63 @@
         
         <!-- Hover Tooltip -->
         <div id="hover-tooltip" class="hidden">
-          <div class="tooltip-title">Nodon Info</div>
-          <div class="tooltip-body">Instruction</div>
+          <div class="tooltip-title">노돈 정보</div>
+          <div class="tooltip-body">설명</div>
         </div>
         
+        <!-- Instruction Manual Modal -->
+        <div id="manual-modal" class="modal hidden">
+          <div class="modal-content manual-content">
+            <h2 data-lang="manual_title">📖 노돈 가이드북</h2>
+            <div class="manual-body">
+              <section>
+                <h3 data-lang="man_how_to_build">1. 장치 만들기</h3>
+                <p data-lang="man_desc_build">왼쪽 사이드바에서 노돈을 드래그하여 화면에 놓으세요. <b>R 키</b>를 눌러 선택한 노돈을 회전시킬 수 있습니다.</p>
+              </section>
+              <section>
+                <h3 data-lang="man_how_to_wire">2. 논리 연결하기</h3>
+                <p data-lang="man_desc_wire"><b>Shift 키</b>를 누른 채로 노돈의 빨간 점(출력)에서 노란 점(입력)으로 드래그하면 선이 연결됩니다. 센서와 팬을 연결해 보세요!</p>
+              </section>
+              <section>
+                <h3 data-lang="man_play">3. 실행하기</h3>
+                <p data-lang="man_desc_play">상단의 <b>시작 버튼</b>을 누르면 물리 법칙이 적용됩니다. 공이 골인 지점에 닿도록 멋진 장치를 설계해 보세요!</p>
+              </section>
+            </div>
+            <button id="btn-close-manual" class="btn btn-primary">알겠어요!</button>
+          </div>
+        </div>
+
         <!-- Global Settings Modal -->
         <div id="settings-modal" class="modal hidden">
           <div class="modal-content">
             <h2 data-lang="settings_title">환경 설정</h2>
             <div class="setting-item">
-              <label data-lang="label_language">언어</label>
+              <label data-lang="label_language">언어 선택</label>
               <select id="select-lang">
-                <option value="ko">한국어</option>
+                <option value="ko" selected>한국어</option>
                 <option value="en">English</option>
               </select>
             </div>
             <div class="setting-item">
-              <label data-lang="label_theme">테마</label>
+              <label data-lang="label_theme">테마 설정</label>
               <select id="select-theme">
-                <option value="default">Default</option>
-                <option value="dark">Dark</option>
+                <option value="default">라이트</option>
+                <option value="dark">다크</option>
               </select>
             </div>
-            <button id="btn-close-settings" class="btn btn-secondary">Close</button>
+            <button id="btn-close-settings" class="btn btn-secondary">닫기</button>
           </div>
         </div>
         
         <!-- Settings Panel -->
         <div id="settings-panel" class="hidden">
           <div class="panel-header">
-            <span id="node-name">Nodon</span>
+            <span id="node-name">노돈</span>
             <button id="node-delete"><i data-lucide="trash-2"></i></button>
           </div>
           <div class="panel-body">
             <div class="prop-group" id="prop-restitution">
-              <label>튕김 정도</label>
+              <label>탄성 (Bounce)</label>
               <input type="range" min="0" max="1" step="0.1" id="input-restitution">
             </div>
             <div class="prop-group" id="prop-delay">
@@ -141,16 +186,10 @@
               <input type="number" min="0" max="10" step="0.5" id="input-delay">
             </div>
             <div class="prop-group" id="prop-power">
-              <label>세기</label>
+              <label>힘 (Power)</label>
               <input type="range" min="-0.2" max="0.2" step="0.05" id="input-power">
             </div>
           </div>
-        </div>
-        
-        <div id="instructions">
-          <p><kbd>드래그</kbd> 배치</p>
-          <p><kbd>Shift</kbd> + <kbd>드래그</kbd> 연결 (센서 → 팬)</p>
-          <p><kbd>R</kbd> 선택된 노돈 회전</p>
         </div>
       </div>
     </main>
