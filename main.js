@@ -222,23 +222,17 @@ class GoldbergApp {
   initDragAndDrop() {
     document.querySelectorAll('.nodon-item').forEach(item => {
       item.ondragstart = (e) => {
-        e.dataTransfer.setData('nodon-type', item.dataset.type);
-        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('type', item.dataset.type);
       };
     });
-    const container = document.getElementById('canvas-container');
-    container.ondragover = (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'copy';
-    };
+    const container = document.getElementById('physics-canvas');
+    container.ondragover = (e) => e.preventDefault();
     container.ondrop = (e) => {
       e.preventDefault();
-      const type = e.dataTransfer.getData('nodon-type');
+      const type = e.dataTransfer.getData('type');
       if (!type) return;
-      const rect = this.render.canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      this.addNodon(type, x, y);
+      const rect = container.getBoundingClientRect();
+      this.addNodon(type, e.clientX - rect.left, e.clientY - rect.top);
     };
   }
 
@@ -268,10 +262,26 @@ class GoldbergApp {
         this.hoveredNodon = null;
       }
     };
+
+    Events.on(this.mouseConstraint, 'mousedown', () => {
+      if (!this.isPlaying && this.mouseConstraint.body) {
+        const nodon = this.nodons.find(n => n.body === this.mouseConstraint.body);
+        if (nodon) this.selectedNodon = nodon;
+      }
+    });
+
+    Events.on(this.mouseConstraint, 'mouseup', () => {
+      if (!this.isPlaying && this.selectedNodon) {
+        // Update initial position/angle when moved in edit mode
+        this.selectedNodon.initialPos = { ...this.selectedNodon.body.position };
+        this.selectedNodon.initialAngle = this.selectedNodon.body.angle;
+      }
+    });
     
     window.onkeydown = (e) => {
       if (e.key.toLowerCase() === 'r' && this.selectedNodon) {
         Matter.Body.setAngle(this.selectedNodon.body, this.selectedNodon.body.angle + Math.PI / 8);
+        this.selectedNodon.initialAngle = this.selectedNodon.body.angle;
       }
     };
 
@@ -627,15 +637,23 @@ class GoldbergApp {
 
   resetSimulation() {
     this.nodons.forEach(n => { 
-      Matter.Body.setPosition(n.body, n.initialPos); 
-      Matter.Body.setAngle(n.body, n.initialAngle); 
-      Matter.Body.setVelocity(n.body, { x: 0, y: 0 }); 
-      Matter.Body.setAngularVelocity(n.body, 0);
+      if (!n.body.isStatic) {
+        Matter.Body.setPosition(n.body, n.initialPos); 
+        Matter.Body.setAngle(n.body, n.initialAngle); 
+        Matter.Body.setVelocity(n.body, { x: 0, y: 0 }); 
+        Matter.Body.setAngularVelocity(n.body, 0);
+      }
       n.count = 0; n.isActive = false;
     });
     this.goalReached = false; 
     const msg = document.getElementById('success-msg');
     if (msg) msg.classList.remove('show');
+    
+    if (this.isPlaying) {
+      // If playing, reset and keep playing (objects start moving again)
+    } else {
+      // If paused, just reset
+    }
   }
 
   clearAll() {
