@@ -376,21 +376,35 @@ class GoldbergApp {
     document.querySelectorAll('.nodon-item').forEach(item => {
       item.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('type', item.dataset.type);
+        e.dataTransfer.effectAllowed = 'copy';
+        // 시각적 피드백 강화
+        item.style.opacity = '0.5';
+      });
+      item.addEventListener('dragend', () => {
+        item.style.opacity = '1';
       });
     });
 
-    const container = document.getElementById('canvas-container');
-    container.addEventListener('dragover', (e) => {
+    const canvasContainer = document.getElementById('canvas-container');
+    const physicsCanvas = document.getElementById('physics-canvas');
+
+    // 드롭 허용을 위한 이벤트 리스너들
+    const allowDrop = (e) => {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy';
+    };
+
+    [canvasContainer, physicsCanvas].forEach(el => {
+      el.addEventListener('dragover', allowDrop);
+      el.addEventListener('dragenter', allowDrop);
     });
 
-    container.addEventListener('drop', (e) => {
+    canvasContainer.addEventListener('drop', (e) => {
       e.preventDefault();
       const type = e.dataTransfer.getData('type');
       if (!type) return;
 
-      const rect = container.getBoundingClientRect();
+      const rect = physicsCanvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       
