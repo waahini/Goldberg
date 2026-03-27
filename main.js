@@ -18,8 +18,8 @@ const I18N = {
     tip_box: "물리 영향을 받는 상자입니다. 장애물을 만들거나 쌓을 수 있습니다.",
     tip_floor: "움직이지 않는 고정된 바닥입니다. 장치를 지탱하는 기초가 됩니다.",
     tip_goal: "최종 목적지입니다! 공이 여기에 닿으면 장치 만들기에 성공합니다.",
-    tip_spring: "물체가 닿으면 강력하게 튕겨내는 용수철입니다.",
-    tip_treadmill: "벨트 위의 물체를 한쪽 방향으로 강하게 이동시킵니다.",
+    tip_spring: "물체가 닿으면 강력하게 튕겨내는 용수철입니다. '힘'을 조절해 보세요.",
+    tip_treadmill: "벨트 위의 물체를 한쪽 방향으로 강하게 이동시킵니다. '힘'으로 속도를 조절하세요.",
     tip_breakable: "강한 충격을 받으면 산산조각 나며 사라지는 약한 상자입니다.",
     tip_balloon: "중력을 거스르고 위로 두둥실 떠오르는 공기 주머니입니다.",
     tip_sensor: "물체가 닿으면 감지하여 연결된 노돈에게 신호를 보냅니다.",
@@ -198,9 +198,22 @@ class GoldbergApp {
       delay: document.getElementById('input-delay'),
       power: document.getElementById('input-power')
     };
-    this.inputs.restitution.oninput = (e) => this.selectedNodon && (this.selectedNodon.body.restitution = parseFloat(e.target.value));
-    this.inputs.delay.oninput = (e) => this.selectedNodon && (this.selectedNodon.delay = parseFloat(e.target.value) * 1000);
-    this.inputs.power.oninput = (e) => this.selectedNodon && (this.selectedNodon.power = parseFloat(e.target.value));
+    
+    this.inputs.restitution.oninput = (e) => {
+      if (!this.selectedNodon) return;
+      const val = parseFloat(e.target.value);
+      this.selectedNodon.body.restitution = val;
+    };
+    
+    this.inputs.delay.oninput = (e) => {
+      if (!this.selectedNodon) return;
+      this.selectedNodon.delay = parseFloat(e.target.value) * 1000;
+    };
+    
+    this.inputs.power.oninput = (e) => {
+      if (!this.selectedNodon) return;
+      this.selectedNodon.power = parseFloat(e.target.value);
+    };
   }
 
   updateSettingsPanel() {
@@ -210,9 +223,10 @@ class GoldbergApp {
     document.getElementById('node-name').textContent = I18N[this.lang][nameKey] || this.selectedNodon.type.toUpperCase();
     
     const type = this.selectedNodon.type;
-    document.getElementById('prop-restitution').style.display = ['ball', 'box', 'spring', 'breakable'].includes(type) ? 'block' : 'none';
+    // Show/Hide relevant controls
+    document.getElementById('prop-restitution').style.display = ['ball', 'box', 'spring', 'breakable', 'floor', 'ramp'].includes(type) ? 'block' : 'none';
     document.getElementById('prop-delay').style.display = (type === 'timer') ? 'block' : 'none';
-    document.getElementById('prop-power').style.display = ['fan', 'magnet', 'treadmill'].includes(type) ? 'block' : 'none';
+    document.getElementById('prop-power').style.display = ['fan', 'magnet', 'treadmill', 'spring'].includes(type) ? 'block' : 'none';
     
     this.inputs.restitution.value = this.selectedNodon.body.restitution || 0.5;
     this.inputs.delay.value = (this.selectedNodon.delay || 1000) / 1000;
@@ -243,8 +257,12 @@ class GoldbergApp {
     canvas.onmousedown = (e) => {
       if (this.isPlaying) return;
       const clickedBody = Matter.Query.point(Composite.allBodies(this.world), { x: e.offsetX, y: e.offsetY })[0];
-      if (clickedBody) this.selectedNodon = this.nodons.find(n => n.body === clickedBody);
-      else if (!e.target.classList.contains('port')) this.selectedNodon = null;
+      if (clickedBody) {
+        const nodon = this.nodons.find(n => n.body === clickedBody);
+        if (nodon) this.selectedNodon = nodon;
+      } else if (!e.target.classList.contains('port')) {
+        this.selectedNodon = null;
+      }
     };
 
     canvas.onmousemove = (e) => {
@@ -272,7 +290,6 @@ class GoldbergApp {
 
     Events.on(this.mouseConstraint, 'mouseup', () => {
       if (!this.isPlaying && this.selectedNodon) {
-        // Update initial position/angle when moved in edit mode
         this.selectedNodon.initialPos = { ...this.selectedNodon.body.position };
         this.selectedNodon.initialAngle = this.selectedNodon.body.angle;
       }
@@ -321,7 +338,7 @@ class GoldbergApp {
 
   applySpring(spring, body) {
     const angle = spring.body.angle - Math.PI/2;
-    const force = 0.07;
+    const force = spring.power || 0.07;
     Matter.Body.applyForce(body, body.position, { x: Math.cos(angle) * force, y: Math.sin(angle) * force });
     spring.isActive = true;
     setTimeout(() => spring.isActive = false, 250);
@@ -375,7 +392,7 @@ class GoldbergApp {
 
     if (body) {
       Composite.add(this.world, body);
-      const nodon = { id, type, body, initialPos: { x, y }, initialAngle: body.angle, power: 0.05, delay: 1000, count: 0, target: 3 };
+      const nodon = { id, type, body, initialPos: { x, y }, initialAngle: body.angle, power: 0.07, delay: 1000, count: 0, target: 3 };
       this.nodons.push(nodon);
       this.selectedNodon = nodon;
     }
@@ -648,12 +665,6 @@ class GoldbergApp {
     this.goalReached = false; 
     const msg = document.getElementById('success-msg');
     if (msg) msg.classList.remove('show');
-    
-    if (this.isPlaying) {
-      // If playing, reset and keep playing (objects start moving again)
-    } else {
-      // If paused, just reset
-    }
   }
 
   clearAll() {
