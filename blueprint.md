@@ -47,5 +47,6 @@ A visual, node-based "Goldberg Machine" builder inspired by Nintendo's *Game Bui
 ### **Phase 4: Global Settings & Polish**
 - [x] Language toggle (Basic).
 - [ ] **Fix Language Default**: Set KO as default, EN as optional.
+- [x] **Google AdSense Integration**: Added site verification meta tag, ads.js script, and ads.txt.
 - [ ] Add sound effects and particle effects for collisions.
 - [ ] Final aesthetic polish.
