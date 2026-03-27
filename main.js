@@ -300,14 +300,23 @@ class GoldbergApp {
     this.mouseConstraint = MouseConstraint.create(this.engine, { mouse, constraint: { stiffness: 0.2, render: { visible: false } } });
     Composite.add(this.world, this.mouseConstraint);
 
-    // Sync Matter.js with container on resize
-    window.addEventListener('resize', () => {
-      this.render.canvas.width = container.clientWidth;
-      this.render.canvas.height = container.clientHeight;
-      this.render.options.width = container.clientWidth;
-      this.render.options.height = container.clientHeight;
-      Matter.Render.setPixelRatio(this.render, window.devicePixelRatio || 1);
+    // Dynamic resizing to maintain 1:1 coordinate mapping
+    const resizeObserver = new ResizeObserver(() => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      if (w === 0 || h === 0) return;
+      
+      this.render.canvas.width = w;
+      this.render.canvas.height = h;
+      this.render.options.width = w;
+      this.render.options.height = h;
+      
+      // Update mouse offset if canvas moved
+      if (this.mouseConstraint.mouse) {
+        Matter.Mouse.setOffset(this.mouseConstraint.mouse, { x: 0, y: 0 });
+      }
     });
+    resizeObserver.observe(container);
   }
 
   initControls() {
