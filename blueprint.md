@@ -50,3 +50,13 @@ A visual, node-based "Goldberg Machine" builder inspired by Nintendo's *Game Bui
 - [x] **Google AdSense Integration**: Added site verification meta tag, ads.js script, and ads.txt.
 - [ ] Add sound effects and particle effects for collisions.
 - [ ] Final aesthetic polish.
+
+### **Phase 5: AdSense Approval & High-Quality Optimization**
+- [ ] **Rich Landing Page**: Add detailed textual content (~1,000 words) explaining the physics, mechanics, and educational value of the builder.
+- [ ] **Global Navigation**: Implement a persistent header with links: Home, Editor, Tutorial, About, Privacy Policy, Terms.
+- [ ] **Legal Compliance**: Add comprehensive Privacy Policy and Terms of Service pages/modals.
+- [ ] **Nodon Encyclopedia**: Create a rich, descriptive manual for every Nodon type.
+- [ ] **Mobile-First UX**: Ensure the site is fully responsive and interactive on all screen sizes.
+- [ ] **Semantic SEO**: Optimize HTML structure, meta tags, and descriptions for search engines.
+- [ ] **Ad Placement**: Define non-intrusive, policy-compliant ad slots.
+

@@ -13,22 +13,66 @@ const I18N = {
     nodon_sensor: "터치 센서", nodon_fan: "강풍기", nodon_timer: "타이머", nodon_warp_a: "워프 입구 (A)", nodon_warp_b: "워프 출구 (B)", nodon_magnet: "자석", nodon_counter: "카운터",
     settings_title: "환경 설정", label_language: "언어 선택", label_theme: "테마 설정",
     manual_title: "📖 노돈 가이드북",
-    tip_ball: "물리 법칙을 따르는 기본 공입니다. 다른 물체와 부딪히며 굴러갑니다.",
-    tip_ramp: "공이 굴러내려갈 수 있는 경사면입니다. R키로 방향을 조절하세요.",
-    tip_box: "물리 영향을 받는 상자입니다. 장애물을 만들거나 쌓을 수 있습니다.",
-    tip_floor: "움직이지 않는 고정된 바닥입니다. 장치를 지탱하는 기초가 됩니다.",
-    tip_goal: "최종 목적지입니다! 공이 여기에 닿으면 장치 만들기에 성공합니다.",
-    tip_spring: "물체가 닿으면 강력하게 튕겨내는 용수철입니다. '힘'을 조절해 보세요.",
-    tip_treadmill: "벨트 위의 물체를 한쪽 방향으로 강하게 이동시킵니다. '힘'으로 속도를 조절하세요.",
-    tip_breakable: "강한 충격을 받으면 산산조각 나며 사라지는 약한 상자입니다.",
-    tip_balloon: "중력을 거스르고 위로 두둥실 떠오르는 공기 주머니입니다.",
-    tip_sensor: "물체가 닿으면 감지하여 연결된 노돈에게 신호를 보냅니다.",
-    tip_fan: "신호를 받으면 강력한 바람을 내뿜어 물체를 날려버립니다.",
-    tip_timer: "신호를 받은 뒤, 설정한 시간이 지나면 다음 신호를 전달합니다.",
-    tip_warp_a: "순간이동 입구입니다. 여기로 들어온 물체는 'B'로 이동합니다.",
-    tip_warp_b: "순간이동 출구입니다. 'A'에서 들어온 물체가 여기서 나옵니다.",
-    tip_magnet: "주변의 금속 공을 강력하게 끌어당기는 자석 노돈입니다.",
-    tip_counter: "신호를 받을 때마다 숫자를 세며, 목표에 도달하면 신호를 보냅니다."
+    success_title: "성공!", success_msg: "정말 멋진 장치예요!",
+    guide_title: "🛠️ 골드버그 노돈 빌더 사용 가이드",
+    guide_intro: "골드버그 장치는 아주 간단한 일을 처리하기 위해 수많은 단계를 거치도록 복잡하게 만들어진 장치입니다.",
+    guide_step1_title: "1. 노돈 배치",
+    guide_step1_desc: "사이드바에서 노돈을 드래그하여 배치하세요.",
+    guide_step2_title: "2. 연결의 힘",
+    guide_step2_desc: "Shift 키를 누른 채 드래그하여 논리를 연결하세요.",
+    guide_step3_title: "3. 실험과 수정",
+    guide_step3_desc: "물리 엔진을 통해 최적의 경로를 찾아보세요.",
+    encyclo_title: "📚 노돈 백과사전",
+    encyclo_intro: "각 노돈의 역할과 성격을 확인해보세요.",
+    nodon_ball_desc: "중력의 영향을 받아 굴러가는 주인공입니다.",
+    nodon_warp_desc: "A 입구로 들어가면 B 출구로 순간이동합니다.",
+    nodon_sensor_desc_title: "센서",
+    nodon_sensor_desc_text: "물체의 충돌을 감지하여 신호를 보냅니다.",
+    nodon_fan_desc_title: "팬",
+    nodon_fan_desc_text: "바람의 힘으로 물체를 밀어냅니다.",
+    physics_title: "🎓 학습할 수 있는 물리 원리",
+    physics_intro: "Matter.js 물리 엔진 기반의 STEM 교육 도구입니다.",
+    phys_gravity_title: "중력과 자유 낙하",
+    phys_gravity_desc: "물체가 아래로 떨어지는 물리 현상을 체험합니다.",
+    phys_momentum_title: "운동량과 충돌",
+    phys_momentum_desc: "충돌 시 에너지 전달 과정을 관찰합니다.",
+    phys_elasticity_title: "탄성과 반발력",
+    phys_elasticity_desc: "스프링을 통한 에너지 변환을 이해합니다.",
+    vision_title: "🎨 골드버그 노돈 빌더의 비전",
+    vision_desc1: "우리는 물리 법칙을 재미있게 배울 수 있는 세상을 꿈꿉니다.",
+    vision_desc2: "창의적 사고를 기를 수 있는 최고의 도구를 제공합니다.",
+    vision_highlight_title: "왜 골드버그 노돈 빌더인가요?",
+    vision_li1: "무한한 자유도: 상상력이 곧 설계도가 됩니다.",
+    vision_li2: "직관적인 연결: 복잡한 코딩 없이 논리를 구현합니다.",
+    vision_li3: "실시간 피드백: 즉각적인 물리 시뮬레이션이 가능합니다.",
+    faq_title: "❓ 자주 묻는 질문 (FAQ)",
+    faq_q1: "작동하지 않아요.", faq_a1: "시작 버튼과 연결 방향을 확인하세요.",
+    faq_q2: "삭제 방법은?", faq_a2: "노돈 클릭 후 휴지통 아이콘을 누르세요.",
+    faq_q3: "모바일 지원?", faq_a3: "네, 반응형으로 설계되었습니다.",
+    footer_tagline: "창의력과 물리 법칙이 만나는 곳.",
+    footer_nav_title: "탐색", nav_editor: "빌더", nav_guide: "가이드", nav_encyclo: "백과사전",
+    footer_legal_title: "법적 고지", nav_privacy: "개인정보처리방침", nav_terms: "이용약관",
+    privacy_title: "개인정보처리방침",
+    privacy_p1: "개인정보를 수집하지 않으며, 광고 제공을 위해 쿠키를 사용합니다.",
+    terms_title: "이용약관",
+    terms_h1: "서비스 이용",
+    terms_p1: "교육적 목적으로 자유롭게 이용 가능합니다.",
+    tip_ball: "물리 법칙을 따르는 기본 공입니다.",
+    tip_ramp: "공이 굴러내려갈 수 있는 경사면입니다.",
+    tip_box: "장애물을 만들 수 있는 상자입니다.",
+    tip_floor: "장치를 지탱하는 고정된 바닥입니다.",
+    tip_goal: "최종 목적지입니다!",
+    tip_spring: "물체를 튕겨내는 용수철입니다.",
+    tip_treadmill: "물체를 한쪽으로 이동시킵니다.",
+    tip_breakable: "충격에 부서지는 상자입니다.",
+    tip_balloon: "위로 떠오르는 풍선입니다.",
+    tip_sensor: "충돌을 감지하여 신호를 보냅니다.",
+    tip_fan: "바람을 내뿜어 물체를 날립니다.",
+    tip_timer: "시간 지연 후 신호를 전달합니다.",
+    tip_warp_a: "순간이동 입구입니다.",
+    tip_warp_b: "순간이동 출구입니다.",
+    tip_magnet: "금속 공을 끌어당기는 자석입니다.",
+    tip_counter: "신호의 횟수를 세는 카운터입니다."
   },
   en: {
     app_title: "Goldberg Nodon Builder",
@@ -39,22 +83,66 @@ const I18N = {
     nodon_sensor: "Sensor", nodon_fan: "Fan", nodon_timer: "Timer", nodon_warp_a: "Warp A", nodon_warp_b: "Warp B", nodon_magnet: "Magnet", nodon_counter: "Counter",
     settings_title: "Settings", label_language: "Language", label_theme: "Theme",
     manual_title: "📖 Nodon Guidebook",
-    tip_ball: "A basic marble that follows physics. It rolls and hits things.",
-    tip_ramp: "An inclined surface. Use R to rotate and guide the ball.",
-    tip_box: "A physical cube. Great for building towers and obstacles.",
-    tip_floor: "A static platform that stays fixed in place to support your machine.",
-    tip_goal: "The ultimate target! Reach this with a ball to win.",
-    tip_spring: "Launches any object that touches it with high force.",
-    tip_treadmill: "Moves objects on top of it in a specific direction.",
-    tip_breakable: "A fragile box that shatters and disappears on impact.",
-    tip_balloon: "Defies gravity and floats upwards into the sky.",
-    tip_sensor: "Detects collisions and sends a signal to connected Nodons.",
-    tip_fan: "Blasts a powerful gust of wind when triggered by a signal.",
-    tip_timer: "Waits for a specific delay before passing the signal on.",
-    tip_warp_a: "The entrance portal. Objects entering here teleport to B.",
-    tip_warp_b: "The exit portal. Objects from A emerge from this point.",
-    tip_magnet: "Creates a magnetic field to attract nearby balls.",
-    tip_counter: "Increments count on signal. Triggers when the target is reached."
+    success_title: "Success!", success_msg: "Amazing Contraption!",
+    guide_title: "🛠️ Goldberg Nodon Builder Guide",
+    guide_intro: "A Goldberg machine is a complex contraption for simple tasks.",
+    guide_step1_title: "1. Place Nodons",
+    guide_step1_desc: "Drag and drop Nodons from the sidebar.",
+    guide_step2_title: "2. Power of Wiring",
+    guide_step2_desc: "Hold Shift and drag to connect logic wires.",
+    guide_step3_title: "3. Experiment & Refine",
+    guide_step3_desc: "Find the perfect path via physics engine.",
+    encyclo_title: "📚 Nodon Encyclopedia",
+    encyclo_intro: "Learn about each Nodon's role.",
+    nodon_ball_desc: "The main character that follows gravity.",
+    nodon_warp_desc: "Teleports objects from A to B.",
+    nodon_sensor_desc_title: "Sensor",
+    nodon_sensor_desc_text: "Sends signals on collision.",
+    nodon_fan_desc_title: "Fan",
+    nodon_fan_desc_text: "Pushes objects with wind force.",
+    physics_title: "🎓 Physics Principles",
+    physics_intro: "STEM tool powered by Matter.js.",
+    phys_gravity_title: "Gravity & Free Fall",
+    phys_gravity_desc: "Experience objects falling under gravity.",
+    phys_momentum_title: "Momentum & Collisions",
+    phys_momentum_desc: "Observe energy transfer during impacts.",
+    phys_elasticity_title: "Elasticity & Bouncing",
+    phys_elasticity_desc: "Understand energy conversion via springs.",
+    vision_title: "🎨 Vision of Nodon Builder",
+    vision_desc1: "Making physics learning fun for everyone.",
+    vision_desc2: "The ultimate tool for creative thinking.",
+    vision_highlight_title: "Why Nodon Builder?",
+    vision_li1: "Infinite Freedom: Your imagination is the blueprint.",
+    vision_li2: "Intuitive: Logic without complex coding.",
+    vision_li3: "Real-time: Instant physics simulation.",
+    faq_title: "❓ FAQ",
+    faq_q1: "Not working?", faq_a1: "Check Play button and wiring direction.",
+    faq_q2: "How to delete?", faq_a2: "Click Nodon and use the trash icon.",
+    faq_q3: "Mobile support?", faq_a3: "Yes, it is fully responsive.",
+    footer_tagline: "Where creativity meets physics.",
+    footer_nav_title: "Explore", nav_editor: "Builder", nav_guide: "Guide", nav_encyclo: "Encyclopedia",
+    footer_legal_title: "Legal", nav_privacy: "Privacy Policy", nav_terms: "Terms",
+    privacy_title: "Privacy Policy",
+    privacy_p1: "No personal data collected; uses cookies for ads.",
+    terms_title: "Terms",
+    terms_h1: "Usage",
+    terms_p1: "Free for educational and personal use.",
+    tip_ball: "A basic marble that follows physics.",
+    tip_ramp: "An inclined surface for the ball.",
+    tip_box: "A physical cube for obstacles.",
+    tip_floor: "A static platform to support the machine.",
+    tip_goal: "The ultimate target!",
+    tip_spring: "Launches any object that touches it.",
+    tip_treadmill: "Moves objects in a specific direction.",
+    tip_breakable: "Fragile box that shatters on impact.",
+    tip_balloon: "Defies gravity and floats upwards.",
+    tip_sensor: "Detects collisions and sends signals.",
+    tip_fan: "Blasts wind when triggered.",
+    tip_timer: "Waits for a delay before signaling.",
+    tip_warp_a: "The entrance portal.",
+    tip_warp_b: "The exit portal.",
+    tip_magnet: "Attracts nearby metallic balls.",
+    tip_counter: "Increments count on signal."
   }
 };
 
@@ -77,9 +165,41 @@ class GoldbergApp {
     this.initSuccessUI();
     this.initSettings();
     this.initManual();
+    this.initLegal();
+    this.initSmoothScroll();
     this.applyLanguage();
     
     this.animate();
+  }
+
+  initLegal() {
+    const showPrivacy = document.getElementById('show-privacy');
+    const showTerms = document.getElementById('show-terms');
+    const privacyModal = document.getElementById('privacy-modal');
+    const termsModal = document.getElementById('terms-modal');
+
+    if (showPrivacy) showPrivacy.onclick = (e) => { e.preventDefault(); privacyModal.classList.remove('hidden'); };
+    if (showTerms) showTerms.onclick = (e) => { e.preventDefault(); termsModal.classList.remove('hidden'); };
+
+    document.querySelectorAll('.btn-close-modal').forEach(btn => {
+      btn.onclick = () => {
+        const modalId = btn.dataset.modal;
+        if (modalId) document.getElementById(modalId).classList.add('hidden');
+      };
+    });
+  }
+
+  initSmoothScroll() {
+    document.querySelectorAll('.nav-link, .footer-nav a').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
   }
 
   get selectedNodon() { return this._selectedNodon; }
@@ -518,6 +638,181 @@ class GoldbergApp {
       bladeG.setAttribute('transform', `rotate(${(time / (nodon.isActive ? 1.5 : 8)) % 360})`);
       for(let i=0; i<4; i++) {
         const b = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        b.setAttribute('d', 'M 0 0 C 20 -10 30 -30 0 -35 C -30 -30 -20 -10 0 0');
+        b.setAttribute('fill', 'rgba(255,255,255,0.8)'); b.setAttribute('transform', `rotate(${i * 90})`); bladeG.appendChild(b);
+      }
+      g.appendChild(bladeG);
+    }
+    if (type === 'timer') {
+      const hand = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      hand.setAttribute('y2', -25); hand.setAttribute('stroke', 'white'); hand.setAttribute('stroke-width', '3');
+      hand.setAttribute('transform', `rotate(${(time/10)%360})`); g.appendChild(hand);
+    }
+    if (type === 'warp-a' || type === 'warp-b') {
+      const swirl = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      swirl.setAttribute('r', 25); swirl.setAttribute('fill', 'none'); swirl.setAttribute('stroke', 'white');
+      swirl.setAttribute('stroke-width', '4'); swirl.setAttribute('stroke-dasharray', '5,15');
+      swirl.setAttribute('transform', `rotate(${(time/5)%360})`); g.appendChild(swirl);
+    }
+    if (type === 'magnet') {
+      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ring.setAttribute('r', 35); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'rgba(255,255,255,0.2)');
+      ring.setAttribute('stroke-width', '8'); ring.setAttribute('stroke-dasharray', '10,10');
+      ring.setAttribute('transform', `rotate(${(time/20)%360})`); g.appendChild(ring);
+    }
+    if (type === 'goal') {
+      const pole = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      pole.setAttribute('x', -3); pole.setAttribute('y', -50); pole.setAttribute('width', 6); pole.setAttribute('height', 50);
+      pole.setAttribute('fill', '#57606F'); g.appendChild(pole);
+      const flag = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const off = Math.sin(time / 120) * 10;
+      flag.setAttribute('d', `M 0 -50 L ${35+off} -35 L 0 -20 Z`);
+      flag.setAttribute('fill', '#FF4757'); flag.setAttribute('stroke', 'white'); flag.setAttribute('stroke-width', '2'); g.appendChild(flag);
+    }
+    if (type === 'counter') {
+      const box = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      box.setAttribute('x', -25); box.setAttribute('y', 10); box.setAttribute('width', 50); box.setAttribute('height', 25);
+      box.setAttribute('fill', '#2F3542'); box.setAttribute('rx', '5'); g.appendChild(box);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('y', 28); txt.setAttribute('text-anchor', 'middle'); txt.setAttribute('fill', '#FED330');
+      txt.setAttribute('font-weight', 'bold'); txt.setAttribute('font-size', '18'); txt.setAttribute('font-family', 'monospace');
+      txt.textContent = `${nodon.count}/${nodon.target}`; g.appendChild(txt);
+    }
+  }
+
+  addFaceToGroup(g, size, offset, time, look, selected, active) {
+    const isBlinking = (Math.floor(time / 100) % 60 === 0);
+    [ -offset, offset ].forEach(ox => {
+      if (isBlinking) {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', ox - size); line.setAttribute('y1', -3); line.setAttribute('x2', ox + size); line.setAttribute('y2', -3);
+        line.setAttribute('stroke', '#2F3542'); line.setAttribute('stroke-width', '3'); g.appendChild(line);
+      } else {
+        const w = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        w.setAttribute('cx', ox); w.setAttribute('cy', -3); w.setAttribute('r', size); w.setAttribute('fill', 'white');
+        w.setAttribute('stroke', '#2F3542'); w.setAttribute('stroke-width', '1'); g.appendChild(w);
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        p.setAttribute('cx', ox + look.x); p.setAttribute('cy', -3 + look.y); p.setAttribute('r', size / 1.8); p.setAttribute('fill', '#2F3542'); g.appendChild(p);
+      }
+    });
+    const mouth = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const mh = active ? size * 3 : 2.5;
+    mouth.setAttribute('d', `M ${-size*1.6} 8 Q 0 ${8 + mh} ${size*1.6} 8`);
+    mouth.setAttribute('fill', active ? '#2F3542' : 'none'); mouth.setAttribute('stroke', '#2F3542'); mouth.setAttribute('stroke-width', '2.5');
+    g.appendChild(mouth);
+    if (selected) {
+      [ -offset-8, offset+8 ].forEach(bx => {
+        const b = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        b.setAttribute('cx', bx); b.setAttribute('cy', 5); b.setAttribute('r', 5); b.setAttribute('fill', 'rgba(255,100,100,0.6)'); g.appendChild(b);
+      });
+    }
+  }
+
+  handleMagnets() {
+    if (!this.isPlaying) return;
+    this.nodons.filter(n => n.type === 'magnet').forEach(m => {
+      this.nodons.filter(n => n.type === 'ball').forEach(b => {
+        const d = Vector.magnitude(Vector.sub(m.body.position, b.body.position));
+        if (d < 280) Matter.Body.applyForce(b.body, b.body.position, Vector.mult(Vector.normalise(Vector.sub(m.body.position, b.body.position)), m.power * (1 - d/280)));
+      });
+    });
+  }
+
+  drawPorts() {
+    if (this.isPlaying) return;
+    this.nodons.forEach(n => {
+      if (['sensor', 'timer', 'counter'].includes(n.type)) this.createPort(n, n.body.position.x + 45, n.body.position.y, 'output');
+      if (['fan', 'timer', 'counter'].includes(n.type)) this.createPort(n, n.body.position.x - 45, n.body.position.y, 'input');
+    });
+  }
+
+  createPort(nodon, x, y, type) {
+    const svg = document.getElementById('wiring-layer');
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', '10'); c.classList.add('port', type);
+    c.onmousedown = (e) => {
+      e.stopPropagation();
+      if (type === 'output') { this.isWiring = true; this.wireStartPort = { nodon, x, y }; }
+      else if (this.isWiring) { 
+        if (!this.connections.some(c => c.fromId === this.wireStartPort.nodon.id && c.toId === nodon.id)) {
+          this.connections.push({ fromId: this.wireStartPort.nodon.id, toId: nodon.id });
+        }
+        this.isWiring = false; 
+      }
+    };
+    svg.appendChild(c);
+  }
+
+  drawWires() {
+    this.connections.forEach(conn => {
+      const f = this.nodons.find(n => n.id === conn.fromId);
+      const t = this.nodons.find(n => n.id === conn.toId);
+      if (f && t) this.createWire({ x: f.body.position.x + 45, y: f.body.position.y }, { x: t.body.position.x - 45, y: t.body.position.y }, '#4a90e2');
+    });
+    if (this.isWiring) this.createWire(this.wireStartPort, this.mouseConstraint.mouse.position, '#ff4757', true);
+  }
+
+  createWire(p1, p2, color, isDashed = false) {
+    const svg = document.getElementById('wiring-layer');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const dx = Math.abs(p2.x - p1.x) * 0.65;
+    path.setAttribute('d', `M ${p1.x} ${p1.y} C ${p1.x + dx} ${p1.y}, ${p2.x - dx} ${p2.y}, ${p2.x} ${p2.y}`);
+    path.setAttribute('stroke', color); path.setAttribute('fill', 'none'); path.setAttribute('stroke-width', '6'); path.setAttribute('stroke-linecap', 'round');
+    if (isDashed) path.setAttribute('stroke-dasharray', '12,12');
+    svg.appendChild(path);
+  }
+
+  drawSelectionHighlight() {
+    if (!this.selectedNodon) return;
+    const { x, y } = this.selectedNodon.body.position;
+    const svg = document.getElementById('wiring-layer');
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', x); circle.setAttribute('cy', y); circle.setAttribute('r', 60);
+    circle.setAttribute('fill', 'none'); circle.setAttribute('stroke', '#ff4757'); circle.setAttribute('stroke-width', '4'); circle.setAttribute('stroke-dasharray', '6,6');
+    svg.appendChild(circle);
+  }
+
+  resetSimulation() {
+    this.nodons.forEach(n => { 
+      if (!n.body.isStatic) {
+        Matter.Body.setPosition(n.body, n.initialPos); 
+        Matter.Body.setAngle(n.body, n.initialAngle); 
+        Matter.Body.setVelocity(n.body, { x: 0, y: 0 }); 
+        Matter.Body.setAngularVelocity(n.body, 0);
+      }
+      n.count = 0; n.isActive = false;
+    });
+    this.goalReached = false; 
+    const msg = document.getElementById('success-msg');
+    if (msg) msg.classList.remove('show');
+  }
+
+  clearAll() {
+    Composite.clear(this.world, false); Composite.add(this.world, this.mouseConstraint);
+    this.nodons = []; this.connections = []; this.selectedNodon = null;
+  }
+
+  initSuccessUI() {
+    let msg = document.getElementById('success-msg');
+    if (!msg) {
+      msg = document.createElement('div'); msg.id = 'success-msg';
+      document.body.appendChild(msg);
+    }
+    msg.innerHTML = '<h2 data-lang="success_title">성공!</h2><p data-lang="success_msg">정말 멋진 장치예요!</p>';
+    I18N.ko.success_title = "성공!"; I18N.ko.success_msg = "정말 멋진 장치예요!";
+    I18N.en.success_title = "Success!"; I18N.en.success_msg = "Amazing Contraption!";
+  }
+
+  removeNodon(n) {
+    if (!n) return; Composite.remove(this.world, n.body);
+    this.nodons = this.nodons.filter(x => x.id !== n.id);
+    this.connections = this.connections.filter(c => c.fromId !== n.id && c.toId !== n.id);
+    if (this.selectedNodon === n) this.selectedNodon = null;
+  }
+}
+
+const app = new GoldbergApp();
+g', 'path');
         b.setAttribute('d', 'M 0 0 C 20 -10 30 -30 0 -35 C -30 -30 -20 -10 0 0');
         b.setAttribute('fill', 'rgba(255,255,255,0.8)'); b.setAttribute('transform', `rotate(${i * 90})`); bladeG.appendChild(b);
       }
