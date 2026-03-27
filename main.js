@@ -290,7 +290,8 @@ class GoldbergApp {
         width: container.clientWidth,
         height: container.clientHeight,
         wireframes: false,
-        background: 'transparent'
+        background: 'transparent',
+        pixelRatio: window.devicePixelRatio || 1
       }
     });
     Render.run(this.render);
@@ -298,6 +299,15 @@ class GoldbergApp {
     const mouse = Mouse.create(this.render.canvas);
     this.mouseConstraint = MouseConstraint.create(this.engine, { mouse, constraint: { stiffness: 0.2, render: { visible: false } } });
     Composite.add(this.world, this.mouseConstraint);
+
+    // Sync Matter.js with container on resize
+    window.addEventListener('resize', () => {
+      this.render.canvas.width = container.clientWidth;
+      this.render.canvas.height = container.clientHeight;
+      this.render.options.width = container.clientWidth;
+      this.render.options.height = container.clientHeight;
+      Matter.Render.setPixelRatio(this.render, window.devicePixelRatio || 1);
+    });
   }
 
   initControls() {
@@ -355,19 +365,28 @@ class GoldbergApp {
 
   initDragAndDrop() {
     document.querySelectorAll('.nodon-item').forEach(item => {
-      item.ondragstart = (e) => {
+      item.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('type', item.dataset.type);
-      };
+      });
     });
-    const container = document.getElementById('physics-canvas');
-    container.ondragover = (e) => e.preventDefault();
-    container.ondrop = (e) => {
+
+    const container = document.getElementById('canvas-container');
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    });
+
+    container.addEventListener('drop', (e) => {
       e.preventDefault();
       const type = e.dataTransfer.getData('type');
       if (!type) return;
+
       const rect = container.getBoundingClientRect();
-      this.addNodon(type, e.clientX - rect.left, e.clientY - rect.top);
-    };
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      this.addNodon(type, x, y);
+    });
   }
 
   initEvents() {
