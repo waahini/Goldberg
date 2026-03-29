@@ -384,17 +384,64 @@ footer {
   main {
     flex-direction: column;
     height: auto;
+    padding-bottom: 220px; /* Space for fixed sidebar */
   }
   
   #sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 300px;
+    height: 200px;
     border-right: none;
-    border-bottom: 4px solid rgba(0,0,0,0.03);
+    border-top: 4px solid rgba(0,0,0,0.1);
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.8rem;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+    z-index: 1000;
+  }
+
+  .sidebar-section {
+    display: flex;
+    flex-direction: column;
+    min-width: max-content;
+  }
+
+  .sidebar-section h3 {
+    position: static;
+    border-bottom: none;
+    font-size: 0.7rem;
+    margin-bottom: 0.4rem;
+    background: transparent;
+  }
+
+  .nodon-palette {
+    display: flex;
+    flex-direction: row;
+    gap: 0.6rem;
+  }
+
+  .nodon-item {
+    min-width: 80px;
+    padding: 0.6rem;
+  }
+
+  .nodon-item span {
+    font-size: 0.65rem;
+    white-space: nowrap;
+  }
+
+  .sidebar-ad {
+    display: none; /* Hide ad in compact mobile sidebar */
   }
   
   #canvas-container {
-    height: 500px;
+    height: calc(100vh - 264px); /* Full height minus header and mobile sidebar */
   }
   
   .footer-top {
@@ -447,16 +494,23 @@ footer {
 
 main {
   display: flex;
-  flex: 1;
-  overflow: hidden;
+  height: calc(100vh - 64px); /* Fixed height for editor */
+  background: white;
+  position: relative;
 }
 
 #sidebar {
   width: 280px;
   background: var(--color-sidebar);
   border-right: 4px solid rgba(0,0,0,0.03);
-  padding: 1.2rem;
+  padding: 1rem;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 50;
+  position: sticky;
+  top: 0;
 }
 
 .sidebar-section h3 {
@@ -464,15 +518,27 @@ main {
   font-weight: 900;
   color: #A4B0BE;
   margin-bottom: 0.8rem;
-  padding-left: 0.4rem;
+  padding: 0.4rem;
   text-transform: uppercase;
+  background: white;
+  position: sticky;
+  top: -1rem;
+  z-index: 5;
+  border-bottom: 2px solid #F1F2F6;
 }
 
 .nodon-palette {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-ad {
+  margin-top: auto;
+  min-height: 200px;
+  border-style: solid;
+  background: #fdfdfd;
 }
 
 .nodon-item {
