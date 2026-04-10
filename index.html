@@ -1,378 +1,366 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-adsense-account" content="ca-pub-4555364222256220">
-  <meta name="description" content="골드버그 노돈 빌더 - 물리 법칙을 이용한 창의적인 골드버그 장치 만들기 도구. 재미있는 물리 실험과 논리 연결을 통해 나만의 장치를 설계해보세요.">
-  <meta name="keywords" content="골드버그 장치, 물리 시뮬레이션, 노돈 빌더, 교육용 게임, 코딩 논리, 창의력 도구">
-  <title>골드버그 노돈 빌더 | 창의적인 물리 장치 설계 도구</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Matter.js for Physics -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-  <!-- Lucide for Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4555364222256220"
-     crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-adsense-account" content="ca-pub-4555364222256220">
+  <meta name="description" content="골드버그 노돈 빌더 - 물리 법칙을 이용한 창의적인 골드버그 장치 만들기 도구. 재미있는 물리 실험과 논리 연결을 통해 나만의 장치를 설계해보세요.">
+  <meta name="keywords" content="골드버그 장치, 물리 시뮬레이션, 노돈 빌더, 교육용 게임, 코딩 논리, 창의력 도구">
+  <title>골드버그 노돈 빌더 - codinqing</title>
+  <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4555364222256220"
+     crossorigin="anonymous"></script>
 </head>
 <body class="theme-nintendo">
-  <div id="app">
-    <header>
-      <div class="logo">
-        <i data-lucide="gamepad-2"></i>
-        <span data-lang="app_title">골드버그 노돈 빌더</span>
-      </div>
-      <nav class="top-nav">
-        <a href="#guide-section" class="nav-link">가이드</a>
-        <a href="#physics-section" class="nav-link">물리 원리</a>
-      </nav>
-      <div class="controls">
-        <button id="btn-play" class="btn btn-primary">
-          <i data-lucide="play"></i> <span data-lang="btn_play">시작</span>
-        </button>
-        <button id="btn-reset" class="btn btn-secondary">
-          <i data-lucide="rotate-ccw"></i> <span data-lang="btn_reset">초기화</span>
-        </button>
-        <button id="btn-clear" class="btn btn-danger">
-          <i data-lucide="trash-2"></i> <span data-lang="btn_clear">모두 삭제</span>
-        </button>
-        <button id="btn-manual" class="btn btn-accent">
-          <i data-lucide="book-open"></i> <span data-lang="btn_manual">설명서</span>
-        </button>
-        <button id="btn-settings" class="btn">
-          <i data-lucide="settings"></i>
-        </button>
-      </div>
-    </header>
+  <div id="app">
+    <header>
+      <div class="logo">
+        <i data-lucide="gamepad-2"></i>
+        <span data-lang="app_title">codinqing</span>
+      </div>
+      <nav class="top-nav">
+        <a href="#guide-section" class="nav-link">가이드</a>
+        <a href="#physics-section" class="nav-link">물리 원리</a>
+      </nav>
+      <div class="controls">
+        <button id="btn-play" class="btn btn-primary">
+          <i data-lucide="play"></i> <span data-lang="btn_play">시작</span>
+        </button>
+        <button id="btn-reset" class="btn btn-secondary">
+          <i data-lucide="rotate-ccw"></i> <span data-lang="btn_reset">초기화</span>
+        </button>
+        <button id="btn-clear" class="btn btn-danger">
+          <i data-lucide="trash-2"></i> <span data-lang="btn_clear">모두 삭제</span>
+        </button>
+        <button id="btn-manual" class="btn btn-accent">
+          <i data-lucide="book-open"></i> <span data-lang="btn_manual">설명서</span>
+        </button>
+        <button id="btn-settings" class="btn">
+          <i data-lucide="settings"></i>
+        </button>
+      </div>
+    </header>
 
-    <main>
-      <aside id="sidebar">
-        <div class="sidebar-section">
-          <h3 data-lang="cat_phys">물리 노돈 (움직이는 물체)</h3>
-          <div class="nodon-palette">
-            <div class="nodon-item" data-type="ball" draggable="true">
-              <div class="nodon-icon ball"></div>
-              <span data-lang="nodon_ball">공</span>
-            </div>
-            <div class="nodon-item" data-type="ramp" draggable="true">
-              <div class="nodon-icon ramp"></div>
-              <span data-lang="nodon_ramp">경사로</span>
-            </div>
-            <div class="nodon-item" data-type="box" draggable="true">
-              <div class="nodon-icon box"></div>
-              <span data-lang="nodon_box">상자</span>
-            </div>
-            <div class="nodon-item" data-type="floor" draggable="true">
-              <div class="nodon-icon floor"></div>
-              <span data-lang="nodon_floor">바닥</span>
-            </div>
-            <div class="nodon-item" data-type="goal" draggable="true">
-              <div class="nodon-icon goal"></div>
-              <span data-lang="nodon_goal">골인</span>
-            </div>
-            <div class="nodon-item" data-type="spring" draggable="true">
-              <div class="nodon-icon spring"></div>
-              <span data-lang="nodon_spring">스프링</span>
-            </div>
-            <div class="nodon-item" data-type="treadmill" draggable="true">
-              <div class="nodon-icon treadmill"></div>
-              <span data-lang="nodon_treadmill">컨베이어</span>
-            </div>
-            <div class="nodon-item" data-type="breakable" draggable="true">
-              <div class="nodon-icon breakable"></div>
-              <span data-lang="nodon_breakable">부서지는 상자</span>
-            </div>
-            <div class="nodon-item" data-type="balloon" draggable="true">
-              <div class="nodon-icon balloon"></div>
-              <span data-lang="nodon_balloon">풍선</span>
-            </div>
-          </div>
-        </div>
+    <main>
+      <aside id="sidebar">
+        <div class="sidebar-section">
+          <h3 data-lang="cat_phys">물리 노돈 (움직이는 물체)</h3>
+          <div class="nodon-palette">
+            <div class="nodon-item" data-type="ball" draggable="true">
+              <div class="nodon-icon ball"></div>
+              <span data-lang="nodon_ball">공</span>
+            </div>
+            <div class="nodon-item" data-type="ramp" draggable="true">
+              <div class="nodon-icon ramp"></div>
+              <span data-lang="nodon_ramp">경사로</span>
+            </div>
+            <div class="nodon-item" data-type="box" draggable="true">
+              <div class="nodon-icon box"></div>
+              <span data-lang="nodon_box">상자</span>
+            </div>
+            <div class="nodon-item" data-type="floor" draggable="true">
+              <div class="nodon-icon floor"></div>
+              <span data-lang="nodon_floor">바닥</span>
+            </div>
+            <div class="nodon-item" data-type="goal" draggable="true">
+              <div class="nodon-icon goal"></div>
+              <span data-lang="nodon_goal">골인</span>
+            </div>
+            <div class="nodon-item" data-type="spring" draggable="true">
+              <div class="nodon-icon spring"></div>
+              <span data-lang="nodon_spring">스프링</span>
+            </div>
+            <div class="nodon-item" data-type="treadmill" draggable="true">
+              <div class="nodon-icon treadmill"></div>
+              <span data-lang="nodon_treadmill">컨베이어</span>
+            </div>
+            <div class="nodon-item" data-type="breakable" draggable="true">
+              <div class="nodon-icon breakable"></div>
+              <span data-lang="nodon_breakable">부서지는 상자</span>
+            </div>
+            <div class="nodon-item" data-type="balloon" draggable="true">
+              <div class="nodon-icon balloon"></div>
+              <span data-lang="nodon_balloon">풍선</span>
+            </div>
+          </div>
+        </div>
 
-        <div class="sidebar-section">
-          <h3 data-lang="cat_logic">논리 노돈 (명령하는 물체)</h3>
-          <div class="nodon-palette">
-            <div class="nodon-item" data-type="sensor" draggable="true">
-              <div class="nodon-icon sensor"></div>
-              <span data-lang="nodon_sensor">센서</span>
-            </div>
-            <div class="nodon-item" data-type="fan" draggable="true">
-              <div class="nodon-icon fan"></div>
-              <span data-lang="nodon_fan">팬</span>
-            </div>
-            <div class="nodon-item" data-type="timer" draggable="true">
-              <div class="nodon-icon timer"></div>
-              <span data-lang="nodon_timer">타이머</span>
-            </div>
-            <div class="nodon-item" data-type="warp-a" draggable="true">
-              <div class="nodon-icon warp-a"></div>
-              <span data-lang="nodon_warp_a">포탈 A</span>
-            </div>
-            <div class="nodon-item" data-type="warp-b" draggable="true">
-              <div class="nodon-icon warp-b"></div>
-              <span data-lang="nodon_warp_b">포탈 B</span>
-            </div>
-            <div class="nodon-item" data-type="magnet" draggable="true">
-              <div class="nodon-icon magnet"></div>
-              <span data-lang="nodon_magnet">자석</span>
-            </div>
-            <div class="nodon-item" data-type="counter" draggable="true">
-              <div class="nodon-icon counter"></div>
-              <span data-lang="nodon_counter">카운터</span>
-            </div>
-          </div>
-        </div>
+        <div class="sidebar-section">
+          <h3 data-lang="cat_logic">논리 노돈 (명령하는 물체)</h3>
+          <div class="nodon-palette">
+            <div class="nodon-item" data-type="sensor" draggable="true">
+              <div class="nodon-icon sensor"></div>
+              <span data-lang="nodon_sensor">센서</span>
+            </div>
+            <div class="nodon-item" data-type="fan" draggable="true">
+              <div class="nodon-icon fan"></div>
+              <span data-lang="nodon_fan">팬</span>
+            </div>
+            <div class="nodon-item" data-type="timer" draggable="true">
+              <div class="nodon-icon timer"></div>
+              <span data-lang="nodon_timer">타이머</span>
+            </div>
+            <div class="nodon-item" data-type="warp-a" draggable="true">
+              <div class="nodon-icon warp-a"></div>
+              <span data-lang="nodon_warp_a">포탈 A</span>
+            </div>
+            <div class="nodon-item" data-type="warp-b" draggable="true">
+              <div class="nodon-icon warp-b"></div>
+              <span data-lang="nodon_warp_b">포탈 B</span>
+            </div>
+            <div class="nodon-item" data-type="magnet" draggable="true">
+              <div class="nodon-icon magnet"></div>
+              <span data-lang="nodon_magnet">자석</span>
+            </div>
+            <div class="nodon-item" data-type="counter" draggable="true">
+              <div class="nodon-icon counter"></div>
+              <span data-lang="nodon_counter">카운터</span>
+            </div>
+          </div>
+        </div>
 
-        <!-- Sidebar Ad Slot moved to bottom -->
-        <div class="ad-container sidebar-ad">
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4555364222256220"
-               data-ad-slot="1234567890"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-      </aside>
+                <div class="ad-container sidebar-ad">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-4555364222256220"
+               data-ad-slot="1234567890"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+      </aside>
 
-      <div id="canvas-container">
-        <!-- Physics Canvas -->
-        <div id="physics-canvas"></div>
-        <svg id="wiring-layer"></svg>
-        
-        <!-- Hover Tooltip -->
-        <div id="hover-tooltip" class="hidden">
-          <div class="tooltip-title">노돈 정보</div>
-          <div class="tooltip-body">설명</div>
-        </div>
-        
-        <!-- Instruction Manual Modal -->
-        <div id="manual-modal" class="modal hidden">
-          <div class="modal-content manual-content">
-            <h2 data-lang="manual_title">📖 노돈 가이드북</h2>
-            <div class="manual-body">
-              <section>
-                <h3 data-lang="man_how_to_build">1. 장치 만들기</h3>
-                <p data-lang="man_desc_build">왼쪽 사이드바에서 노돈을 드래그하여 화면에 놓으세요. <b>R 키</b>를 눌러 선택한 노돈을 회전시킬 수 있습니다.</p>
-              </section>
-              <section>
-                <h3 data-lang="man_how_to_wire">2. 논리 연결하기</h3>
-                <p data-lang="man_desc_wire"><b>Shift 키</b>를 누른 채로 노돈의 빨간 점(출력)에서 노란 점(입력)으로 드래그하면 선이 연결됩니다. 센서와 팬을 연결해 보세요!</p>
-              </section>
-              <section>
-                <h3 data-lang="man_play">3. 실행하기</h3>
-                <p data-lang="man_desc_play">상단의 <b>시작 버튼</b>을 누르면 물리 법칙이 적용됩니다. 공이 골인 지점에 닿도록 멋진 장치를 설계해 보세요!</p>
-              </section>
-            </div>
-            <button id="btn-close-manual" class="btn btn-primary">알겠어요!</button>
-          </div>
-        </div>
+      <div id="canvas-container">
+                <div id="physics-canvas"></div>
+        <svg id="wiring-layer"></svg>
+        
+                <div id="hover-tooltip" class="hidden">
+          <div class="tooltip-title">노돈 정보</div>
+          <div class="tooltip-body">설명</div>
+        </div>
+        
+                <div id="manual-modal" class="modal hidden">
+          <div class="modal-content manual-content">
+            <h2 data-lang="manual_title">📖 노돈 가이드북</h2>
+            <div class="manual-body">
+              <section>
+                <h3 data-lang="man_how_to_build">1. 장치 만들기</h3>
+              <p data-lang="man_desc_build">왼쪽 사이드바에서 노돈을 드래그하여 화면에 놓으세요. <b>R 키</b>를 눌러 선택한 노돈을 회전시킬 수 있습니다.</p>
+              </section>
+              <section>
+                <h3 data-lang="man_how_to_wire">2. 논리 연결하기</h3>
+              <p data-lang="man_desc_wire"><b>Shift 키</b>를 누른 채로 노돈의 빨간 점(출력)에서 노란 점(입력)으로 드래그하면 선이 연결됩니다. 센서와 팬을 연결해 보세요!</p>
+              </section>
+              <section>
+                <h3 data-lang="man_play">3. 실행하기</h3>
+                <p data-lang="man_desc_play">상단의 <b>시작 버튼</b>을 누르면 물리 법칙이 적용됩니다. 공이 골인 지점에 닿도록 멋진 장치를 설계해 보세요!</p>
+              </section>
+            </div>
+            <button id="btn-close-manual" class="btn btn-primary">알겠어요!</button>
+          </div>
+        </div>
 
-        <!-- Global Settings Modal -->
-        <div id="settings-modal" class="modal hidden">
-          <div class="modal-content">
-            <h2 data-lang="settings_title">환경 설정</h2>
-            <div class="setting-item">
-              <label data-lang="label_language">언어 선택</label>
-              <select id="select-lang">
-                <option value="ko" selected>한국어</option>
-                <option value="en">English</option>
-              </select>
-            </div>
-            <div class="setting-item">
-              <label data-lang="label_theme">테마 설정</label>
-              <select id="select-theme">
-                <option value="default">라이트</option>
-                <option value="dark">다크</option>
-              </select>
-            </div>
-            <button id="btn-close-settings" class="btn btn-secondary">닫기</button>
-          </div>
-        </div>
-        
-        <!-- Settings Panel -->
-        <div id="settings-panel" class="hidden">
-          <div class="panel-header">
-            <span id="node-name">노돈</span>
-            <button id="node-delete"><i data-lucide="trash-2"></i></button>
-          </div>
-          <div class="panel-body">
-            <div class="prop-group" id="prop-restitution">
-              <label>탄성 (Bounce)</label>
-              <input type="range" min="0" max="1" step="0.1" id="input-restitution">
-            </div>
-            <div class="prop-group" id="prop-delay">
-              <label>지연 시간 (초)</label>
-              <input type="number" min="0" max="10" step="0.5" id="input-delay">
-            </div>
-            <div class="prop-group" id="prop-power">
-              <label>힘 (Power)</label>
-              <input type="range" min="-0.2" max="0.2" step="0.05" id="input-power">
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+                <div id="settings-modal" class="modal hidden">
+          <div class="modal-content">
+            <h2 data-lang="settings_title">환경 설정</h2>
+            <div class="setting-item">
+              <label data-lang="label_language">언어 선택</label>
+              <select id="select-lang">
+                <option value="ko" selected>한국어</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label data-lang="label_theme">테마 설정</label>
+              <select id="select-theme">
+                <option value="default">라이트</option>
+                <option value="dark">다크</option>
+              </select>
+            </div>
+            <button id="btn-close-settings" class="btn btn-secondary">닫기</button>
+          </div>
+        </div>
+        
+                <div id="settings-panel" class="hidden">
+          <div class="panel-header">
+            <span id="node-name">노돈</span>
+            <button id="node-delete"><i data-lucide="trash-2"></i></button>
+          </div>
+          <div class="panel-body">
+            <div class="prop-group" id="prop-restitution">
+              <label>탄성 (Bounce)</label>
+              <input type="range" min="0" max="1" step="0.1" id="input-restitution">
+            </div>
+            <div class="prop-group" id="prop-delay">
+              <label>지연 시간 (초)</label>
+              <input type="number" min="0" max="10" step="0.5" id="input-delay">
+            </div>
+            <div class="prop-group" id="prop-power">
+              <label>힘 (Power)</label>
+              <input type="range" min="-0.2" max="0.2" step="0.05" id="input-power">
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
-    <!-- Detailed Content for AdSense Quality -->
-    <section id="detailed-content">
-      <div class="content-wrapper">
-        <article id="guide-section">
-          <h2 data-lang="guide_title">🛠️ 골드버그 노돈 빌더 사용 가이드</h2>
-          <p data-lang="guide_intro">골드버그 장치는 아주 간단한 일을 처리하기 위해 수많은 단계를 거치도록 복잡하게 만들어진 장치입니다. 본 빌더는 이러한 창의적인 설계를 누구나 쉽게 체험할 수 있도록 돕습니다. 노돈(Nodon)이라 불리는 작고 귀여운 프로그램 유닛들을 연결하여 당신만의 거대한 연쇄 반응 기계를 만들어보세요.</p>
-          <div class="guide-grid">
-            <div class="guide-card">
-              <h3 data-lang="guide_step1_title">1. 노돈 배치</h3>
-              <p data-lang="guide_step1_desc">왼쪽 사이드바에서 물리 노돈과 논리 노돈을 조합하여 연쇄 반응을 만듭니다. 드래그 앤 드롭으로 간단하게 배치하고, R 키를 눌러 각도를 조절하세요.</p>
-            </div>
-            <div class="guide-card">
-              <h3 data-lang="guide_step2_title">2. 연결의 힘 (Wiring)</h3>
-              <p data-lang="guide_step2_desc">센서가 감지하면 팬이 돌아가도록 연결해보세요. Shift 키를 누른 채 드래그하여 노돈 사이의 '논리 선'을 연결할 수 있습니다. 단순한 움직임이 복잡한 시스템이 되는 순간입니다.</p>
-            </div>
-            <div class="guide-card">
-              <h3 data-lang="guide_step3_title">3. 실험과 수정</h3>
-              <p data-lang="guide_step3_desc">실패는 성공의 어머니입니다! 물리 엔진을 통해 공의 궤적을 실시간으로 확인하고, 설정을 수정하며 최적의 경로를 찾아보세요. 모든 과정이 하나의 거대한 물리 실험실이 됩니다.</p>
-            </div>
-          </div>
-        </article>
+        <section id="detailed-content">
+      <div class="content-wrapper">
+        <article id="guide-section">
+          <h2 data-lang="guide_title">🛠️ 골드버그 노돈 빌더 사용 가이드</h2>
+          <p data-lang="guide_intro">골드버그 장치는 아주 간단한 일을 처리하기 위해 수많은 단계를 거치도록 복잡하게 만들어진 장치입니다. 본 빌더는 이러한 창의적인 설계를 누구나 쉽게 체험할 수 있도록 돕습니다. 노돈(Nodon)이라 불리는 작고 귀여운 프로그램 유닛들을 연결하여 당신만의 거대한 연쇄 반응 기계를 만들어보세요.</p>
+          <div class="guide-grid">
+            <div class="guide-card">
+              <h3 data-lang="guide_step1_title">1. 노돈 배치</h3>
+              <p data-lang="guide_step1_desc">왼쪽 사이드바에서 물리 노돈과 논리 노돈을 조합하여 연쇄 반응을 만듭니다. 드래그 앤 드롭으로 간단하게 배치하고, R 키를 눌러 각도를 조절하세요.</p>
+            </div>
+            <div class="guide-card">
+              <h3 data-lang="guide_step2_title">2. 연결의 힘 (Wiring)</h3>
+              <p data-lang="guide_step2_desc">센서가 감지하면 팬이 돌아가도록 연결해보세요. Shift 키를 누른 채 드래그하여 노돈 사이의 '논리 선'을 연결할 수 있습니다. 단순한 움직임이 복잡한 시스템이 되는 순간입니다.</p>
+            </div>
+            <div class="guide-card">
+              <h3 data-lang="guide_step3_title">3. 실험과 수정</h3>
+              <p data-lang="guide_step3_desc">실패는 성공의 어머니입니다! 물리 엔진을 통해 공의 궤적을 실시간으로 확인하고, 설정을 수정하며 최적의 경로를 찾아보세요. 모든 과정이 하나의 거대한 물리 실험실이 됩니다.</p>
+            </div>
+          </div>
+        </article>
 
-        <article id="nodon-encyclopedia">
-          <h2 data-lang="encyclo_title">📚 노돈 백과사전 (Nodon Encyclopedia)</h2>
-          <p data-lang="encyclo_intro">각 노돈은 자신만의 역할과 성격을 가지고 있습니다. 노돈을 더 잘 알수록 더 멋진 장치를 만들 수 있습니다.</p>
-          <div class="encyclo-list">
-            <div class="encyclo-item">
-              <h4 data-lang="nodon_ball">공 (Ball)</h4>
-              <p data-lang="nodon_ball_desc">가장 기본적인 물리 노돈입니다. 중력의 영향을 받아 굴러가며 다른 물체와 충돌합니다. 모든 골드버그 장치의 주인공이죠!</p>
-            </div>
-            <div class="encyclo-item">
-              <h4 data-lang="nodon_warp">포탈 (Warp)</h4>
-              <p data-lang="nodon_warp_desc">공간을 연결하는 신비로운 노돈입니다. A 입구로 들어간 물체는 B 출구로 순식간에 이동합니다. 복잡한 구조를 단순하게 만들어줍니다.</p>
-            </div>
-            <div class="encyclo-item">
-              <h4 data-lang="nodon_sensor_desc_title">센서 (Sensor)</h4>
-              <p data-lang="nodon_sensor_desc_text">물체의 움직임을 감시합니다. 자신의 영역 안에 물체가 들어오면 연결된 다른 노돈에게 신호를 보냅니다. 자동화 시스템의 핵심입니다.</p>
-            </div>
-            <div class="encyclo-item">
-              <h4 data-lang="nodon_fan_desc_title">팬 (Fan)</h4>
-              <p data-lang="nodon_fan_desc_text">바람의 힘으로 물체를 밀어냅니다. 신호를 받으면 작동하며, 공을 위로 띄우거나 멀리 날려 보낼 때 유용합니다.</p>
-            </div>
-          </div>
-        </article>
+        <article id="nodon-encyclopedia">
+          <h2 data-lang="encyclo_title">📚 노돈 백과사전 (Nodon Encyclopedia)</h2>
+          <p data-lang="encyclo_intro">각 노돈은 자신만의 역할과 성격을 가지고 있습니다. 노돈을 더 잘 알수록 더 멋진 장치를 만들 수 있습니다.</p>
+          <div class="encyclo-list">
+            <div class="encyclo-item">
+              <h4 data-lang="nodon_ball">공 (Ball)</h4>
+              <p data-lang="nodon_ball_desc">가장 기본적인 물리 노돈입니다. 중력의 영향을 받아 굴러가며 다른 물체와 충돌합니다. 모든 골드버그 장치의 주인공이죠!</p>
+            </div>
+            <div class="encyclo-item">
+              <h4 data-lang="nodon_warp">포탈 (Warp)</h4>
+              <p data-lang="nodon_warp_desc">공간을 연결하는 신비로운 노돈입니다. A 입구로 들어간 물체는 B 출구로 순식간에 이동합니다. 복잡한 구조를 단순하게 만들어줍니다.</p>
+            </div>
+            <div class="encyclo-item">
+              <h4 data-lang="nodon_sensor_desc_title">센서 (Sensor)</h4>
+              <p data-lang="nodon_sensor_desc_text">물체의 움직임을 감시합니다. 자신의 영역 안에 물체가 들어오면 연결된 다른 노돈에게 신호를 보냅니다. 자동화 시스템의 핵심입니다.</p>
+            </div>
+            <div class="encyclo-item">
+              <h4 data-lang="nodon_fan_desc_title">팬 (Fan)</h4>
+              <p data-lang="nodon_fan_desc_text">바람의 힘으로 물체를 밀어냅니다. 신호를 받으면 작동하며, 공을 위로 띄우거나 멀리 날려 보낼 때 유용합니다.</p>
+            </div>
+          </div>
+        </article>
 
-        <article id="physics-section">
-          <h2 data-lang="physics_title">🎓 학습할 수 있는 물리 원리</h2>
-          <p data-lang="physics_intro">본 빌더는 <strong>Matter.js</strong> 물리 엔진을 기반으로 하여 실제와 유사한 물리 현상을 체험할 수 있는 훌륭한 STEM 교육 도구입니다.</p>
-          <div class="physics-grid">
-            <div class="physics-card">
-              <h3 data-lang="phys_gravity_title">중력과 자유 낙하</h3>
-              <p data-lang="phys_gravity_desc">지구의 중력 가속도를 시뮬레이션합니다. 물체의 무게와 상관없이 동일한 가속도로 떨어지는 현상을 관찰할 수 있습니다.</p>
-            </div>
-            <div class="physics-card">
-              <h3 data-lang="phys_momentum_title">운동량과 충돌</h3>
-              <p data-lang="phys_momentum_desc">움직이는 공이 정지해 있는 상자에 부딪히면 에너지가 전달됩니다. 질량과 속도에 따른 충격량의 변화를 경험해보세요.</p>
-            </div>
-            <div class="physics-card">
-              <h3 data-lang="phys_elasticity_title">탄성과 반발력</h3>
-              <p data-lang="phys_elasticity_desc">스프링 노돈을 사용하면 물체가 튕겨 나갑니다. 에너지의 변환(운동 에너지 <-> 탄성 위치 에너지) 과정을 시각적으로 이해할 수 있습니다.</p>
-            </div>
-          </div>
-        </article>
+        <article id="physics-section">
+          <h2 data-lang="physics_title">🎓 학습할 수 있는 물리 원리</h2>
+          <p data-lang="physics_intro">본 빌더는 <strong>Matter.js</strong> 물리 엔진을 기반으로 하여 실제와 유사한 물리 현상을 체험할 수 있는 훌륭한 STEM 교육 도구입니다.</p>
+          <div class="physics-grid">
+            <div class="physics-card">
+              <h3 data-lang="phys_gravity_title">중력과 자유 낙하</h3>
+              <p data-lang="phys_gravity_desc">지구의 중력 가속도를 시뮬레이션합니다. 물체의 무게와 상관없이 동일한 가속도로 떨어지는 현상을 관찰할 수 있습니다.</p>
+            </div>
+            <div class="physics-card">
+              <h3 data-lang="phys_momentum_title">운동량과 충돌</h3>
+              <p data-lang="phys_momentum_desc">움직이는 공이 정지해 있는 상자에 부딪히면 에너지가 전달됩니다. 질량과 속도에 따른 충격량의 변화를 경험해보세요.</p>
+            </div>
+            <div class="physics-card">
+              <h3 data-lang="phys_elasticity_title">탄성과 반발력</h3>
+              <p data-lang="phys_elasticity_desc">스프링 노돈을 사용하면 물체가 튕겨 나갑니다. 에너지의 변환(운동 에너지 <-> 탄성 위치 에너지) 과정을 시각적으로 이해할 수 있습니다.</p>
+            </div>
+          </div>
+        </article>
 
-        <article id="vision-section">
-          <h2 data-lang="vision_title">🎨 골드버그 노돈 빌더의 비전</h2>
-          <p data-lang="vision_desc1">우리는 누구나 복잡한 물리 법칙을 재미있게 배우고, 자신만의 논리를 현실로 구현할 수 있는 세상을 꿈꿉니다. 골드버그 장치는 단순한 장난감을 넘어, 문제 해결 능력과 창의적 사고를 기를 수 있는 훌륭한 도구입니다.</p>
-          <p data-lang="vision_desc2">이 빌더를 통해 사용자들은 중력, 운동량, 가속도와 같은 추상적인 개념을 직접 눈으로 확인하고 조작할 수 있습니다. 수많은 실패와 재시도 끝에 마침내 작동하는 장치를 보며 얻는 성취감은 학습에 대한 강력한 동기부여가 됩니다.</p>
-          <div class="vision-highlight">
-            <h3 data-lang="vision_highlight_title">왜 골드버그 노돈 빌더인가요?</h3>
-            <ul data-lang="vision_list_items">
-              <li data-lang="vision_li1"><strong>무한한 자유도:</strong> 정해진 정답 없이 당신의 상상력이 곧 설계도가 됩니다.</li>
-              <li data-lang="vision_li2"><strong>직관적인 연결:</strong> 복잡한 코딩 대신 '선'을 연결하는 것만으로 논리를 구현합니다.</li>
-              <li data-lang="vision_li3"><strong>실시간 피드백:</strong> 수정 사항이 즉시 물리 엔진에 반영되어 빠른 실험이 가능합니다.</li>
-            </ul>
-          </div>
-        </article>
+        <article id="vision-section">
+          <h2 data-lang="vision_title">🎨 골드버그 노돈 빌더의 비전</h2>
+          <p data-lang="vision_desc1">우리는 누구나 복잡한 물리 법칙을 재미있게 배우고, 자신만의 논리를 현실로 구현할 수 있는 세상을 꿈꿉니다. 골드버그 장치는 단순한 장난감을 넘어, 문제 해결 능력과 창의적 사고를 기를 수 있는 훌륭한 도구입니다.</p>
+          <p data-lang="vision_desc2">이 빌더를 통해 사용자들은 중력, 운동량, 가속도와 같은 추상적인 개념을 직접 눈으로 확인하고 조작할 수 있습니다. 수많은 실패와 재시도 끝에 마침내 작동하는 장치를 보며 얻는 성취감은 학습에 대한 강력한 동기부여가 됩니다.</p>
+          <div class="vision-highlight">
+            <h3 data-lang="vision_highlight_title">왜 골드버그 노돈 빌더인가요?</h3>
+            <ul data-lang="vision_list_items">
+              <li data-lang="vision_li1"><strong>무한한 자유도:</strong> 정해진 정답 없이 당신의 상상력이 곧 설계도가 됩니다.</li>
+              <li data-lang="vision_li2"><strong>직관적인 연결:</strong> 복잡한 코딩 대신 '선'을 연결하는 것만으로 논리를 구현합니다.</li>
+              <li data-lang="vision_li3"><strong>실시간 피드백:</strong> 수정 사항이 즉시 물리 엔진에 반영되어 빠른 실험이 가능합니다.</li>
+            </ul>
+          </div>
+        </article>
 
-        <article id="faq-section">
-          <h2 data-lang="faq_title">❓ 자주 묻는 질문 (FAQ)</h2>
-          <div class="faq-list">
-            <details>
-              <summary data-lang="faq_q1">장치가 작동하지 않아요. 어떻게 하죠?</summary>
-              <p data-lang="faq_a1">먼저 상단의 '시작' 버튼을 눌렀는지 확인하세요. 논리 연결(선)이 올바른 방향(출력 -> 입력)으로 연결되었는지도 체크해보세요.</p>
-            </details>
-            <details>
-              <summary data-lang="faq_q2">노돈을 삭제하고 싶어요.</summary>
-              <p data-lang="faq_a2">삭제하고 싶은 노돈을 클릭한 뒤, 오른쪽 설정 패널 상단의 휴지통 아이콘을 누르거나 키보드의 Delete/Backspace 키를 누르세요.</p>
-            </details>
-            <details>
-              <summary data-lang="faq_q3">모바일에서도 사용할 수 있나요?</summary>
-              <p data-lang="faq_a3">네! 골드버그 노돈 빌더는 반응형 웹으로 설계되어 스마트폰과 태블릿에서도 터치 드래그를 통해 장치를 만들 수 있습니다.</p>
-            </details>
-          </div>
-        </article>
-      </div>
-    </section>
+        <article id="faq-section">
+          <h2 data-lang="faq_title">❓ 자주 묻는 질문 (FAQ)</h2>
+          <div class="faq-list">
+            <details>
+              <summary data-lang="faq_q1">장치가 작동하지 않아요. 어떻게 하죠?</summary>
+              <p data-lang="faq_a1">먼저 상단의 '시작' 버튼을 눌렀는지 확인하세요. 논리 연결(선)이 올바른 방향(출력 -> 입력)으로 연결되었는지도 체크해보세요.</p>
+            </details>
+            <details>
+              <summary data-lang="faq_q2">노돈을 삭제하고 싶어요.</summary>
+              <p data-lang="faq_a2">삭제하고 싶은 노돈을 클릭한 뒤, 오른쪽 설정 패널 상단의 휴지통 아이콘을 누르거나 키보드의 Delete/Backspace 키를 누르세요.</p>
+            </details>
+            <details>
+              <summary data-lang="faq_q3">모바일에서도 사용할 수 있나요?</summary>
+              <p data-lang="faq_a3">네! 골드버그 노돈 빌더는 반응형 웹으로 설계되어 스마트폰과 태블릿에서도 터치 드래그를 통해 장치를 만들 수 있습니다.</p>
+            </details>
+          </div>
+        </article>
+      </div>
+    </section>
 
-    <footer>
-      <div class="footer-content">
-        <div class="footer-top">
-          <div class="footer-info">
-            <h3 data-lang="app_title">골드버그 노돈 빌더</h3>
-            <p data-lang="footer_tagline">창의력과 물리 법칙이 만나는 곳. 나만의 골드버그 장치를 설계해보세요.</p>
-          </div>
-          <div class="footer-nav">
-            <h4 data-lang="footer_nav_title">탐색</h4>
-            <ul>
-              <li><a href="#app" data-lang="nav_editor">빌더</a></li>
-              <li><a href="#guide-section" data-lang="nav_guide">가이드</a></li>
-              <li><a href="#nodon-encyclopedia" data-lang="nav_encyclo">백과사전</a></li>
-            </ul>
-          </div>
-          <div class="footer-legal">
-            <h4 data-lang="footer_legal_title">법적 고지</h4>
-            <ul>
-              <li><a href="#privacy-policy" id="show-privacy" data-lang="nav_privacy">개인정보처리방침</a></li>
-              <li><a href="#terms-of-service" id="show-terms" data-lang="nav_terms">이용약관</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p>&copy; 2024 골드버그 노돈 빌더 (Goldberg Nodon Builder). All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-top">
+          <div class="footer-info">
+            <h3 data-lang="app_title">codinqing 노돈 빌더</h3>
+            <p data-lang="footer_tagline">창의력과 물리 법칙이 만나는 곳. 나만의 골드버그 장치를 설계해보세요.</p>
+          </div>
+          <div class="footer-nav">
+            <h4 data-lang="footer_nav_title">탐색</h4>
+            <ul>
+              <li><a href="#app" data-lang="nav_editor">빌더</a></li>
+              <li><a href="#guide-section" data-lang="nav_guide">가이드</a></li>
+              <li><a href="#nodon-encyclopedia" data-lang="nav_encyclo">백과사전</a></li>
+            </ul>
+          </div>
+          <div class="footer-legal">
+            <h4 data-lang="footer_legal_title">법적 고지</h4>
+            <ul>
+              <li><a href="#privacy-policy" id="show-privacy" data-lang="nav_privacy">개인정보처리방침</a></li>
+              <li><a href="#terms-of-service" id="show-terms" data-lang="nav_terms">이용약관</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 골드버그 노돈 빌더 (Goldberg Nodon Builder). All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
 
-    <!-- Privacy Policy Modal -->
-    <div id="privacy-modal" class="modal hidden">
-      <div class="modal-content legal-content">
-        <h2 data-lang="privacy_title">개인정보처리방침</h2>
-        <div class="legal-body">
-          <p data-lang="privacy_p1">본 사이트는 사용자의 개인정보를 소중하게 생각합니다.</p>
-          <h3 data-lang="privacy_h1">1. 수집하는 개인정보</h3>
-          <p data-lang="privacy_p2">본 사이트는 별도의 회원가입 없이 이용 가능하며, 어떠한 개인식별정보도 수집하지 않습니다. 다만, 서비스 개선을 위한 쿠키 및 익명 통계 정보가 수집될 수 있습니다.</p>
-          <h3 data-lang="privacy_h2">2. Google AdSense 광고</h3>
-          <p data-lang="privacy_p3">본 사이트는 Google AdSense를 통해 광고를 게재합니다. Google은 사용자의 브라우저에 쿠키를 저장하여 이전 방문 정보를 바탕으로 맞춤형 광고를 제공할 수 있습니다.</p>
-          <h3 data-lang="privacy_h3">3. 정보 보호</h3>
-          <p data-lang="privacy_p4">우리는 수집된 익명 정보를 안전하게 관리하며, 법적 요구가 없는 한 제3자에게 제공하지 않습니다.</p>
-        </div>
-        <button class="btn btn-secondary btn-close-modal" data-modal="privacy-modal">닫기</button>
-      </div>
-    </div>
+        <div id="privacy-modal" class="modal hidden">
+      <div class="modal-content legal-content">
+        <h2 data-lang="privacy_title">개인정보처리방침</h2>
+        <div class="legal-body">
+          <p data-lang="privacy_p1">본 사이트는 사용자의 개인정보를 소중하게 생각합니다.</p>
+          <h3 data-lang="privacy_h1">1. 수집하는 개인정보</h3>
+          <p data-lang="privacy_p2">본 사이트는 별도의 회원가입 없이 이용 가능하며, 어떠한 개인식별정보도 수집하지 않습니다. 다만, 서비스 개선을 위한 쿠키 및 익명 통계 정보가 수집될 수 있습니다.</p>
+          <h3 data-lang="privacy_h2">2. Google AdSense 광고</h3>
+          <p data-lang="privacy_p3">본 사이트는 Google AdSense를 통해 광고를 게재합니다. Google은 사용자의 브라우저에 쿠키를 저장하여 이전 방문 정보를 바탕으로 맞춤형 광고를 제공할 수 있습니다.</p>
+          <h3 data-lang="privacy_h3">3. 정보 보호</h3>
+          <p data-lang="privacy_p4">우리는 수집된 익명 정보를 안전하게 관리하며, 법적 요구가 없는 한 제3자에게 제공하지 않습니다.</p>
+        </div>
+        <button class="btn btn-secondary btn-close-modal" data-modal="privacy-modal">닫기</button>
+      </div>
+    </div>
 
-    <!-- Terms of Service Modal -->
-    <div id="terms-modal" class="modal hidden">
-      <div class="modal-content legal-content">
-        <h2 data-lang="terms_title">이용약관</h2>
-        <div class="legal-body">
-          <h3 data-lang="terms_h1">1. 서비스 이용</h3>
-          <p data-lang="terms_p1">사용자는 본 사이트가 제공하는 골드버그 장치 제작 도구를 자유롭게 이용할 수 있습니다. 상업적 목적으로 코드를 무단 복제하는 것은 금지됩니다.</p>
-          <h3 data-lang="terms_h2">2. 면책 조항</h3>
-          <p data-lang="terms_p2">본 서비스는 물리 시뮬레이션 교육 목적으로 제공되며, 결과물의 완벽한 물리적 정확성을 보장하지 않습니다. 서비스 이용 중 발생하는 데이터 손실 등에 대해 책임지지 않습니다.</p>
-        </div>
-        <button class="btn btn-secondary btn-close-modal" data-modal="terms-modal">닫기</button>
-      </div>
-    </div>
-  </div>
-  <script type="module" src="main.js"></script>
+        <div id="terms-modal" class="modal hidden">
+      <div class="modal-content legal-content">
+        <h2 data-lang="terms_title">이용약관</h2>
+        <div class="legal-body">
+          <h3 data-lang="terms_h1">1. 서비스 이용</h3>
+          <p data-lang="terms_p1">사용자는 본 사이트가 제공하는 골드버그 장치 제작 도구를 자유롭게 이용할 수 있습니다. 상업적 목적으로 코드를 무단 복제하는 무단 복제하는 것은 금지됩니다.</p>
+          <h3 data-lang="terms_h2">2. 면책 조항</h3>
+          <p data-lang="terms_p2">본 서비스는 물리 시뮬레이션 교육 목적으로 제공되며, 결과물의 완벽한 물리적 정확성을 보장하지 않습니다. 서비스 이용 중 발생하는 데이터 손실 등에 대해 책임지지 않습니다.</p>
+        </div>
+        <button class="btn btn-secondary btn-close-modal" data-modal="terms-modal">닫기</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
