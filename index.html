@@ -6,11 +6,14 @@
   <meta name="google-adsense-account" content="ca-pub-4555364222256220">
   <meta name="description" content="골드버그 노돈 빌더 - 물리 법칙을 이용한 창의적인 골드버그 장치 만들기 도구. 재미있는 물리 실험과 논리 연결을 통해 나만의 장치를 설계해보세요.">
   <meta name="keywords" content="골드버그 장치, 물리 시뮬레이션, 노돈 빌더, 교육용 게임, 코딩 논리, 창의력 도구">
-  <title>골드버그 노돈 빌더 - codinqing</title>
+  <title>골드버그 노돈 빌더 | 창의적인 물리 장치 설계 도구</title>
   <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4555364222256220"
+  <!-- Matter.js for Physics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <!-- Lucide for Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4555364222256220"
      crossorigin="anonymous"></script>
 </head>
 <body class="theme-nintendo">
@@ -18,7 +21,7 @@
     <header>
       <div class="logo">
         <i data-lucide="gamepad-2"></i>
-        <span data-lang="app_title">codinqing</span>
+        <span data-lang="app_title">골드버그 노돈 빌더</span>
       </div>
       <nav class="top-nav">
         <a href="#guide-section" class="nav-link">가이드</a>
@@ -121,7 +124,8 @@
           </div>
         </div>
 
-                <div class="ad-container sidebar-ad">
+        <!-- Sidebar Ad Slot moved to bottom -->
+        <div class="ad-container sidebar-ad">
           <ins class="adsbygoogle"
                style="display:block"
                data-ad-client="ca-pub-4555364222256220"
@@ -133,25 +137,28 @@
       </aside>
 
       <div id="canvas-container">
-                <div id="physics-canvas"></div>
+        <!-- Physics Canvas -->
+        <div id="physics-canvas"></div>
         <svg id="wiring-layer"></svg>
         
-                <div id="hover-tooltip" class="hidden">
+        <!-- Hover Tooltip -->
+        <div id="hover-tooltip" class="hidden">
           <div class="tooltip-title">노돈 정보</div>
           <div class="tooltip-body">설명</div>
         </div>
         
-                <div id="manual-modal" class="modal hidden">
+        <!-- Instruction Manual Modal -->
+        <div id="manual-modal" class="modal hidden">
           <div class="modal-content manual-content">
             <h2 data-lang="manual_title">📖 노돈 가이드북</h2>
             <div class="manual-body">
               <section>
                 <h3 data-lang="man_how_to_build">1. 장치 만들기</h3>
-              <p data-lang="man_desc_build">왼쪽 사이드바에서 노돈을 드래그하여 화면에 놓으세요. <b>R 키</b>를 눌러 선택한 노돈을 회전시킬 수 있습니다.</p>
+                <p data-lang="man_desc_build">왼쪽 사이드바에서 노돈을 드래그하여 화면에 놓으세요. <b>R 키</b>를 눌러 선택한 노돈을 회전시킬 수 있습니다.</p>
               </section>
               <section>
                 <h3 data-lang="man_how_to_wire">2. 논리 연결하기</h3>
-              <p data-lang="man_desc_wire"><b>Shift 키</b>를 누른 채로 노돈의 빨간 점(출력)에서 노란 점(입력)으로 드래그하면 선이 연결됩니다. 센서와 팬을 연결해 보세요!</p>
+                <p data-lang="man_desc_wire"><b>Shift 키</b>를 누른 채로 노돈의 빨간 점(출력)에서 노란 점(입력)으로 드래그하면 선이 연결됩니다. 센서와 팬을 연결해 보세요!</p>
               </section>
               <section>
                 <h3 data-lang="man_play">3. 실행하기</h3>
@@ -162,7 +169,8 @@
           </div>
         </div>
 
-                <div id="settings-modal" class="modal hidden">
+        <!-- Global Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
           <div class="modal-content">
             <h2 data-lang="settings_title">환경 설정</h2>
             <div class="setting-item">
@@ -183,7 +191,8 @@
           </div>
         </div>
         
-                <div id="settings-panel" class="hidden">
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="hidden">
           <div class="panel-header">
             <span id="node-name">노돈</span>
             <button id="node-delete"><i data-lucide="trash-2"></i></button>
@@ -206,7 +215,8 @@
       </div>
     </main>
 
-        <section id="detailed-content">
+    <!-- Detailed Content for AdSense Quality -->
+    <section id="detailed-content">
       <div class="content-wrapper">
         <article id="guide-section">
           <h2 data-lang="guide_title">🛠️ 골드버그 노돈 빌더 사용 가이드</h2>
@@ -307,7 +317,7 @@
       <div class="footer-content">
         <div class="footer-top">
           <div class="footer-info">
-            <h3 data-lang="app_title">codinqing 노돈 빌더</h3>
+            <h3 data-lang="app_title">골드버그 노돈 빌더</h3>
             <p data-lang="footer_tagline">창의력과 물리 법칙이 만나는 곳. 나만의 골드버그 장치를 설계해보세요.</p>
           </div>
           <div class="footer-nav">
@@ -332,7 +342,8 @@
       </div>
     </footer>
 
-        <div id="privacy-modal" class="modal hidden">
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-modal" class="modal hidden">
       <div class="modal-content legal-content">
         <h2 data-lang="privacy_title">개인정보처리방침</h2>
         <div class="legal-body">
@@ -348,12 +359,13 @@
       </div>
     </div>
 
-        <div id="terms-modal" class="modal hidden">
+    <!-- Terms of Service Modal -->
+    <div id="terms-modal" class="modal hidden">
       <div class="modal-content legal-content">
         <h2 data-lang="terms_title">이용약관</h2>
         <div class="legal-body">
           <h3 data-lang="terms_h1">1. 서비스 이용</h3>
-          <p data-lang="terms_p1">사용자는 본 사이트가 제공하는 골드버그 장치 제작 도구를 자유롭게 이용할 수 있습니다. 상업적 목적으로 코드를 무단 복제하는 무단 복제하는 것은 금지됩니다.</p>
+          <p data-lang="terms_p1">사용자는 본 사이트가 제공하는 골드버그 장치 제작 도구를 자유롭게 이용할 수 있습니다. 상업적 목적으로 코드를 무단 복제하는 것은 금지됩니다.</p>
           <h3 data-lang="terms_h2">2. 면책 조항</h3>
           <p data-lang="terms_p2">본 서비스는 물리 시뮬레이션 교육 목적으로 제공되며, 결과물의 완벽한 물리적 정확성을 보장하지 않습니다. 서비스 이용 중 발생하는 데이터 손실 등에 대해 책임지지 않습니다.</p>
         </div>
