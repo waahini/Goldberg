@@ -1,3 +1,4 @@
+// Initialize Matter.js modules
 const { Engine, Render, Runner, Bodies, Composite, Mouse, MouseConstraint, Events, Vector } = Matter;
 
 const I18N = {
@@ -76,6 +77,9 @@ class GoldbergApp {
     this.lang = 'ko';
     this.theme = 'default';
     this.hoveredNodon = null;
+    this.isWiring = false;
+    this.wireStartPort = null;
+    this.goalReached = false;
 
     this.initCanvas();
     this.initControls();
@@ -99,6 +103,7 @@ class GoldbergApp {
 
   initCanvas() {
     const container = document.getElementById('physics-canvas');
+    if (!container) return;
     const width = container.clientWidth || 800;
     const height = container.clientHeight || 600;
 
@@ -176,34 +181,42 @@ class GoldbergApp {
       e.dataTransfer.dropEffect = 'copy';
     };
 
-    dropZone.addEventListener('dragover', handleDragOver);
-    physicsCanvas.addEventListener('dragover', handleDragOver);
+    if (dropZone) dropZone.addEventListener('dragover', handleDragOver);
+    if (physicsCanvas) physicsCanvas.addEventListener('dragover', handleDragOver);
 
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      const type = e.dataTransfer.getData('type');
-      if (!type) return;
+    if (dropZone) {
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const type = e.dataTransfer.getData('type');
+        if (!type) return;
 
-      const rect = physicsCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      this.addNodon(type, x, y);
-    });
+        const rect = physicsCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        this.addNodon(type, x, y);
+      });
+    }
   }
 
   initControls() {
-    document.getElementById('btn-play').onclick = () => {
+    const btnPlay = document.getElementById('btn-play');
+    const btnReset = document.getElementById('btn-reset');
+    const btnClear = document.getElementById('btn-clear');
+    const nodeDelete = document.getElementById('node-delete');
+
+    if (btnPlay) btnPlay.onclick = () => {
       this.isPlaying = !this.isPlaying;
       if (this.isPlaying) Runner.run(this.runner, this.engine);
       else Runner.stop(this.runner);
       this.applyLanguage();
     };
-    document.getElementById('btn-reset').onclick = () => this.resetSimulation();
-    document.getElementById('btn-clear').onclick = () => this.clearAll();
+
+    if (btnReset) btnReset.onclick = () => this.resetSimulation();
+    if (btnClear) btnClear.onclick = () => this.clearAll();
     
     this.panel = document.getElementById('settings-panel');
-    document.getElementById('node-delete').onclick = () => this.removeNodon(this.selectedNodon);
+    if (nodeDelete) nodeDelete.onclick = () => this.removeNodon(this.selectedNodon);
     
     this.inputs = {
       restitution: document.getElementById('input-restitution'),
@@ -211,9 +224,9 @@ class GoldbergApp {
       power: document.getElementById('input-power')
     };
     
-    this.inputs.restitution.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.body.restitution = parseFloat(e.target.value); };
-    this.inputs.delay.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.delay = parseFloat(e.target.value) * 1000; };
-    this.inputs.power.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.power = parseFloat(e.target.value); };
+    if (this.inputs.restitution) this.inputs.restitution.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.body.restitution = parseFloat(e.target.value); };
+    if (this.inputs.delay) this.inputs.delay.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.delay = parseFloat(e.target.value) * 1000; };
+    if (this.inputs.power) this.inputs.power.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.power = parseFloat(e.target.value); };
   }
 
   addNodon(type, x, y) {
@@ -255,12 +268,14 @@ class GoldbergApp {
     });
 
     const canvas = this.render.canvas;
-    canvas.addEventListener('mousedown', (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const mousePos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-      const clickedBody = Matter.Query.point(Composite.allBodies(this.world), mousePos)[0];
-      this.selectedNodon = clickedBody ? this.nodons.find(n => n.body === clickedBody) : null;
-    });
+    if (canvas) {
+      canvas.addEventListener('mousedown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mousePos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        const clickedBody = Matter.Query.point(Composite.allBodies(this.world), mousePos)[0];
+        this.selectedNodon = clickedBody ? this.nodons.find(n => n.body === clickedBody) : null;
+      });
+    }
 
     window.addEventListener('keydown', (e) => {
       if (!this.selectedNodon) return;
@@ -333,8 +348,8 @@ class GoldbergApp {
     if (this.goalReached) return;
     this.goalReached = true;
     const msg = document.getElementById('success-msg');
-    msg.classList.add('show');
-    setTimeout(() => { msg.classList.remove('show'); this.goalReached = false; }, 5000);
+    if (msg) msg.classList.add('show');
+    setTimeout(() => { if (msg) msg.classList.remove('show'); this.goalReached = false; }, 5000);
   }
 
   animate() {
@@ -354,6 +369,7 @@ class GoldbergApp {
       const { x, y } = nodon.body.position;
       const angle = nodon.body.angle;
       const svg = document.getElementById('wiring-layer');
+      if (!svg) return;
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('transform', `translate(${x},${y}) rotate(${angle * 180 / Math.PI})`);
       const isLogic = ['sensor', 'timer', 'fan', 'warp-a', 'warp-b', 'magnet', 'counter'].includes(nodon.type);
@@ -386,6 +402,7 @@ class GoldbergApp {
 
   createPort(nodon, x, y, type) {
     const svg = document.getElementById('wiring-layer');
+    if (!svg) return;
     const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', '10');
     c.style.fill = type === 'output' ? '#ff4757' : '#fed330';
@@ -408,6 +425,7 @@ class GoldbergApp {
 
   drawWires() {
     const svg = document.getElementById('wiring-layer');
+    if (!svg) return;
     this.connections.forEach(conn => {
       const f = this.nodons.find(n => n.id === conn.fromId), t = this.nodons.find(n => n.id === conn.toId);
       if (f && t) {
@@ -437,17 +455,24 @@ class GoldbergApp {
   }
 
   updateSettingsPanel() {
-    if (!this.selectedNodon) { this.panel.classList.add('hidden'); return; }
+    if (!this.selectedNodon || !this.panel) { if (this.panel) this.panel.classList.add('hidden'); return; }
     this.panel.classList.remove('hidden');
     const nameKey = `nodon_${this.selectedNodon.type.replace('-', '_')}`;
-    document.getElementById('node-name').textContent = I18N[this.lang][nameKey] || this.selectedNodon.type.toUpperCase();
+    const nodeName = document.getElementById('node-name');
+    if (nodeName) nodeName.textContent = I18N[this.lang][nameKey] || this.selectedNodon.type.toUpperCase();
+    
     const type = this.selectedNodon.type;
-    document.getElementById('prop-restitution').style.display = ['ball', 'box', 'spring', 'breakable', 'floor', 'ramp'].includes(type) ? 'block' : 'none';
-    document.getElementById('prop-delay').style.display = (type === 'timer') ? 'block' : 'none';
-    document.getElementById('prop-power').style.display = ['fan', 'magnet', 'treadmill', 'spring'].includes(type) ? 'block' : 'none';
-    this.inputs.restitution.value = this.selectedNodon.body.restitution;
-    this.inputs.delay.value = this.selectedNodon.delay / 1000;
-    this.inputs.power.value = this.selectedNodon.power;
+    const propRestitution = document.getElementById('prop-restitution');
+    const propDelay = document.getElementById('prop-delay');
+    const propPower = document.getElementById('prop-power');
+
+    if (propRestitution) propRestitution.style.display = ['ball', 'box', 'spring', 'breakable', 'floor', 'ramp'].includes(type) ? 'block' : 'none';
+    if (propDelay) propDelay.style.display = (type === 'timer') ? 'block' : 'none';
+    if (propPower) propPower.style.display = ['fan', 'magnet', 'treadmill', 'spring'].includes(type) ? 'block' : 'none';
+    
+    if (this.inputs.restitution) this.inputs.restitution.value = this.selectedNodon.body.restitution;
+    if (this.inputs.delay) this.inputs.delay.value = this.selectedNodon.delay / 1000;
+    if (this.inputs.power) this.inputs.power.value = this.selectedNodon.power;
   }
 
   getNodonColor(type) {
@@ -464,30 +489,62 @@ class GoldbergApp {
 
   initManual() {
     const modal = document.getElementById('manual-modal');
-    document.getElementById('btn-manual').onclick = () => modal.classList.remove('hidden');
-    document.getElementById('btn-close-manual').onclick = () => modal.classList.add('hidden');
-    document.getElementById('btn-close-manual-icon').onclick = () => modal.classList.add('hidden');
+    const btnManual = document.getElementById('btn-manual');
+    const btnCloseManual = document.getElementById('btn-close-manual');
+    const btnCloseManualIcon = document.getElementById('btn-close-manual-icon');
+
+    if (btnManual) btnManual.onclick = () => modal.classList.remove('hidden');
+    if (btnCloseManual) btnCloseManual.onclick = () => modal.classList.add('hidden');
+    if (btnCloseManualIcon) btnCloseManualIcon.onclick = () => modal.classList.add('hidden');
   }
 
   initSettings() {
     const modal = document.getElementById('settings-modal');
-    document.getElementById('btn-settings').onclick = () => modal.classList.remove('hidden');
-    document.getElementById('btn-close-settings').onclick = () => modal.classList.add('hidden');
-    document.getElementById('select-lang').onchange = (e) => { this.lang = e.target.value; document.getElementById('select-lang-inline').value = this.lang; this.applyLanguage(); };
-    document.getElementById('select-lang-inline').onchange = (e) => { this.lang = e.target.value; document.getElementById('select-lang').value = this.lang; this.applyLanguage(); };
+    const btnSettings = document.getElementById('btn-settings');
+    const btnCloseSettings = document.getElementById('btn-close-settings');
+    const selectLang = document.getElementById('select-lang');
+    const selectLangInline = document.getElementById('select-lang-inline');
+    const selectTheme = document.getElementById('select-theme');
+
+    if (btnSettings) btnSettings.onclick = () => modal.classList.remove('hidden');
+    if (btnCloseSettings) btnCloseSettings.onclick = () => modal.classList.add('hidden');
+    
+    if (selectLang) selectLang.onchange = (e) => { 
+      this.lang = e.target.value; 
+      if (selectLangInline) selectLangInline.value = this.lang; 
+      this.applyLanguage(); 
+    };
+    if (selectLangInline) selectLangInline.onchange = (e) => { 
+      this.lang = e.target.value; 
+      if (selectLang) selectLang.value = this.lang; 
+      this.applyLanguage(); 
+    };
+    if (selectTheme) selectTheme.onchange = (e) => {
+      document.body.className = (e.target.value === 'dark') ? 'theme-dark' : 'theme-nintendo';
+    };
   }
 
   initLegal() {
     const priv = document.getElementById('privacy-modal'), term = document.getElementById('terms-modal');
-    document.getElementById('show-privacy').onclick = (e) => { e.preventDefault(); priv.classList.remove('hidden'); };
-    document.getElementById('show-terms').onclick = (e) => { e.preventDefault(); term.classList.remove('hidden'); };
-    document.querySelectorAll('.btn-close-modal').forEach(btn => btn.onclick = () => { priv.classList.add('hidden'); term.classList.add('hidden'); });
+    const showPrivacy = document.getElementById('show-privacy'), showTerms = document.getElementById('show-terms');
+    
+    if (showPrivacy) showPrivacy.onclick = (e) => { e.preventDefault(); if (priv) priv.classList.remove('hidden'); };
+    if (showTerms) showTerms.onclick = (e) => { e.preventDefault(); if (term) term.classList.remove('hidden'); };
+    
+    document.querySelectorAll('.btn-close-modal').forEach(btn => btn.onclick = () => { 
+      if (priv) priv.classList.add('hidden'); 
+      if (term) term.classList.add('hidden'); 
+    });
   }
 
   initSmoothScroll() {
     document.querySelectorAll('.nav-link, .footer-links a').forEach(a => a.onclick = (e) => {
       const href = a.getAttribute('href');
-      if (href.startsWith('#')) { e.preventDefault(); const target = document.querySelector(href); if (target) window.scrollTo({ top: target.offsetTop - 120, behavior: 'smooth' }); }
+      if (href && href.startsWith('#')) { 
+        e.preventDefault(); 
+        const target = document.querySelector(href); 
+        if (target) window.scrollTo({ top: target.offsetTop - 120, behavior: 'smooth' }); 
+      }
     });
   }
 
@@ -495,4 +552,6 @@ class GoldbergApp {
 }
 
 lucide.createIcons();
-new GoldbergApp();
+window.addEventListener('DOMContentLoaded', () => {
+  new GoldbergApp();
+});
