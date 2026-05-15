@@ -1,54 +1,45 @@
-# **Goldberg Machine Builder: Project Blueprint (V2 - AdSense & Design Polish)**
+# **Goldberg Machine Builder: Project Blueprint (V3 - Korean Honey Golden Style)**
 
 ## **1. Overview**
-A visual, node-based "Goldberg Machine" builder inspired by Nintendo's *Game Builder Garage*. This version is optimized for Google AdSense approval through high-quality, substantial content and a "쌈뽕한" (cool/trendy) aesthetic. Users can build complex chain reactions with an expanded library of Nodons in a flexible, mobile-responsive environment.
+A high-density, professional "Goldberg Machine" builder optimized for the Korean web aesthetic. This version uses a vibrant "Honey Golden" design system, characterized by bright, warm tones, solid integrated layouts, and a "Full & Packed" (꽉 채워진) feel. It is designed for maximum productivity and STEM educational value.
 
 ## **2. Detailed Outline & Current State**
 
 ### **Architecture & Tech Stack**
-- **Physics Engine**: Matter.js (2D simulation).
-- **UI Architecture**: Vanilla JS with ES Modules, CSS Grid/Flexbox, and Lucide Icons.
-- **Rendering**: HTML5 Canvas (Physics) + SVG Overlay (Logic/Wires).
+- **Physics Engine**: Matter.js.
+- **UI Architecture**: Integrated Grid/Flexbox (Solid layout, no floating panels).
+- **Color System**: "Honey Golden" (Yellow, Orange, Warm White).
+- **Typography**: Pretendard (Optimized for Korean legibility and modern feel).
 
-### **New "쌈뽕한" (Cool/Awesome) Design System**
-- **Vibrant Palette**: Using `oklch` colors for more vibrancy and modern gradients.
-- **Glassmorphism**: UI panels with backdrop-blur and subtle borders.
-- **Micro-interactions**: Hover effects, springy animations, and toast notifications.
-- **Typography**: Playful yet readable Korean fonts (e.g., 'Jua' or 'Do Hyeon' via Google Fonts).
-
-### **Expanded Content for AdSense (High Substance)**
-- **Nodon Encyclopedia (Expanded)**: 15+ detailed entries with 200+ words each, including technical specs and "Fun Facts".
-- **Physics Lab 2.0**: Articles on "Centripetal Force", "Friction vs. Air Resistance", and "The Law of Conservation of Energy".
-- **Goldberg Masterclass**: A blog-style section with "Building Tips" and "History of Goldberg Machines".
-- **Legal Compliance**: Robust Privacy Policy, Terms of Service, and About pages.
+### **Korean "쌈뽕한" (Packed & Professional) Design**
+- **High Density**: Every part of the screen is utilized. Clear partitions using cards and solid borders.
+- **Integrated Sidebar**: A solid "Workbench" area on the left where Nodons are organized in high-density grids.
+- **Warm Palette**: OKLCH-based yellows and ambers for an energetic, bright, and friendly atmosphere.
+- **Shadows & Depth**: Soft, wide shadows that make elements feel like they are sitting on a solid desk.
 
 ### **Functional Upgrades**
-- **Toggleable Workspace**: Sidebar can be hidden to maximize building area.
-- **New Nodon Library**:
-  - **Seesaw (시소)**: Lever-based physics object.
-  - **Pendulum (진공추)**: Swinging object for momentum transfer.
-  - **Domino (도미노)**: Sequential collision object.
-  - **Accelerator (가속기)**: Logic-triggered velocity booster.
-  - **Hammer (망치)**: High-mass swinging trigger.
+- **Solid Workspace**: The editor and sidebar are locked into a professional grid, ensuring stability during complex builds.
+- **High-Density Palette**: Icons are smaller but more detailed, allowing more tools to be visible at once.
+- **Improved Drag & Drop**: Visual feedback localized to the "Workbench" and "Atelier" sections.
 
 ## **3. Implementation Roadmap**
 
-### **Phase 1: Layout & UX Overhaul**
-- [ ] **Toggleable Sidebar**: Add a "Hide/Show" button for the Nodon palette.
-- [ ] **Responsive Canvas**: Ensure the canvas resizes dynamically without breaking simulation coordinates.
-- [ ] **Modern Header**: Redesign with a sleek, floating look.
+### **Phase 1: Layout Consolidation**
+- [ ] **Grid Overhaul**: Change from floating panels to a 3-tier solid layout (Header / Sidebar+Canvas / Footer).
+- [ ] **Yellow Palette Setup**: Implement `oklch` yellow and amber variables.
+- [ ] **Typography Fix**: Ensure Pretendard is the primary font with tight, professional leading.
 
-### **Phase 2: Content Injection (AdSense Focus)**
-- [ ] **Expand Encyclopedia**: Write deep-dive content for new and existing Nodons.
-- [ ] **Add "History of Goldberg" Section**: Add 500+ words of unique historical context.
-- [ ] **Add "Engineering Principles" Section**: Connect simulation features to real-world engineering.
+### **Phase 2: "Honey Golden" Component Design**
+- [ ] **Integrated Sidebar**: Style the palette area as a solid, high-tech workbench.
+- [ ] **Nodon Icon Overhaul**: Re-color and re-style all icons into the yellow/orange/gray theme.
+- [ ] **Canvas Grid**: Use a more prominent "Engineering Paper" grid in warm gray.
 
-### **Phase 3: Logic & Node Expansion**
-- [ ] **Implement New Bodies**: Add `seesaw`, `pendulum`, etc., to `main.js`.
-- [ ] **Refine Wiring Logic**: Ensure new logical nodes (Accelerator) work seamlessly.
+### **Phase 3: Content Packing**
+- [ ] **Gallery Style Sections**: Re-style the Archives and Masterclass sections into "Card-Heavy" high-density layouts.
+- [ ] **AdSense Integration**: Ensure ads blend seamlessly into the new card-based system.
 
-### **Phase 4: Aesthetic Polish**
-- [ ] **CSS Modernization**: Apply gradients, shadows, and better transitions.
-- [ ] **Sound Effects (Optional/Visual feedback)**: Add visual "pops" and "sparkles" for successful goal reaches.
-- [ ] **AdSense Validation**: Check ad-to-content ratio and placement.
+## **4. Verification**
+- [ ] **Density Audit**: Does the site feel "full" and "packed" as requested?
+- [ ] **Color Check**: Is the red completely gone? Is the yellow vibrant and warm?
+- [ ] **Functionality**: Is dragging from the sidebar to the canvas seamless and intuitive?
 

@@ -1,27 +1,27 @@
 const I18N = {
   ko: {
-    app_title: "ZEN RED",
-    btn_play: "IGNITION", btn_reset: "RESET", btn_clear: "PURGE", btn_manual: "DOCS",
-    cat_phys: "PHYSICAL DYNAMICS", cat_logic: "LOGIC CIRCUITS",
-    nodon_ball: "BALL", nodon_ramp: "RAMP", nodon_box: "BOX", nodon_floor: "FLOOR",
-    nodon_seesaw: "SEESAW", nodon_pendulum: "PENDULUM", nodon_domino: "DOMINO", nodon_hammer: "HAMMER",
-    nodon_sensor: "SENSOR", nodon_accelerator: "ACCELERATOR", nodon_gate_and: "AND GATE", nodon_gate_not: "NOT GATE",
-    nodon_timer: "TIMER", nodon_counter: "COUNTER",
-    history_title: "ARCHIVES", guide_title: "MASTERCLASS",
-    nav_editor: "ATELIER", nav_history: "ARCHIVES", nav_guide: "MASTERCLASS", nav_encyclo: "LIBRARY", nav_physics: "SCIENCE",
-    success_title: "SYSTEM BREACH: SUCCESS", success_msg: "Your machine has reached its destiny."
+    app_title: "HONEY GOLDEN",
+    btn_play: "실행하기", btn_reset: "초기화", btn_clear: "전체 삭제", btn_manual: "설명서",
+    cat_phys: "물리 오브젝트", cat_logic: "논리 프로그래밍",
+    nodon_ball: "공", nodon_ramp: "경사로", nodon_box: "상자", nodon_floor: "바닥",
+    nodon_seesaw: "시소", nodon_pendulum: "진공추", nodon_domino: "도미노", nodon_hammer: "망치",
+    nodon_sensor: "센서", nodon_accelerator: "가속기", nodon_gate_and: "AND 게이트", nodon_gate_not: "NOT 게이트",
+    nodon_timer: "타이머", nodon_counter: "카운터",
+    history_title: "골드버그의 역사", guide_title: "제작 마스터클래스",
+    nav_editor: "빌더", nav_history: "기록", nav_guide: "마스터클래스", nav_encyclo: "백과사전", nav_physics: "물리법칙",
+    success_title: "미션 성공!", success_msg: "장치가 완벽하게 작동했습니다."
   },
   en: {
-    app_title: "ZEN RED",
-    btn_play: "IGNITION", btn_reset: "RESET", btn_clear: "PURGE", btn_manual: "DOCS",
-    cat_phys: "PHYSICAL DYNAMICS", cat_logic: "LOGIC CIRCUITS",
+    app_title: "HONEY GOLDEN",
+    btn_play: "RUN", btn_reset: "RESET", btn_clear: "CLEAR", btn_manual: "DOCS",
+    cat_phys: "PHYSICAL OBJECTS", cat_logic: "LOGIC PROGRAMMING",
     nodon_ball: "BALL", nodon_ramp: "RAMP", nodon_box: "BOX", nodon_floor: "FLOOR",
     nodon_seesaw: "SEESAW", nodon_pendulum: "PENDULUM", nodon_domino: "DOMINO", nodon_hammer: "HAMMER",
     nodon_sensor: "SENSOR", nodon_accelerator: "ACCELERATOR", nodon_gate_and: "AND GATE", nodon_gate_not: "NOT GATE",
     nodon_timer: "TIMER", nodon_counter: "COUNTER",
-    history_title: "ARCHIVES", guide_title: "MASTERCLASS",
-    nav_editor: "ATELIER", nav_history: "ARCHIVES", nav_guide: "MASTERCLASS", nav_encyclo: "LIBRARY", nav_physics: "SCIENCE",
-    success_title: "SYSTEM BREACH: SUCCESS", success_msg: "Your machine has reached its destiny."
+    history_title: "HISTORY", guide_title: "MASTERCLASS",
+    nav_editor: "BUILDER", nav_history: "ARCHIVES", nav_guide: "GUIDE", nav_encyclo: "LIBRARY", nav_physics: "SCIENCE",
+    success_title: "MISSION SUCCESS!", success_msg: "The contraption worked perfectly."
   }
 };
 
@@ -296,12 +296,12 @@ class GoldbergApp {
 
   getNodonColor(type) {
     const palette = { 
-      ball: 'oklch(0.6 0.3 25)', ramp: 'oklch(0.3 0.1 260)', box: 'oklch(0.8 0.2 80)', 
-      floor: 'oklch(0.5 0.05 260)', seesaw: 'oklch(0.6 0.3 25)', pendulum: 'oklch(0.2 0.05 25)', 
-      domino: 'oklch(0.6 0.3 25)', hammer: 'oklch(0.2 0.05 25)', sensor: 'oklch(0.6 0.3 25 / 0.2)',
-      accelerator: 'oklch(0.7 0.25 40)', 'gate-and': 'oklch(0.6 0.25 150)', 'gate-not': 'oklch(0.6 0.3 25)'
+      ball: 'oklch(0.8 0.25 85)', ramp: 'oklch(0.3 0.05 85)', box: 'oklch(0.65 0.3 40)', 
+      floor: 'oklch(0.5 0.03 85)', seesaw: 'oklch(0.8 0.25 85)', pendulum: 'oklch(0.2 0.02 85)', 
+      domino: 'oklch(0.65 0.3 40)', hammer: 'oklch(0.2 0.02 85)', sensor: 'oklch(0.8 0.25 85 / 0.2)',
+      accelerator: 'oklch(0.7 0.25 60)', 'gate-and': 'oklch(0.6 0.2 140)', 'gate-not': 'oklch(0.6 0.2 20)'
     };
-    return palette[type] || 'oklch(0.6 0.3 25)';
+    return palette[type] || 'oklch(0.8 0.25 85)';
   }
 
   applyLanguage() {
