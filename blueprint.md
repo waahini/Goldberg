@@ -1,7 +1,7 @@
 # **Goldberg Machine Builder: Project Blueprint**
 
 ## **1. Overview**
-A visual, node-based "Goldberg Machine" builder inspired by Nintendo's *Game Builder Garage*. Users can place physical objects (Nodons) and connect them via logical "wires" to create complex, physics-driven chain reactions.
+A visual, node-based "Goldberg Machine" builder inspired by Nintendo's *Game Builder Garage*. Users can place physical objects (Nodons) and connect them via logical "wires" to create complex, physics-driven chain reactions. This project is optimized for STEM education and creative play, meeting high standards for content quality and user experience.
 
 ## **2. Detailed Outline & Current State**
 
@@ -10,54 +10,40 @@ A visual, node-based "Goldberg Machine" builder inspired by Nintendo's *Game Bui
 - **Visuals**: Clean, vibrant, "Nintendo-like" UI with rounded corners, soft shadows, and expressive typography.
 - **Component System**: Custom Web Components and SVG layers for UI/Editor.
 
-### **Features (Current & Planned)**
-- **Nodon Types (Expanded)**:
-  - **Physical**: Ball, Ramp, Box, Floor, Goal, **Spring (Bouncer)**, **Treadmill (Conveyor)**, **Pendulum**, **Breakable Box**, **Balloon**.
-  - **Logical**: Button, Timer, Fan (force emitter), Sensor (collision detector), Warp A/B (Portals), Magnet, **Counter (logic gate)**.
-- **Editor Functions**:
-  - **Drag & Drop**: Place objects from a sidebar.
-  - **Wiring Mode**: Connect logic nodes (e.g., Sensor -> Fan) to trigger actions.
-  - **Hover Info**: Mouse hover over *any* object (sidebar or canvas) shows a detailed manual/instruction.
-  - **Connection Visualization**: Automatic visual indicators for paired objects (Warp A <-> Warp B) and logical wires.
-  - **Language Support**: Multi-language (KO/EN). Default to Korean; switches to English only when selected in settings.
-  - **Simulation Control**: Play, Pause, Reset, Clear.
+### **Features & Content Structure**
+- **Interactive Editor**: Drag-and-drop interface for building machines.
+- **Nodon Encyclopedia**: A comprehensive guide for every object type, explaining its physics properties, logic connections, and real-world mechanical parallels.
+- **Physics Lab**: A dedicated section explaining the STEM principles behind the simulation (Gravity, Momentum, Torque, etc.).
+- **User Tutorials**: Step-by-step guides for creating common Goldberg mechanisms (e.g., a "Warp Loop" or a "Timer-based Trigger").
+- **Multi-language Support**: Full support for Korean (Default) and English, ensuring high-quality, human-readable content for a global audience.
 
-### **Visual Design**
-- **Color Palette**: Vibrant blues, yellows, and greens.
-- **Nodon Aesthetics**: Each Nodon has a "living" face with eyes that track the ball, blinking animations, and expressive mouths.
-- **Typography**: Friendly, rounded sans-serif.
+### **AdSense Compliance Strategy**
+To ensure approval and long-term compliance with Google AdSense and Publisher Policies, the site adheres to the following:
+- **High-Value Content**: Every page/section provides unique, educational value. Avoids "thin content" by providing deep dives into physics and engineering concepts.
+- **Clear Navigation**: A persistent, intuitive navigation system that allows users to find the Editor, Guides, and Legal information easily.
+- **Standard Legal Pages**: Comprehensive and easily accessible Privacy Policy and Terms of Service.
+- **Technical Integrity**: Mobile-responsive design, fast loading times, and zero broken links.
+- **Ad Quality**: Non-intrusive ad placements that do not interfere with the interactive canvas.
 
-## **3. Current Implementation Plan**
+## **3. Implementation Roadmap**
 
-### **Phase 1: Foundation (Matter.js Setup)**
-- [x] Integrate Matter.js via CDN.
-- [x] Initialize the engine, renderer, and runner.
-- [x] Set up the main UI layout.
+### **Phase 1: Content Expansion (Current Focus)**
+- [ ] **Expand Nodon Encyclopedia**: Write 200+ words for each major Nodon category (Physical vs. Logical).
+- [ ] **STEM Learning Section**: Create a detailed article on "The Physics of Chain Reactions" (~1,000 words).
+- [ ] **Interactive Guide**: Replace static text with a structured "Getting Started" manual.
 
-### **Phase 2: Expanded Nodon System**
-- [ ] Implement new Nodon types: Spring, Treadmill, Pendulum, Breakable Box, Balloon.
-- [ ] Refine existing Nodon visuals (better faces, more decorators).
-- [ ] Implement hover manual for all canvas objects.
+### **Phase 2: Navigation & UX Refinement**
+- [ ] **Persistent Header**: Implement a modern navigation bar with anchor links and multi-page-like behavior.
+- [ ] **Sidebar Optimization**: Fix the Nodon palette to be accessible during long content scrolls.
+- [ ] **Mobile Polish**: Ensure the editor and the detailed content are both easily readable on small screens.
 
-### **Phase 3: Logic & Connectivity**
-- [ ] Visual indicators for Portal (Warp) connections.
-- [ ] Enhance wiring visibility.
-- [ ] Add "Counter" Nodon for complex logic.
+### **Phase 3: Legal & Technical Compliance**
+- [ ] **Privacy Policy Update**: Ensure it explicitly mentions AdSense, cookies, and data usage.
+- [ ] **Terms of Service**: Add standard clauses for an interactive educational tool.
+- [ ] **SEO Metadata**: Optimize every section with semantic HTML (`<article>`, `<section>`, `<h1>-<h3>`).
 
-### **Phase 4: Global Settings & Polish**
-- [x] Language toggle (Basic).
-- [ ] **Fix Language Default**: Set KO as default, EN as optional.
-- [x] **Google AdSense Integration**: Added site verification meta tag, ads.js script, and ads.txt.
-- [ ] **Sidebar Optimization**: Fix sidebar (nodon palette) positioning to be fixed/sticky so it stays accessible during scroll, especially on mobile.
-- [ ] Add sound effects and particle effects for collisions.
-- [ ] Final aesthetic polish.
-
-### **Phase 5: AdSense Approval & High-Quality Optimization**
-- [ ] **Rich Landing Page**: Add detailed textual content (~1,000 words) explaining the physics, mechanics, and educational value of the builder.
-- [ ] **Global Navigation**: Implement a persistent header with links: Home, Editor, Tutorial, About, Privacy Policy, Terms.
-- [ ] **Legal Compliance**: Add comprehensive Privacy Policy and Terms of Service pages/modals.
-- [ ] **Nodon Encyclopedia**: Create a rich, descriptive manual for every Nodon type.
-- [ ] **Mobile-First UX**: Ensure the site is fully responsive and interactive on all screen sizes.
-- [ ] **Semantic SEO**: Optimize HTML structure, meta tags, and descriptions for search engines.
-- [ ] **Ad Placement**: Define non-intrusive, policy-compliant ad slots.
+### **Phase 4: Final Validation**
+- [ ] **Content Audit**: Use tools to check for readability and uniqueness.
+- [ ] **Technical Check**: Verify `ads.txt`, meta tags, and mobile usability via Lighthouse.
+- [ ] **Manual Review Simulation**: Walk through the site as an AdSense reviewer to ensure "Substantial Content" and "Easy Navigation".
 

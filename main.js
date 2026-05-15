@@ -1,78 +1,36 @@
-// Initialize Lucide icons
-lucide.createIcons();
-
 const { Engine, Render, Runner, Bodies, Composite, Mouse, MouseConstraint, Events, Vector } = Matter;
 
 const I18N = {
   ko: {
     app_title: "골드버그 노돈 빌더",
     btn_play: "실행", btn_reset: "초기화", btn_clear: "전체 삭제", btn_manual: "설명서",
-    cat_phys: "물리 노돈 (움직이는 물체)", cat_logic: "논리 노돈 (명령하는 물체)",
+    cat_phys: "물리 노돈", cat_logic: "논리 노돈",
     nodon_ball: "공", nodon_ramp: "경사로", nodon_box: "상자", nodon_floor: "바닥", nodon_goal: "골인 지점",
-    nodon_spring: "스프링", nodon_treadmill: "컨베이어 벨트", nodon_breakable: "부서지는 상자", nodon_balloon: "풍선",
+    nodon_spring: "스프링", nodon_treadmill: "컨베이어", nodon_breakable: "부서지는 상자", nodon_balloon: "풍선",
     nodon_sensor: "터치 센서", nodon_fan: "강풍기", nodon_timer: "타이머", nodon_warp_a: "워프 입구 (A)", nodon_warp_b: "워프 출구 (B)", nodon_magnet: "자석", nodon_counter: "카운터",
     settings_title: "환경 설정", label_language: "언어 선택", label_theme: "테마 설정",
     manual_title: "📖 노돈 가이드북",
     success_title: "성공!", success_msg: "정말 멋진 장치예요!",
-    guide_title: "🛠️ 골드버그 노돈 빌더 사용 가이드",
-    guide_intro: "골드버그 장치는 아주 간단한 일을 처리하기 위해 수많은 단계를 거치도록 복잡하게 만들어진 장치입니다.",
-    guide_step1_title: "1. 노돈 배치",
-    guide_step1_desc: "사이드바에서 노돈을 드래그하여 배치하세요.",
-    guide_step2_title: "2. 연결의 힘",
-    guide_step2_desc: "Shift 키를 누른 채 드래그하여 논리를 연결하세요.",
-    guide_step3_title: "3. 실험과 수정",
-    guide_step3_desc: "물리 엔진을 통해 최적의 경로를 찾아보세요.",
-    encyclo_title: "📚 노돈 백과사전",
-    encyclo_intro: "각 노돈의 역할과 성격을 확인해보세요.",
-    nodon_ball_desc: "중력의 영향을 받아 굴러가는 주인공입니다.",
-    nodon_warp_desc: "A 입구로 들어가면 B 출구로 순간이동합니다.",
-    nodon_sensor_desc_title: "센서",
-    nodon_sensor_desc_text: "물체의 충돌을 감지하여 신호를 보냅니다.",
-    nodon_fan_desc_title: "팬",
-    nodon_fan_desc_text: "바람의 힘으로 물체를 밀어냅니다.",
-    physics_title: "🎓 학습할 수 있는 물리 원리",
-    physics_intro: "Matter.js 물리 엔진 기반의 STEM 교육 도구입니다.",
-    phys_gravity_title: "중력과 자유 낙하",
-    phys_gravity_desc: "물체가 아래로 떨어지는 물리 현상을 체험합니다.",
-    phys_momentum_title: "운동량과 충돌",
-    phys_momentum_desc: "충돌 시 에너지 전달 과정을 관찰합니다.",
-    phys_elasticity_title: "탄성과 반발력",
-    phys_elasticity_desc: "스프링을 통한 에너지 변환을 이해합니다.",
-    vision_title: "🎨 골드버그 노돈 빌더의 비전",
-    vision_desc1: "우리는 물리 법칙을 재미있게 배울 수 있는 세상을 꿈꿉니다.",
-    vision_desc2: "창의적 사고를 기를 수 있는 최고의 도구를 제공합니다.",
-    vision_highlight_title: "왜 골드버그 노돈 빌더인가요?",
-    vision_li1: "무한한 자유도: 상상력이 곧 설계도가 됩니다.",
-    vision_li2: "직관적인 연결: 복잡한 코딩 없이 논리를 구현합니다.",
-    vision_li3: "실시간 피드백: 즉각적인 물리 시뮬레이션이 가능합니다.",
-    faq_title: "❓ 자주 묻는 질문 (FAQ)",
-    faq_q1: "작동하지 않아요.", faq_a1: "시작 버튼과 연결 방향을 확인하세요.",
-    faq_q2: "삭제 방법은?", faq_a2: "노돈 클릭 후 휴지통 아이콘을 누르세요.",
-    faq_q3: "모바일 지원?", faq_a3: "네, 반응형으로 설계되었습니다.",
-    footer_tagline: "창의력과 물리 법칙이 만나는 곳.",
-    footer_nav_title: "탐색", nav_editor: "빌더", nav_guide: "가이드", nav_encyclo: "백과사전",
-    footer_legal_title: "법적 고지", nav_privacy: "개인정보처리방침", nav_terms: "이용약관",
+    nav_editor: "빌더", nav_guide: "가이드", nav_encyclo: "백과사전", nav_physics: "물리 원리",
+    guide_title: "🛠️ 골드버그 장치 제작 가이드",
+    guide_intro_long: "골드버그 장치(Rube Goldberg Machine)는 아주 단순한 작업을 수행하기 위해 고안된 가장 복잡하고 비효율적인 기계입니다. 하지만 그 과정에는 물리 법칙의 정수와 창의적인 문제 해결 능력이 담겨 있습니다. 본 빌더를 통해 여러분은 엔지니어가 되어 자신만의 연쇄 반응을 설계할 수 있습니다.",
+    guide_step1_desc_long: "모든 기계의 시작은 중력입니다. 왼쪽 팔레트에서 '공'과 '경사로'를 드래그하여 배치해보세요. 공이 중력에 의해 굴러내려가는 아주 기본적인 단계가 당신의 거대한 프로젝트의 첫 걸음이 됩니다.",
+    guide_step2_desc_long: "단순한 물리 충돌을 넘어, '센서'와 '팬'을 연결해보세요. Shift 키를 누른 채 센서의 출력(빨간 점)에서 팬의 입력(노란 점)으로 드래그하면 논리적인 연결이 완성됩니다. 이제 공이 센서를 지날 때마다 팬이 돌아가 공을 더 멀리 날려 보낼 것입니다.",
+    guide_step3_desc_long: "한 번에 성공하는 설계는 없습니다. 재생 버튼을 눌러 시뮬레이션을 실행하고, 어느 지점에서 공이 멈추는지 관찰하세요. 각도를 미세하게 조정하고 탄성 수치를 조절하며 완벽한 연쇄 반응을 완성해가는 과정 자체가 훌륭한 물리 실험입니다.",
+    encyclo_title: "📚 노돈 백과사전: 모든 부품의 이해",
+    encyclo_intro: "각 노돈은 고유한 물리적 특성과 논리적 역할을 가집니다. 이를 깊이 이해할수록 더욱 정교한 장치를 만들 수 있습니다.",
+    ball_long_desc: "골드버그 장치의 가장 핵심적인 주인공입니다. 질량과 반지름을 가지며, 중력 가속도의 영향을 받아 포물선 운동을 합니다. 다른 물체와의 충돌 시 운동량을 전달하며 연쇄 반응의 도화선 역할을 합니다.",
+    warp_long_desc: "공간의 제약을 뛰어넘는 장치입니다. A 입구로 들어온 물체는 그 즉시 B 출구로 전송됩니다. 복잡한 맵 디자인에서 경로를 단순화하거나, 예상치 못한 위치에서 공이 튀어나오게 하는 트릭을 설계할 때 필수적입니다.",
+    sensor_long_desc: "눈에 보이지 않는 감시자입니다. 설정된 영역 내에 물체가 들어오면 즉시 논리 신호를 발생시킵니다. 이 신호는 타이머를 작동시키거나 팬을 돌리는 등 장치에 '지능'을 부여하는 핵심 부품입니다.",
+    fan_long_desc: "공기의 흐름을 제어합니다. 논리 신호를 받으면 설정된 방향으로 강한 힘을 내뿜습니다. 공을 공중에 띄우거나, 멀리 있는 상자를 밀어뜨리는 등 물리적 거리를 극복하게 해주는 강력한 도구입니다.",
+    physics_title: "🎓 STEM: 골드버그 장치 속 물리 원리",
+    phys_gravity_desc_long: "높은 곳에 있는 공은 위치 에너지를 가집니다. 중력은 이 에너지를 운동 에너지로 변환시키며 공을 아래로 가속시킵니다. 본 빌더는 지구의 중력 가속도를 정밀하게 시뮬레이션하여 실제와 같은 낙하 운동을 구현합니다.",
+    phys_momentum_desc_long: "굴러가는 공이 정지한 상자에 부딪히면, 공의 운동량 일부가 상자로 전달됩니다. 질량과 속도의 곱으로 정의되는 이 물리량은 연쇄 반응이 끊기지 않고 이어지게 만드는 가장 중요한 동력입니다.",
+    phys_elasticity_desc_long: "물체가 충돌할 때 모든 에너지가 보존되지는 않습니다. '탄성 계수(Restitution)' 설정을 통해 얼마나 많은 에너지가 보존되어 튕겨 나갈지 조절할 수 있습니다. 이는 실제 공학 설계에서 마찰과 저항을 고려하는 과정과 유사합니다.",
+    footer_tagline: "창의적인 엔지니어링과 재미있는 물리 시뮬레이션의 만남.",
+    footer_nav_title: "탐색", footer_legal_title: "법적 고지", nav_privacy: "개인정보처리방침", nav_terms: "이용약관",
     privacy_title: "개인정보처리방침",
-    privacy_p1: "개인정보를 수집하지 않으며, 광고 제공을 위해 쿠키를 사용합니다.",
-    terms_title: "이용약관",
-    terms_h1: "서비스 이용",
-    terms_p1: "교육적 목적으로 자유롭게 이용 가능합니다.",
-    tip_ball: "물리 법칙을 따르는 기본 공입니다.",
-    tip_ramp: "공이 굴러내려갈 수 있는 경사면입니다.",
-    tip_box: "장애물을 만들 수 있는 상자입니다.",
-    tip_floor: "장치를 지탱하는 고정된 바닥입니다.",
-    tip_goal: "최종 목적지입니다!",
-    tip_spring: "물체를 튕겨내는 용수철입니다.",
-    tip_treadmill: "물체를 한쪽으로 이동시킵니다.",
-    tip_breakable: "충격에 부서지는 상자입니다.",
-    tip_balloon: "위로 떠오르는 풍선입니다.",
-    tip_sensor: "충돌을 감지하여 신호를 보냅니다.",
-    tip_fan: "바람을 내뿜어 물체를 날립니다.",
-    tip_timer: "시간 지연 후 신호를 전달합니다.",
-    tip_warp_a: "순간이동 입구입니다.",
-    tip_warp_b: "순간이동 출구입니다.",
-    tip_magnet: "금속 공을 끌어당기는 자석입니다.",
-    tip_counter: "신호의 횟수를 세는 카운터입니다."
+    terms_title: "이용약관"
   },
   en: {
     app_title: "Goldberg Nodon Builder",
@@ -84,65 +42,26 @@ const I18N = {
     settings_title: "Settings", label_language: "Language", label_theme: "Theme",
     manual_title: "📖 Nodon Guidebook",
     success_title: "Success!", success_msg: "Amazing Contraption!",
-    guide_title: "🛠️ Goldberg Nodon Builder Guide",
-    guide_intro: "A Goldberg machine is a complex contraption for simple tasks.",
-    guide_step1_title: "1. Place Nodons",
-    guide_step1_desc: "Drag and drop Nodons from the sidebar.",
-    guide_step2_title: "2. Power of Wiring",
-    guide_step2_desc: "Hold Shift and drag to connect logic wires.",
-    guide_step3_title: "3. Experiment & Refine",
-    guide_step3_desc: "Find the perfect path via physics engine.",
-    encyclo_title: "📚 Nodon Encyclopedia",
-    encyclo_intro: "Learn about each Nodon's role.",
-    nodon_ball_desc: "The main character that follows gravity.",
-    nodon_warp_desc: "Teleports objects from A to B.",
-    nodon_sensor_desc_title: "Sensor",
-    nodon_sensor_desc_text: "Sends signals on collision.",
-    nodon_fan_desc_title: "Fan",
-    nodon_fan_desc_text: "Pushes objects with wind force.",
-    physics_title: "🎓 Physics Principles",
-    physics_intro: "STEM tool powered by Matter.js.",
-    phys_gravity_title: "Gravity & Free Fall",
-    phys_gravity_desc: "Experience objects falling under gravity.",
-    phys_momentum_title: "Momentum & Collisions",
-    phys_momentum_desc: "Observe energy transfer during impacts.",
-    phys_elasticity_title: "Elasticity & Bouncing",
-    phys_elasticity_desc: "Understand energy conversion via springs.",
-    vision_title: "🎨 Vision of Nodon Builder",
-    vision_desc1: "Making physics learning fun for everyone.",
-    vision_desc2: "The ultimate tool for creative thinking.",
-    vision_highlight_title: "Why Nodon Builder?",
-    vision_li1: "Infinite Freedom: Your imagination is the blueprint.",
-    vision_li2: "Intuitive: Logic without complex coding.",
-    vision_li3: "Real-time: Instant physics simulation.",
-    faq_title: "❓ FAQ",
-    faq_q1: "Not working?", faq_a1: "Check Play button and wiring direction.",
-    faq_q2: "How to delete?", faq_a2: "Click Nodon and use the trash icon.",
-    faq_q3: "Mobile support?", faq_a3: "Yes, it is fully responsive.",
-    footer_tagline: "Where creativity meets physics.",
-    footer_nav_title: "Explore", nav_editor: "Builder", nav_guide: "Guide", nav_encyclo: "Encyclopedia",
-    footer_legal_title: "Legal", nav_privacy: "Privacy Policy", nav_terms: "Terms",
+    nav_editor: "Builder", nav_guide: "Guide", nav_encyclo: "Encyclopedia", nav_physics: "Physics",
+    guide_title: "🛠️ Goldberg Construction Guide",
+    guide_intro_long: "A Rube Goldberg machine is a complex contraption designed to perform a simple task. It embodies physics principles and creative problem-solving. Use this builder to design your own chain reactions as an engineer.",
+    guide_step1_desc_long: "Everything starts with gravity. Drag and drop 'Ball' and 'Ramp' from the palette. This basic step of a ball rolling down is the foundation of your grand project.",
+    guide_step2_desc_long: "Go beyond collisions by connecting 'Sensors' and 'Fans'. Hold Shift and drag from the output (red) to input (yellow) to create logic. Now the fan will push the ball further whenever it passes the sensor.",
+    guide_step3_desc_long: "No design succeeds on the first try. Press play, observe where the ball stops, and refine your angles and elasticity. This iterative process is a genuine physics experiment.",
+    encyclo_title: "📚 Nodon Encyclopedia: Understanding Components",
+    encyclo_intro: "Each Nodon has unique physical properties and logical roles. Understanding them deeply allows for more sophisticated contraptions.",
+    ball_long_desc: "The core protagonist of any Goldberg machine. It has mass and radius, moving in a parabolic path under gravity. It transfers momentum upon collision, acting as the fuse for chain reactions.",
+    warp_long_desc: "A device that transcends spatial limits. Objects entering Entrance A are instantly transmitted to Exit B. Essential for simplifying complex paths or creating surprising tricks.",
+    sensor_long_desc: "An invisible observer that generates logic signals when objects enter its zone. It's the brain component that triggers timers or powers fans, giving 'intelligence' to your machine.",
+    fan_long_desc: "Controls airflow to exert force in a set direction. It can lift balls into the air or push distant boxes, acting as a powerful tool to overcome physical distances.",
+    physics_title: "🎓 STEM: Physics of Goldberg Machines",
+    phys_gravity_desc_long: "Balls at a height possess potential energy. Gravity converts this into kinetic energy, accelerating the ball downwards. This builder precisely simulates Earth's gravity for realistic motion.",
+    phys_momentum_desc_long: "When a rolling ball hits a static box, part of its momentum is transferred. This quantity, defined by mass times velocity, is the primary driver keeping the chain reaction alive.",
+    phys_elasticity_desc_long: "Not all energy is conserved during collisions. The 'Restitution' setting controls how much energy is kept for bouncing, mimicking real-world friction and resistance in engineering.",
+    footer_tagline: "Where creative engineering meets fun physics simulation.",
+    footer_nav_title: "Explore", footer_legal_title: "Legal", nav_privacy: "Privacy Policy", nav_terms: "Terms",
     privacy_title: "Privacy Policy",
-    privacy_p1: "No personal data collected; uses cookies for ads.",
-    terms_title: "Terms",
-    terms_h1: "Usage",
-    terms_p1: "Free for educational and personal use.",
-    tip_ball: "A basic marble that follows physics.",
-    tip_ramp: "An inclined surface for the ball.",
-    tip_box: "A physical cube for obstacles.",
-    tip_floor: "A static platform to support the machine.",
-    tip_goal: "The ultimate target!",
-    tip_spring: "Launches any object that touches it.",
-    tip_treadmill: "Moves objects in a specific direction.",
-    tip_breakable: "Fragile box that shatters on impact.",
-    tip_balloon: "Defies gravity and floats upwards.",
-    tip_sensor: "Detects collisions and sends signals.",
-    tip_fan: "Blasts wind when triggered.",
-    tip_timer: "Waits for a delay before signaling.",
-    tip_warp_a: "The entrance portal.",
-    tip_warp_b: "The exit portal.",
-    tip_magnet: "Attracts nearby metallic balls.",
-    tip_counter: "Increments count on signal."
+    terms_title: "Terms"
   }
 };
 
@@ -162,11 +81,11 @@ class GoldbergApp {
     this.initControls();
     this.initDragAndDrop();
     this.initEvents();
-    this.initSuccessUI();
     this.initSettings();
     this.initManual();
     this.initLegal();
     this.initSmoothScroll();
+    this.initNavigation();
     this.applyLanguage();
     
     this.animate();
@@ -180,8 +99,8 @@ class GoldbergApp {
 
   initCanvas() {
     const container = document.getElementById('physics-canvas');
-    const width = container.clientWidth || (window.innerWidth - 280);
-    const height = container.clientHeight || (window.innerHeight - 64);
+    const width = container.clientWidth || 800;
+    const height = container.clientHeight || 600;
 
     this.render = Render.create({
       element: container,
@@ -191,14 +110,13 @@ class GoldbergApp {
         height: height,
         wireframes: false,
         background: 'transparent',
-        pixelRatio: 1
+        pixelRatio: window.devicePixelRatio || 1
       }
     });
 
     Render.run(this.render);
     this.runner = Runner.create();
     
-    // Mouse setup
     const mouse = Mouse.create(this.render.canvas);
     this.mouseConstraint = MouseConstraint.create(this.engine, {
       mouse: mouse,
@@ -209,7 +127,6 @@ class GoldbergApp {
     });
     Composite.add(this.world, this.mouseConstraint);
 
-    // Keep mouse in sync with scrolling/resizing
     const resizeObserver = new ResizeObserver(() => {
       const w = container.clientWidth;
       const h = container.clientHeight;
@@ -223,6 +140,25 @@ class GoldbergApp {
     resizeObserver.observe(container);
   }
 
+  initNavigation() {
+    const navLinks = document.querySelectorAll('.main-nav .nav-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      const sections = ['app', 'guide-section', 'nodon-encyclopedia', 'physics-section'];
+      sections.forEach(s => {
+        const el = document.getElementById(s);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 200) current = s;
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) link.classList.add('active');
+      });
+    });
+  }
+
   initDragAndDrop() {
     const sidebarItems = document.querySelectorAll('.nodon-item');
     const dropZone = document.getElementById('canvas-container');
@@ -232,24 +168,16 @@ class GoldbergApp {
       item.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('type', item.dataset.type);
         e.dataTransfer.effectAllowed = 'copy';
-        item.style.opacity = '0.5';
-      });
-      item.addEventListener('dragend', () => {
-        item.style.opacity = '1';
       });
     });
 
-    // CRITICAL: Prevent forbidden cursor by cancelling dragover and dragenter
     const handleDragOver = (e) => {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy';
-      return false;
     };
 
     dropZone.addEventListener('dragover', handleDragOver);
-    dropZone.addEventListener('dragenter', handleDragOver);
     physicsCanvas.addEventListener('dragover', handleDragOver);
-    physicsCanvas.addEventListener('dragenter', handleDragOver);
 
     dropZone.addEventListener('drop', (e) => {
       e.preventDefault();
@@ -283,18 +211,9 @@ class GoldbergApp {
       power: document.getElementById('input-power')
     };
     
-    this.inputs.restitution.oninput = (e) => {
-      if (!this.selectedNodon) return;
-      this.selectedNodon.body.restitution = parseFloat(e.target.value);
-    };
-    this.inputs.delay.oninput = (e) => {
-      if (!this.selectedNodon) return;
-      this.selectedNodon.delay = parseFloat(e.target.value) * 1000;
-    };
-    this.inputs.power.oninput = (e) => {
-      if (!this.selectedNodon) return;
-      this.selectedNodon.power = parseFloat(e.target.value);
-    };
+    this.inputs.restitution.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.body.restitution = parseFloat(e.target.value); };
+    this.inputs.delay.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.delay = parseFloat(e.target.value) * 1000; };
+    this.inputs.power.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.power = parseFloat(e.target.value); };
   }
 
   addNodon(type, x, y) {
@@ -323,51 +242,35 @@ class GoldbergApp {
 
     if (body) {
       Composite.add(this.world, body);
-      const nodon = { id, type, body, initialPos: { x, y }, initialAngle: body.angle, power: 0.07, delay: 1000, count: 0, target: 3 };
+      const nodon = { id, type, body, initialPos: { x, y }, initialAngle: body.angle, power: 0.07, delay: 1000, count: 0, isActive: false };
       this.nodons.push(nodon);
       this.selectedNodon = nodon;
-      
-      // Force render update
-      if (!this.isPlaying) {
-        Engine.update(this.engine, 16);
-      }
+      if (!this.isPlaying) Engine.update(this.engine, 16);
     }
   }
 
   initEvents() {
     Events.on(this.engine, 'collisionStart', (event) => {
-      event.pairs.forEach(pair => this.handleCollisions(pair.bodyA, pair.bodyB, pair));
+      event.pairs.forEach(pair => this.handleCollisions(pair.bodyA, pair.bodyB));
     });
 
     const canvas = this.render.canvas;
-    
-    // Click to select
     canvas.addEventListener('mousedown', (e) => {
       const rect = canvas.getBoundingClientRect();
       const mousePos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
       const clickedBody = Matter.Query.point(Composite.allBodies(this.world), mousePos)[0];
-      
-      if (clickedBody) {
-        const nodon = this.nodons.find(n => n.body === clickedBody);
-        if (nodon) this.selectedNodon = nodon;
-      } else {
-        this.selectedNodon = null;
-      }
+      this.selectedNodon = clickedBody ? this.nodons.find(n => n.body === clickedBody) : null;
     });
 
-    // Key events
     window.addEventListener('keydown', (e) => {
       if (!this.selectedNodon) return;
       if (e.key.toLowerCase() === 'r') {
         Matter.Body.setAngle(this.selectedNodon.body, this.selectedNodon.body.angle + Math.PI / 8);
         this.selectedNodon.initialAngle = this.selectedNodon.body.angle;
       }
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        this.removeNodon(this.selectedNodon);
-      }
+      if (e.key === 'Delete' || e.key === 'Backspace') this.removeNodon(this.selectedNodon);
     });
 
-    // Special logic for treadmill and balloon
     Events.on(this.engine, 'beforeUpdate', () => {
       if (!this.isPlaying) return;
       this.nodons.forEach(n => {
@@ -375,19 +278,16 @@ class GoldbergApp {
           const bodies = Composite.allBodies(this.world);
           bodies.forEach(b => {
             if (b !== n.body && Matter.Bounds.overlaps(b.bounds, n.body.bounds)) {
-              const force = n.power * 2;
-              Matter.Body.translate(b, { x: Math.cos(n.body.angle) * force, y: Math.sin(n.body.angle) * force });
+              Matter.Body.translate(b, { x: Math.cos(n.body.angle) * n.power * 2, y: Math.sin(n.body.angle) * n.power * 2 });
             }
           });
         }
-        if (n.type === 'balloon') {
-          Matter.Body.applyForce(n.body, n.body.position, { x: 0, y: -0.0015 });
-        }
+        if (n.type === 'balloon') Matter.Body.applyForce(n.body, n.body.position, { x: 0, y: -0.0015 });
       });
     });
   }
 
-  handleCollisions(bodyA, bodyB, pair) {
+  handleCollisions(bodyA, bodyB) {
     const nA = this.nodons.find(n => n.body === bodyA);
     const nB = this.nodons.find(n => n.body === bodyB);
     if (!nA || !nB) return;
@@ -406,13 +306,8 @@ class GoldbergApp {
       this.connections.filter(c => c.fromId === sensor.id).forEach(c => {
         const target = this.nodons.find(n => n.id === c.toId);
         if (target && target.type === 'fan') {
-          const angle = target.body.angle;
-          Matter.Body.applyForce(targetBody, targetBody.position, { 
-            x: Math.cos(angle) * target.power, 
-            y: Math.sin(angle) * target.power 
-          });
-          target.isActive = true;
-          setTimeout(() => target.isActive = false, 300);
+          Matter.Body.applyForce(targetBody, targetBody.position, { x: Math.cos(target.body.angle) * target.power, y: Math.sin(target.body.angle) * target.power });
+          target.isActive = true; setTimeout(() => target.isActive = false, 300);
         }
       });
     };
@@ -422,12 +317,8 @@ class GoldbergApp {
 
   applySpring(spring, body) {
     const angle = spring.body.angle - Math.PI/2;
-    Matter.Body.applyForce(body, body.position, { 
-      x: Math.cos(angle) * spring.power, 
-      y: Math.sin(angle) * spring.power 
-    });
-    spring.isActive = true;
-    setTimeout(() => spring.isActive = false, 250);
+    Matter.Body.applyForce(body, body.position, { x: Math.cos(angle) * spring.power, y: Math.sin(angle) * spring.power });
+    spring.isActive = true; setTimeout(() => spring.isActive = false, 250);
   }
 
   teleport(body, targetType) {
@@ -442,8 +333,8 @@ class GoldbergApp {
     if (this.goalReached) return;
     this.goalReached = true;
     const msg = document.getElementById('success-msg');
-    if (msg) msg.classList.add('show');
-    setTimeout(() => { if(msg) msg.classList.remove('show'); this.goalReached = false; }, 5000);
+    msg.classList.add('show');
+    setTimeout(() => { msg.classList.remove('show'); this.goalReached = false; }, 5000);
   }
 
   animate() {
@@ -465,11 +356,8 @@ class GoldbergApp {
       const svg = document.getElementById('wiring-layer');
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('transform', `translate(${x},${y}) rotate(${angle * 180 / Math.PI})`);
-      
-      // Face logic
       const isLogic = ['sensor', 'timer', 'fan', 'warp-a', 'warp-b', 'magnet', 'counter'].includes(nodon.type);
       this.addFaceToGroup(g, isLogic ? 7 : 5, isLogic ? 12 : 8, time, this.selectedNodon === nodon, nodon.isActive);
-      
       svg.appendChild(g);
     });
   }
@@ -499,14 +387,13 @@ class GoldbergApp {
   createPort(nodon, x, y, type) {
     const svg = document.getElementById('wiring-layer');
     const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', '10'); c.classList.add('port', type);
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', '10');
+    c.style.fill = type === 'output' ? '#ff4757' : '#fed330';
+    c.style.stroke = '#2f3542'; c.style.strokeWidth = '2'; c.style.pointerEvents = 'auto'; c.style.cursor = 'crosshair';
     c.addEventListener('mousedown', (e) => {
       e.stopPropagation();
       if (type === 'output') { this.isWiring = true; this.wireStartPort = { nodon, x, y }; }
-      else if (this.isWiring) { 
-        this.connections.push({ fromId: this.wireStartPort.nodon.id, toId: nodon.id });
-        this.isWiring = false; 
-      }
+      else if (this.isWiring) { this.connections.push({ fromId: this.wireStartPort.nodon.id, toId: nodon.id }); this.isWiring = false; }
     });
     svg.appendChild(c);
   }
@@ -522,20 +409,17 @@ class GoldbergApp {
   drawWires() {
     const svg = document.getElementById('wiring-layer');
     this.connections.forEach(conn => {
-      const f = this.nodons.find(n => n.id === conn.fromId);
-      const t = this.nodons.find(n => n.id === conn.toId);
+      const f = this.nodons.find(n => n.id === conn.fromId), t = this.nodons.find(n => n.id === conn.toId);
       if (f && t) {
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        const p1 = { x: f.body.position.x + 40, y: f.body.position.y };
-        const p2 = { x: t.body.position.x - 40, y: t.body.position.y };
+        const p1 = { x: f.body.position.x + 40, y: f.body.position.y }, p2 = { x: t.body.position.x - 40, y: t.body.position.y };
         path.setAttribute('d', `M ${p1.x} ${p1.y} C ${p1.x+40} ${p1.y} ${p2.x-40} ${p2.y} ${p2.x} ${p2.y}`);
         path.setAttribute('stroke', '#4a90e2'); path.setAttribute('fill', 'none'); path.setAttribute('stroke-width', '5');
         svg.appendChild(path);
       }
     });
     if (this.isWiring) {
-      const p1 = this.wireStartPort;
-      const p2 = this.mouseConstraint.mouse.position;
+      const p1 = this.wireStartPort, p2 = this.mouseConstraint.mouse.position;
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('d', `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`);
       path.setAttribute('stroke', '#ff4757'); path.setAttribute('stroke-dasharray', '5,5'); path.setAttribute('fill', 'none');
@@ -549,6 +433,7 @@ class GoldbergApp {
       if (I18N[this.lang][key]) el.textContent = I18N[this.lang][key];
     });
     this.updateSettingsPanel();
+    lucide.createIcons();
   }
 
   updateSettingsPanel() {
@@ -556,55 +441,40 @@ class GoldbergApp {
     this.panel.classList.remove('hidden');
     const nameKey = `nodon_${this.selectedNodon.type.replace('-', '_')}`;
     document.getElementById('node-name').textContent = I18N[this.lang][nameKey] || this.selectedNodon.type.toUpperCase();
-    
     const type = this.selectedNodon.type;
     document.getElementById('prop-restitution').style.display = ['ball', 'box', 'spring', 'breakable', 'floor', 'ramp'].includes(type) ? 'block' : 'none';
     document.getElementById('prop-delay').style.display = (type === 'timer') ? 'block' : 'none';
     document.getElementById('prop-power').style.display = ['fan', 'magnet', 'treadmill', 'spring'].includes(type) ? 'block' : 'none';
-    
     this.inputs.restitution.value = this.selectedNodon.body.restitution;
     this.inputs.delay.value = this.selectedNodon.delay / 1000;
     this.inputs.power.value = this.selectedNodon.power;
   }
 
   getNodonColor(type) {
-    const palette = {
-      ball: '#FF4757', ramp: '#1E90FF', box: '#FFA502', floor: '#747D8C',
-      spring: '#FED330', treadmill: '#2F3542', breakable: '#CED6E0', balloon: '#FF6B81',
-      fan: '#2ED573', sensor: '#70A1FF', timer: '#FF6348', 'warp-a': '#6C5CE7',
-      'warp-b': '#A29BFE', magnet: '#2F3542', goal: '#ECCC68', counter: '#535C68'
-    };
+    const palette = { ball: '#FF4757', ramp: '#1E90FF', box: '#FFA502', floor: '#747D8C', spring: '#FED330', treadmill: '#2F3542', breakable: '#CED6E0', balloon: '#FF6B81', fan: '#2ED573', sensor: '#70A1FF', timer: '#FF6348', 'warp-a': '#6C5CE7', 'warp-b': '#A29BFE', magnet: '#2F3542', goal: '#ECCC68', counter: '#535C68' };
     return palette[type] || '#CED6E0';
   }
 
   resetSimulation() {
-    this.nodons.forEach(n => {
-      Matter.Body.setPosition(n.body, n.initialPos);
-      Matter.Body.setAngle(n.body, n.initialAngle);
-      Matter.Body.setVelocity(n.body, { x: 0, y: 0 });
-      Matter.Body.setAngularVelocity(n.body, 0);
-      n.count = 0; n.isActive = false;
-    });
+    this.nodons.forEach(n => { Matter.Body.setPosition(n.body, n.initialPos); Matter.Body.setAngle(n.body, n.initialAngle); Matter.Body.setVelocity(n.body, { x: 0, y: 0 }); Matter.Body.setAngularVelocity(n.body, 0); n.isActive = false; });
     this.goalReached = false;
   }
 
-  clearAll() {
-    Composite.clear(this.world, false);
-    Composite.add(this.world, this.mouseConstraint);
-    this.nodons = []; this.connections = []; this.selectedNodon = null;
-  }
+  clearAll() { Composite.clear(this.world, false); Composite.add(this.world, this.mouseConstraint); this.nodons = []; this.connections = []; this.selectedNodon = null; }
 
   initManual() {
     const modal = document.getElementById('manual-modal');
     document.getElementById('btn-manual').onclick = () => modal.classList.remove('hidden');
     document.getElementById('btn-close-manual').onclick = () => modal.classList.add('hidden');
+    document.getElementById('btn-close-manual-icon').onclick = () => modal.classList.add('hidden');
   }
 
   initSettings() {
     const modal = document.getElementById('settings-modal');
     document.getElementById('btn-settings').onclick = () => modal.classList.remove('hidden');
     document.getElementById('btn-close-settings').onclick = () => modal.classList.add('hidden');
-    document.getElementById('select-lang').onchange = (e) => { this.lang = e.target.value; this.applyLanguage(); };
+    document.getElementById('select-lang').onchange = (e) => { this.lang = e.target.value; document.getElementById('select-lang-inline').value = this.lang; this.applyLanguage(); };
+    document.getElementById('select-lang-inline').onchange = (e) => { this.lang = e.target.value; document.getElementById('select-lang').value = this.lang; this.applyLanguage(); };
   }
 
   initLegal() {
@@ -615,25 +485,14 @@ class GoldbergApp {
   }
 
   initSmoothScroll() {
-    document.querySelectorAll('.nav-link, .footer-nav a').forEach(a => a.onclick = (e) => {
+    document.querySelectorAll('.nav-link, .footer-links a').forEach(a => a.onclick = (e) => {
       const href = a.getAttribute('href');
-      if (href.startsWith('#')) { e.preventDefault(); document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' }); }
+      if (href.startsWith('#')) { e.preventDefault(); const target = document.querySelector(href); if (target) window.scrollTo({ top: target.offsetTop - 120, behavior: 'smooth' }); }
     });
   }
 
-  initSuccessUI() {
-    let msg = document.getElementById('success-msg');
-    if (!msg) { msg = document.createElement('div'); msg.id = 'success-msg'; document.body.appendChild(msg); }
-    msg.innerHTML = '<h2 data-lang="success_title">성공!</h2><p data-lang="success_msg">정말 멋진 장치예요!</p>';
-  }
-
-  removeNodon(n) {
-    if (!n) return;
-    Composite.remove(this.world, n.body);
-    this.nodons = this.nodons.filter(x => x.id !== n.id);
-    this.connections = this.connections.filter(c => c.fromId !== n.id && c.toId !== n.id);
-    this.selectedNodon = null;
-  }
+  removeNodon(n) { if (!n) return; Composite.remove(this.world, n.body); this.nodons = this.nodons.filter(x => x.id !== n.id); this.connections = this.connections.filter(c => c.fromId !== n.id && c.toId !== n.id); this.selectedNodon = null; }
 }
 
+lucide.createIcons();
 new GoldbergApp();
