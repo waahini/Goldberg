@@ -7,6 +7,7 @@ const I18N = {
     nodon_seesaw: "시소", nodon_pendulum: "진공추", nodon_domino: "도미노", nodon_hammer: "망치",
     nodon_spring: "스프링", nodon_balloon: "풍선",
     nodon_sensor: "터치 센서", nodon_fan: "강풍기", nodon_accelerator: "가속기", nodon_timer: "타이머", nodon_warp_a: "워프 입구 (A)", nodon_warp_b: "워프 출구 (B)", nodon_counter: "카운터",
+    nodon_gate_and: "AND 게이트", nodon_gate_not: "NOT 게이트",
     history_title: "📜 골드버그 장치의 역사: 복잡함의 미학",
     guide_title: "🛠️ 골드버그 장치 마스터 클래스",
     encyclo_title: "📚 노돈 백과사전: 심층 분석",
@@ -25,6 +26,7 @@ const I18N = {
     nodon_seesaw: "Seesaw", nodon_pendulum: "Pendulum", nodon_domino: "Domino", nodon_hammer: "Hammer",
     nodon_spring: "Spring", nodon_balloon: "Balloon",
     nodon_sensor: "Sensor", nodon_fan: "Fan", nodon_accelerator: "Accelerator", nodon_timer: "Timer", nodon_warp_a: "Warp A", nodon_warp_b: "Warp B", nodon_counter: "Counter",
+    nodon_gate_and: "AND Gate", nodon_gate_not: "NOT Gate",
     history_title: "📜 History of Goldberg Machines",
     guide_title: "🛠️ Goldberg Masterclass",
     encyclo_title: "📚 Nodon Encyclopedia: Deep Dive",
@@ -244,6 +246,8 @@ class GoldbergApp {
       case 'timer': body = Bodies.circle(x, y, 40, { ...common, isStatic: true, isSensor: true }); break;
       case 'warp-a': case 'warp-b': body = Bodies.circle(x, y, 40, { ...common, isStatic: true, isSensor: true }); break;
       case 'counter': body = Bodies.rectangle(x, y, 70, 70, { ...common, isStatic: true }); break;
+      case 'gate-and': body = Bodies.rectangle(x, y, 80, 50, { ...common, isStatic: true, isSensor: true }); break;
+      case 'gate-not': body = Bodies.circle(x, y, 35, { ...common, isStatic: true, isSensor: true }); break;
       case 'goal': body = Bodies.rectangle(x, y, 90, 60, { ...common, isStatic: true, isSensor: true }); break;
     }
 
@@ -361,7 +365,7 @@ class GoldbergApp {
       if (!svg) return;
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('transform', `translate(${x},${y}) rotate(${angle * 180 / Math.PI})`);
-      const isLogic = ['sensor', 'timer', 'fan', 'warp-a', 'warp-b', 'accelerator', 'counter'].includes(nodon.type);
+      const isLogic = ['sensor', 'timer', 'fan', 'warp-a', 'warp-b', 'accelerator', 'counter', 'gate-and', 'gate-not'].includes(nodon.type);
       this.addFaceToGroup(g, isLogic ? 7 : 5, isLogic ? 12 : 8, time, this.selectedNodon === nodon, nodon.isActive);
       svg.appendChild(g);
     });
@@ -407,8 +411,8 @@ class GoldbergApp {
   drawPorts() {
     if (this.isPlaying) return;
     this.nodons.forEach(n => {
-      if (['sensor', 'timer', 'counter', 'accelerator'].includes(n.type)) this.createPort(n, n.body.position.x + 40, n.body.position.y, 'output');
-      if (['fan', 'timer', 'counter', 'accelerator'].includes(n.type)) this.createPort(n, n.body.position.x - 40, n.body.position.y, 'input');
+      if (['sensor', 'timer', 'counter', 'accelerator', 'gate-and', 'gate-not'].includes(n.type)) this.createPort(n, n.body.position.x + 40, n.body.position.y, 'output');
+      if (['fan', 'timer', 'counter', 'accelerator', 'gate-and', 'gate-not'].includes(n.type)) this.createPort(n, n.body.position.x - 40, n.body.position.y, 'input');
     });
   }
 
@@ -471,7 +475,8 @@ class GoldbergApp {
       domino: 'oklch(0.65 0.25 20)', hammer: 'oklch(0.5 0.05 260)', spring: 'oklch(0.85 0.2 90)', 
       balloon: 'oklch(0.8 0.15 350)', fan: 'oklch(0.7 0.2 150)', sensor: 'oklch(0.75 0.15 220)', 
       accelerator: 'oklch(0.75 0.2 60)', timer: 'oklch(0.7 0.2 30)', 'warp-a': 'oklch(0.6 0.2 280)', 
-      'warp-b': 'oklch(0.8 0.15 280)', goal: 'oklch(0.85 0.15 70)', counter: 'oklch(0.4 0.1 260)' 
+      'warp-b': 'oklch(0.8 0.15 280)', goal: 'oklch(0.85 0.15 70)', counter: 'oklch(0.4 0.1 260)',
+      'gate-and': 'oklch(0.5 0.2 160)', 'gate-not': 'oklch(0.5 0.2 0)' 
     };
     return palette[type] || '#ced6e0';
   }
