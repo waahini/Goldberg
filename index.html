@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-4555364222256220">
-  <title>GOLDBERG NODON | Modern Physics Playground</title>
+  <title>골드버그 노돈 | 세상을 움직이는 물리 장치 빌더</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,14 +12,15 @@
 <body>
   <div id="app">
     <header class="main-header">
-      <div class="logo">GOLDBERG NODON</div>
+      <div class="logo" data-lang="app_title">골드버그 노돈</div>
       <nav class="main-nav">
-        <a href="#app" class="nav-link active">BUILDER</a>
-        <a href="#partnership-section" class="nav-link">PARTNERSHIP</a>
-        <a href="#comment-section" class="nav-link">COMMUNITY</a>
-        <a href="#physics-section" class="nav-link">PHYSICS</a>
+        <a href="#app" class="nav-link active" data-lang="nav_builder">빌더</a>
+        <a href="#history-section" class="nav-link" data-lang="nav_history">탄생일기</a>
+        <a href="#manual-section" class="nav-link" data-lang="nav_manual">설명서</a>
+        <a href="#comment-section" class="nav-link" data-lang="nav_comment">댓글</a>
       </nav>
       <div class="header-controls">
+        <button id="btn-lang-toggle">EN</button>
         <button id="btn-settings" class="btn btn-icon"><i data-lucide="settings"></i></button>
       </div>
     </header>
@@ -29,34 +30,60 @@
         <button id="sidebar-col-toggle" class="sidebar-toggle-columns">
           <i data-lucide="layout-grid"></i>
         </button>
-        <div class="nodon-palette">
-          <div class="nodon-item" data-type="ball" draggable="true">
-            <div class="nodon-icon ball"><div class="icon-inner"></div></div>
-            <span>탱탱공</span>
+        
+        <div class="sidebar-section">
+          <h3 data-lang="cat_phys">물리 노돈</h3>
+          <div class="nodon-palette">
+            <div class="nodon-item" data-type="ball" draggable="true">
+              <div class="nodon-icon ball"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_ball">탱탱공</span>
+            </div>
+            <div class="nodon-item" data-type="ramp" draggable="true">
+              <div class="nodon-icon ramp"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_ramp">미끄럼틀</span>
+            </div>
+            <div class="nodon-item" data-type="box" draggable="true">
+              <div class="nodon-icon box"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_box">상자</span>
+            </div>
+            <div class="nodon-item" data-type="floor" draggable="true">
+              <div class="nodon-icon floor"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_floor">바닥</span>
+            </div>
+            <div class="nodon-item" data-type="seesaw" draggable="true">
+              <div class="nodon-icon seesaw"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_seesaw">시소</span>
+            </div>
+            <div class="nodon-item" data-type="pendulum" draggable="true">
+              <div class="nodon-icon pendulum"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_pendulum">흔들추</span>
+            </div>
+            <div class="nodon-item" data-type="domino" draggable="true">
+              <div class="nodon-icon domino"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_domino">도미노</span>
+            </div>
+            <div class="nodon-item" data-type="hammer" draggable="true">
+              <div class="nodon-icon hammer"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_hammer">뿅망치</span>
+            </div>
           </div>
-          <div class="nodon-item" data-type="ramp" draggable="true">
-            <div class="nodon-icon ramp"><div class="icon-inner"></div></div>
-            <span>미끄럼틀</span>
-          </div>
-          <div class="nodon-item" data-type="box" draggable="true">
-            <div class="nodon-icon box"><div class="icon-inner"></div></div>
-            <span>상자</span>
-          </div>
-          <div class="nodon-item" data-type="floor" draggable="true">
-            <div class="nodon-icon floor"><div class="icon-inner"></div></div>
-            <span>바닥</span>
-          </div>
-          <div class="nodon-item" data-type="sensor" draggable="true">
-            <div class="nodon-icon sensor"><div class="icon-inner"></div></div>
-            <span>센서</span>
-          </div>
-          <div class="nodon-item" data-type="accelerator" draggable="true">
-            <div class="nodon-icon accelerator"><div class="icon-inner"></div></div>
-            <span>부스터</span>
-          </div>
-          <div class="nodon-item" data-type="timer" draggable="true">
-            <div class="nodon-icon timer"><div class="icon-inner"></div></div>
-            <span>타이머</span>
+        </div>
+
+        <div class="sidebar-section">
+          <h3 data-lang="cat_logic">논리 노돈</h3>
+          <div class="nodon-palette">
+            <div class="nodon-item" data-type="sensor" draggable="true">
+              <div class="nodon-icon sensor"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_sensor">감지센서</span>
+            </div>
+            <div class="nodon-item" data-type="accelerator" draggable="true">
+              <div class="nodon-icon accelerator"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_accelerator">부스터</span>
+            </div>
+            <div class="nodon-item" data-type="timer" draggable="true">
+              <div class="nodon-icon timer"><div class="icon-inner"></div></div>
+              <span data-lang="nodon_timer">알람시계</span>
+            </div>
           </div>
         </div>
       </aside>
@@ -66,28 +93,25 @@
         <svg id="wiring-layer"></svg>
         
         <div class="editor-toolbar">
-          <button id="btn-play" class="btn btn-primary">
-            <i data-lucide="play"></i>
-            <span>RUN</span>
+          <button id="btn-play" class="btn-large btn-primary">
+            <span data-lang="btn_play">실행하기</span>
           </button>
-          <button id="btn-reset" class="btn">
-            <i data-lucide="rotate-ccw"></i>
-            <span>RESET</span>
+          <button id="btn-reset" class="btn-large">
+            <span data-lang="btn_reset">되돌리기</span>
           </button>
-          <button id="btn-clear" class="btn">
-            <i data-lucide="trash-2"></i>
-            <span>CLEAR</span>
+          <button id="btn-clear" class="btn-large">
+            <span data-lang="btn_clear">전체 삭제</span>
           </button>
         </div>
 
         <div id="settings-panel" class="hidden">
           <div class="panel-header">
-            <span id="node-name">OBJECT</span>
-            <button id="node-delete" class="btn-icon"><i data-lucide="trash"></i></button>
+            <span id="node-name">오브젝트</span>
+            <button id="node-delete" class="btn btn-icon"><i data-lucide="trash-2"></i></button>
           </div>
           <div class="panel-body">
             <div class="prop-group">
-              <label>ELASTICITY</label>
+              <label>탄성 (Bounce)</label>
               <input type="range" min="0" max="1" step="0.1" id="input-restitution">
             </div>
           </div>
@@ -95,23 +119,40 @@
       </div>
     </div>
 
-    <!-- Additional Content Sections -->
-    <section id="partnership-section" class="content-section">
+    <!-- Goldberg's Birth Diary -->
+    <section id="history-section" class="content-section">
       <div class="section-container">
-        <h2 class="section-title">PARTNERSHIP</h2>
-        <div class="policy-content">
-          <form action="https://formspree.io/f/mlgzqpal" method="POST" style="display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto;">
-            <input type="email" name="email" placeholder="YOUR EMAIL" style="padding: 1rem; border-radius: 12px; border: 1px solid #ddd;">
-            <textarea name="message" placeholder="YOUR MESSAGE" style="padding: 1rem; border-radius: 12px; border: 1px solid #ddd; min-height: 150px;"></textarea>
-            <button type="submit" class="btn btn-primary">SEND INQUIRY</button>
-          </form>
+        <h2 class="section-title">골드버그의 탄생일기</h2>
+        <div class="article-box">
+          <h2>1883년 7월 4일: 기발한 상상의 시작</h2>
+          <p>미국 샌프란시스코의 한 가정에서 미래의 발명가 루브 골드버그가 태어났습니다. 어린 시절부터 그는 단순히 공을 던지는 것보다, 그 공이 굴러가서 도미노를 쓰러뜨리고, 그 도미노가 숟가락을 건드려 아침 식사를 먹여주는 상상을 즐겼습니다.</p>
+          <h2>왜 그렇게 복잡하게 만드나요?</h2>
+          <p>루브 골드버그는 말했습니다. "사람들은 최단 거리를 찾지만, 나는 가장 재미있는 우회로를 찾는다." 그의 기계들은 효율성보다는 과정의 즐거움, 인과관계의 아름다움을 보여주기 위해 만들어졌습니다. 이것이 바로 우리가 '골드버그 장치'라고 부르는 복잡하고도 위대한 예술의 시작이었습니다.</p>
+          <p>오늘날 우리는 이 철학을 계승하여 '골드버그 노돈'을 만들었습니다. 여러분도 루브가 되어보세요. 가장 복잡하고 가장 아름다운 실패를 설계해 보시기 바랍니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Manual Section -->
+    <section id="manual-section" class="content-section alternate-bg">
+      <div class="section-container">
+        <h2 class="section-title">빌더 사용 설명서</h2>
+        <div class="article-box">
+          <h2>1단계: 노돈 배치하기</h2>
+          <p>왼쪽 도구함에서 원하는 노돈을 마우스로 끌어 캔버스에 놓으세요. 물리 노돈은 중력의 영향을 받으며, 논리 노돈은 특정 조건에서 신호를 보냅니다.</p>
+          <h2>2단계: 논리 연결 (와이어링)</h2>
+          <p>감지센서나 타이머 같은 논리 노돈에는 동그란 포트가 있습니다. 출력 포트(오른쪽)를 마우스로 눌러서 부스터 같은 다른 노돈의 입력 포트(왼쪽)로 연결하세요. 이제 센서가 공을 감지하면 부스터가 가동됩니다!</p>
+          <h2>3단계: 물리 속성 조절</h2>
+          <p>설치된 노돈을 클릭하면 우측 상단에 설정창이 나타납니다. '탄성'을 조절하여 공이 얼마나 높이 튈지, 혹은 바닥이 얼마나 끈적일지를 결정할 수 있습니다.</p>
+          <h2>4단계: 실행 및 테스트</h2>
+          <p>하단의 '실행하기' 버튼을 눌러 시뮬레이션을 시작하세요. 공이 멈춘다면 '되돌리기'를 눌러 노돈의 위치를 수정한 뒤 다시 도전해 보세요.</p>
         </div>
       </div>
     </section>
 
     <section id="comment-section" class="content-section">
       <div class="section-container">
-        <h2 class="section-title">COMMUNITY</h2>
+        <h2 class="section-title">사용자 커뮤니티</h2>
         <div id="disqus_thread"></div>
         <script>
             (function() {
@@ -124,24 +165,14 @@
       </div>
     </section>
 
-    <section id="physics-section" class="content-section">
-      <div class="section-container">
-        <h2 class="section-title">PHYSICS LAWS</h2>
-        <div class="policy-content">
-          <p>Explore the fundamental laws of motion through our interactive playground.</p>
-        </div>
-      </div>
-    </section>
-
     <footer class="main-footer">
-      <p>&copy; 2026 GOLDBERG NODON. All rights reserved.</p>
+      <p>&copy; 2026 골드버그 노돈 | 세상에서 가장 위대한 우회로. All rights reserved.</p>
       <div class="footer-links">
-        <a href="#privacy">PRIVACY</a>
-        <a href="#terms">TERMS</a>
+        <a href="#privacy">PRIVACY POLICY</a>
+        <a href="#terms">TERMS OF SERVICE</a>
       </div>
     </footer>
   </div>
   <script src="main.js"></script>
-  <script>lucide.createIcons();</script>
 </body>
 </html>
