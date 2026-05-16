@@ -7,7 +7,21 @@ const I18N = {
     nodon_seesaw: "시소", nodon_pendulum: "진공추", nodon_domino: "도미노", nodon_hammer: "망치",
     nodon_sensor: "센서", nodon_accelerator: "가속기", nodon_gate_and: "AND 게이트", nodon_gate_not: "NOT 게이트",
     nodon_timer: "타이머", nodon_counter: "카운터",
-    history_title: "골드버그의 역사", guide_title: "제작 마스터클래스",
+    history_title: "골드버그의 역사: 기발한 상상력의 발자취", 
+    history_p1: "루브 골드버그(Rube Goldberg)는 미국의 만화가이자 발명가로, 아주 간단한 일을 처리하기 위해 수십 가지의 복잡한 과정을 거치는 기계 장치를 고안한 것으로 유명합니다.",
+    history_p2: "HONEY GOLDEN 빌더는 이러한 역사적 유산을 현대적인 디지털 아틀리에로 재해석하여, 누구나 엔지니어가 되어 자신만의 물리 법칙을 설계하고 실험할 수 있는 공간을 제공합니다.",
+    guide_title: "제작 마스터클래스: 완벽한 장치를 위한 팁",
+    guide_step1_title: "에너지 아키텍처 설계",
+    guide_step1_desc_long: "모든 장치의 심장은 '위치 에너지'입니다. 빌더의 가장 높은 곳에 시작 노돈을 배치하여 중력 가속도를 최대한 활용하세요.",
+    guide_step2_title: "뉴럴 논리 회로 구성",
+    guide_step2_desc_long: "단순한 물리적 충돌을 넘어, 논리 노돈을 사용하여 지능형 장치를 만드세요. AND 게이트를 사용하면 더 복잡한 장치를 만들 수 있습니다.",
+    guide_step3_title: "실험과 반복의 즐거움",
+    guide_step3_desc_long: "실패는 데이터가 됩니다. 공이 멈춘 지점을 분석하고, 타이머의 지연 시간을 0.1초 단위로 튜닝하세요.",
+    physics_title: "물리법칙: 장치 속에 숨겨진 과학",
+    phys_momentum: "운동량 보존 법칙",
+    phys_momentum_desc: "질량과 속도의 곱으로 정의되는 운동량은 충돌 시 다른 물체로 전달됩니다.",
+    phys_logic: "부울 논리와 제어",
+    phys_logic_desc: "센서와 게이트를 통한 신호 제어는 현대 컴퓨터 공학의 기초인 부울 논리(Boolean Logic)를 따릅니다.",
     nav_editor: "빌더", nav_history: "기록", nav_guide: "마스터클래스", nav_encyclo: "백과사전", nav_physics: "물리법칙",
     success_title: "미션 성공!", success_msg: "장치가 완벽하게 작동했습니다."
   },
@@ -19,7 +33,21 @@ const I18N = {
     nodon_seesaw: "SEESAW", nodon_pendulum: "PENDULUM", nodon_domino: "DOMINO", nodon_hammer: "HAMMER",
     nodon_sensor: "SENSOR", nodon_accelerator: "ACCELERATOR", nodon_gate_and: "AND GATE", nodon_gate_not: "NOT GATE",
     nodon_timer: "TIMER", nodon_counter: "COUNTER",
-    history_title: "HISTORY", guide_title: "MASTERCLASS",
+    history_title: "HISTORY OF RUBE GOLDBERG",
+    history_p1: "Rube Goldberg was an American cartoonist and inventor known for his complex machines designed to perform simple tasks.",
+    history_p2: "HONEY GOLDEN reimagines this legacy as a digital atelier where anyone can become an engineer and experiment with physics.",
+    guide_title: "MASTERCLASS: TIPS FOR PERFECT MACHINES",
+    guide_step1_title: "ENERGY ARCHITECTURE",
+    guide_step1_desc_long: "The heart of every machine is potential energy. Place starting nodes at the highest point to maximize gravity.",
+    guide_step2_title: "NEURAL LOGIC CIRCUITS",
+    guide_step2_desc_long: "Go beyond simple collisions using logic nodes. AND gates allow for more intelligent and complex designs.",
+    guide_step3_title: "JOY OF EXPERIMENTATION",
+    guide_step3_desc_long: "Failure is just data. Analyze where the ball stops and tune timer delays by 0.1s increments.",
+    physics_title: "PHYSICS: THE SCIENCE BEHIND MACHINES",
+    phys_momentum: "CONSERVATION OF MOMENTUM",
+    phys_momentum_desc: "Momentum, defined as mass times velocity, is transferred to other objects upon collision.",
+    phys_logic: "BOOLEAN LOGIC & CONTROL",
+    phys_logic_desc: "Signal control via sensors and gates follows Boolean logic, the foundation of modern computer science.",
     nav_editor: "BUILDER", nav_history: "ARCHIVES", nav_guide: "GUIDE", nav_encyclo: "LIBRARY", nav_physics: "SCIENCE",
     success_title: "MISSION SUCCESS!", success_msg: "The contraption worked perfectly."
   }
@@ -102,7 +130,40 @@ class GoldbergApp {
     }
   }
 
+  initDragAndDrop() {
+    const items = document.querySelectorAll('.nodon-item');
+    const container = document.getElementById('physics-canvas');
+
+    items.forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('nodon-type', item.dataset.type);
+        item.classList.add('dragging');
+      });
+      item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    });
+
+    container.addEventListener('dragover', (e) => e.preventDefault());
+    container.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const type = e.dataTransfer.getData('nodon-type');
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      if (type) this.addNodon(type, x, y);
+    });
+  }
+
   initControls() {
+    const langToggle = document.getElementById('btn-lang-toggle');
+    if (langToggle) {
+      langToggle.onclick = () => {
+        this.lang = this.lang === 'ko' ? 'en' : 'ko';
+        langToggle.querySelector('.lang-text').textContent = this.lang === 'ko' ? 'EN' : 'KO';
+        this.applyLanguage();
+        this.updateSettingsPanel();
+      };
+    }
+
     document.getElementById('btn-play').onclick = () => {
       this.isPlaying = !this.isPlaying;
       if (this.isPlaying) Runner.run(this.runner, this.engine);

@@ -1,45 +1,42 @@
-# **Goldberg Machine Builder: Project Blueprint (V3 - Korean Honey Golden Style)**
+# **Goldberg Machine Builder: Project Blueprint (V4 - Educational Rainbow Style)**
 
 ## **1. Overview**
-A high-density, professional "Goldberg Machine" builder optimized for the Korean web aesthetic. This version uses a vibrant "Honey Golden" design system, characterized by bright, warm tones, solid integrated layouts, and a "Full & Packed" (꽉 채워진) feel. It is designed for maximum productivity and STEM educational value.
+A child-friendly, educational "Goldberg Machine" builder. This version transitions from the "Honey Golden" professional look to a vibrant, rounded, and playful "Educational Rainbow" design. It emphasizes ease of use, tactile feedback, and bilingual support (Korean/English).
 
 ## **2. Detailed Outline & Current State**
 
 ### **Architecture & Tech Stack**
 - **Physics Engine**: Matter.js.
-- **UI Architecture**: Integrated Grid/Flexbox (Solid layout, no floating panels).
-- **Color System**: "Honey Golden" (Yellow, Orange, Warm White).
-- **Typography**: Pretendard (Optimized for Korean legibility and modern feel).
+- **UI Architecture**: Integrated Sidebar + Canvas.
+- **Color System**: Vibrant primary colors (Yellow, Blue, Green, Pink) with soft gradients.
+- **Typography**: Rounded, friendly fonts (Pretendard with rounded settings or similar).
+- **Internationalization**: Dual-language support (KO/EN) with a toggle.
 
-### **Korean "쌈뽕한" (Packed & Professional) Design**
-- **High Density**: Every part of the screen is utilized. Clear partitions using cards and solid borders.
-- **Integrated Sidebar**: A solid "Workbench" area on the left where Nodons are organized in high-density grids.
-- **Warm Palette**: OKLCH-based yellows and ambers for an energetic, bright, and friendly atmosphere.
-- **Shadows & Depth**: Soft, wide shadows that make elements feel like they are sitting on a solid desk.
+### **Child-Friendly Design (A동 교육 느낌)**
+- **Ultra-Rounded**: All buttons, cards, and panels have large border-radii (20px+).
+- **Playful Palette**: Bright, energetic colors that appeal to children.
+- **Tactile Feedback**: Larger hit areas, bouncy hover effects, and clear visual cues.
+- **Side Workbench**: A functional sidebar where users can drag Nodons directly onto the canvas.
 
 ### **Functional Upgrades**
-- **Solid Workspace**: The editor and sidebar are locked into a professional grid, ensuring stability during complex builds.
-- **High-Density Palette**: Icons are smaller but more detailed, allowing more tools to be visible at once.
-- **Improved Drag & Drop**: Visual feedback localized to the "Workbench" and "Atelier" sections.
+- **Language Switcher**: A prominent toggle to switch between Korean and English.
+- **Drag & Drop Fix**: Implementation of the missing `initDragAndDrop` logic to enable node placement.
+- **Visual Polish**: Animated transitions and "soft" shadows for a premium toy-like feel.
 
 ## **3. Implementation Roadmap**
 
-### **Phase 1: Layout Consolidation**
-- [ ] **Grid Overhaul**: Change from floating panels to a 3-tier solid layout (Header / Sidebar+Canvas / Footer).
-- [ ] **Yellow Palette Setup**: Implement `oklch` yellow and amber variables.
-- [ ] **Typography Fix**: Ensure Pretendard is the primary font with tight, professional leading.
+### **Phase 1: Logic & Language**
+- [x] **Language Toggle**: Add UI for switching languages.
+- [x] **Drag & Drop Implementation**: Fix the missing `initDragAndDrop` method in `main.js`.
+- [x] **Translation Completion**: Ensure all UI strings are localized.
 
-### **Phase 2: "Honey Golden" Component Design**
-- [ ] **Integrated Sidebar**: Style the palette area as a solid, high-tech workbench.
-- [ ] **Nodon Icon Overhaul**: Re-color and re-style all icons into the yellow/orange/gray theme.
-- [ ] **Canvas Grid**: Use a more prominent "Engineering Paper" grid in warm gray.
+### **Phase 2: Visual Overhaul (Rounded & Playful)**
+- [ ] **Global Rounding**: Apply `border-radius: 2rem` to all major components.
+- [ ] **Color Update**: Transition from pure yellow to a multi-colored educational palette.
+- [ ] **Soft UI**: Use softer shadows and subtle textures for a "toy" feel.
 
-### **Phase 3: Content Packing**
-- [ ] **Gallery Style Sections**: Re-style the Archives and Masterclass sections into "Card-Heavy" high-density layouts.
-- [ ] **AdSense Integration**: Ensure ads blend seamlessly into the new card-based system.
-
-## **4. Verification**
-- [ ] **Density Audit**: Does the site feel "full" and "packed" as requested?
-- [ ] **Color Check**: Is the red completely gone? Is the yellow vibrant and warm?
-- [ ] **Functionality**: Is dragging from the sidebar to the canvas seamless and intuitive?
+### **Phase 3: Verification**
+- [ ] **Accessibility**: Ensure the UI is easy for children to navigate.
+- [ ] **Functionality**: Verify nodes can be dragged from the sidebar and placed accurately.
+- [ ] **Bilingual Check**: Confirm all text switches correctly between KO and EN.
 
