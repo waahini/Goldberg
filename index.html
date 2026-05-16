@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-4555364222256220">
-  <title>골드버그 노돈 | 세상을 움직이는 물리 장치 빌더</title>
+  <title>골드버그 노돈 | 세상을 움직이는 가장 위대한 설계</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -17,7 +17,7 @@
         <a href="#app" class="nav-link active" data-lang="nav_builder">빌더</a>
         <a href="#history-section" class="nav-link" data-lang="nav_history">탄생일기</a>
         <a href="#manual-section" class="nav-link" data-lang="nav_manual">설명서</a>
-        <a href="#comment-section" class="nav-link" data-lang="nav_comment">댓글</a>
+        <a href="#trivia-section" class="nav-link">트리비아</a>
       </nav>
       <div class="header-controls">
         <button id="btn-lang-toggle">EN</button>
@@ -105,9 +105,6 @@
       </aside>
 
       <div id="canvas-container">
-        <div id="physics-canvas"></div>
-        <svg id="wiring-layer"></svg>
-        
         <div class="editor-toolbar">
           <button id="btn-play" class="btn-large btn-primary">
             <span data-lang="btn_play">실행하기</span>
@@ -119,6 +116,9 @@
             <span data-lang="btn_clear">전체 삭제</span>
           </button>
         </div>
+
+        <div id="physics-canvas"></div>
+        <svg id="wiring-layer"></svg>
 
         <div id="settings-panel" class="hidden">
           <div class="panel-header">
@@ -139,40 +139,61 @@
       </div>
     </div>
 
-    <!-- Goldberg's Birth Diary -->
+    <!-- Saturation: Goldberg's World -->
     <section id="history-section" class="content-section">
       <div class="section-container">
-        <h2 class="section-title">골드버그의 탄생일기</h2>
+        <h2 class="section-title">루브 골드버그의 일기: 복잡함의 미학</h2>
         <div class="article-box">
-          <h2>1883년 7월 4일: 기발한 상상의 시작</h2>
-          <p>미국 샌프란시스코의 한 가정에서 미래의 발명가 루브 골드버그가 태어났습니다. 어린 시절부터 그는 단순히 공을 던지는 것보다, 그 공이 굴러가서 도미노를 쓰러뜨리고, 그 도미노가 숟가락을 건드려 아침 식사를 먹여주는 상상을 즐겼습니다.</p>
-          <h2>왜 그렇게 복잡하게 만드나요?</h2>
-          <p>루브 골드버그는 말했습니다. "사람들은 최단 거리를 찾지만, 나는 가장 재미있는 우회로를 찾는다." 그의 기계들은 효율성보다는 과정의 즐거움, 인과관계의 아름다움을 보여주기 위해 만들어졌습니다. 이것이 바로 우리가 '골드버그 장치'라고 부르는 복잡하고도 위대한 예술의 시작이었습니다.</p>
-          <p>오늘날 우리는 이 철학을 계승하여 '골드버그 노돈'을 만들었습니다. 여러분도 루브가 되어보세요. 가장 복잡하고 가장 아름다운 실패를 설계해 보시기 바랍니다.</p>
+          <h2>"가장 쉬운 일을 가장 어렵게 하라"</h2>
+          <p>루브 골드버그는 퓰리처상 수상 만화가이자 엔지니어였습니다. 그는 기계가 인간을 지배하기 시작한 시대에, 기계를 우스꽝스럽고 불필요하게 복잡하게 만들어 비판했습니다. 하지만 그 속에 담긴 정교한 역학은 오늘날의 공학도들에게 거대한 영감을 줍니다.</p>
+          <p>골드버그 장치는 연쇄 반응의 연속입니다. 하나의 사건이 다음 사건을 일으키고, 그 에너지는 결코 소멸하지 않고 형태를 바꾸며 목적지까지 도달합니다. 이것은 단순한 물리학을 넘어 우리 삶의 인과관계를 보여주는 거대한 비유와 같습니다.</p>
+        </div>
+        <div class="quote-box">
+          "사람들은 최단 거리를 찾지만, 나는 가장 위대한 우회로를 설계한다."
         </div>
       </div>
     </section>
 
-    <!-- Detailed Manual Section -->
     <section id="manual-section" class="content-section alternate-bg">
       <div class="section-container">
-        <h2 class="section-title">빌더 사용 설명서</h2>
+        <h2 class="section-title">마스터클래스: 설계 비법</h2>
         <div class="article-box">
-          <h2>1단계: 노돈 배치하기</h2>
-          <p>왼쪽 도구함에서 원하는 노돈을 마우스로 끌어 캔버스에 놓으세요. 물리 노돈은 중력의 영향을 받으며, 논리 노돈은 특정 조건에서 신호를 보냅니다.</p>
-          <h2>2단계: 논리 연결 (와이어링)</h2>
-          <p>감지센서나 타이머 같은 논리 노돈에는 동그란 포트가 있습니다. 출력 포트(오른쪽)를 마우스로 눌러서 부스터 같은 다른 노돈의 입력 포트(왼쪽)로 연결하세요. 이제 센서가 공을 감지하면 부스터가 가동됩니다!</p>
-          <h2>3단계: 물리 속성 조절</h2>
-          <p>설치된 노돈을 클릭하면 우측 상단에 설정창이 나타납니다. '탄성'을 조절하여 공이 얼마나 높이 튈지, 혹은 바닥이 얼마나 끈적일지를 결정할 수 있습니다.</p>
-          <h2>4단계: 실행 및 테스트</h2>
-          <p>하단의 '실행하기' 버튼을 눌러 시뮬레이션을 시작하세요. 공이 멈춘다면 '되돌리기'를 눌러 노돈의 위치를 수정한 뒤 다시 도전해 보세요.</p>
+          <h2>에너지 보존의 비밀</h2>
+          <p>장치가 멈추지 않게 하려면 위치 에너지를 보존해야 합니다. 높은 곳에서 낮은 곳으로, 다시 부스터를 통해 높은 곳으로 공을 이동시키세요. 논리 노돈인 '부스터'와 '감지센서'를 연결하면 무한 동력 장치도 꿈이 아닙니다.</p>
+          <h2>논리의 마술: AND, OR, NOT</h2>
+          <p>단순한 충돌을 넘어선 시스템을 원하시나요? AND 게이트는 두 개의 조건이 충족될 때만 작동합니다. NOT 게이트는 신호를 반전시켜 장치에 반전의 묘미를 더해줍니다. 이것이 골드버그 노돈이 단순한 시뮬레이션이 아닌 '프로그래밍 아틀리에'인 이유입니다.</p>
         </div>
       </div>
     </section>
 
-    <section id="comment-section" class="content-section">
+    <!-- Trivia Saturation Section -->
+    <section id="trivia-section" class="content-section">
       <div class="section-container">
-        <h2 class="section-title">사용자 커뮤니티</h2>
+        <h2 class="section-title">골드버그 트리비아 (지식 창고)</h2>
+        <div class="trivia-grid">
+          <div class="trivia-card">
+            <h3>옥스퍼드 사전 등재</h3>
+            <p>'Rube Goldberg'라는 단어는 1931년 옥스퍼드 영어 사전에 "단순한 일을 해결하기 위해 불필요하게 정교한"이라는 뜻의 형용사로 정식 등재되었습니다.</p>
+          </div>
+          <div class="trivia-card">
+            <h3>일본의 피타고라 스위치</h3>
+            <p>일본의 유명한 방송 프로그램 '피타고라 스위치'는 루브 골드버그 장치를 현대적이고 정갈한 미학으로 재해석하여 전 세계적인 열풍을 일으켰습니다.</p>
+          </div>
+          <div class="trivia-card">
+            <h3>OK Go의 뮤직비디오</h3>
+            <p>미국의 밴드 OK Go는 'This Too Shall Pass' 뮤직비디오에서 초대형 골드버그 장치를 실제로 구현하여 4분 내내 멈추지 않는 경이로운 장면을 촬영했습니다.</p>
+          </div>
+          <div class="trivia-card">
+            <h3>엔지니어링의 시작</h3>
+            <p>NASA를 포함한 많은 엔지니어들은 어린 시절 골드버그 장치를 만들며 물리 법칙에 대한 본능적인 감각을 익혔다고 말합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="comment-section" class="content-section alternate-bg">
+      <div class="section-container">
+        <h2 class="section-title">사용자 피드백 & 댓글</h2>
         <div id="disqus_thread"></div>
         <script>
             (function() {
@@ -186,10 +207,11 @@
     </section>
 
     <footer class="main-footer">
-      <p>&copy; 2026 골드버그 노돈 | 세상에서 가장 위대한 우회로. All rights reserved.</p>
+      <p>&copy; 2026 GOLDBERG NODON | THE ART OF COMPLEXITY. All rights reserved.</p>
       <div class="footer-links">
-        <a href="#privacy">PRIVACY POLICY</a>
-        <a href="#terms">TERMS OF SERVICE</a>
+        <a href="#privacy">PRIVACY</a>
+        <a href="#terms">TERMS</a>
+        <a href="https://formspree.io/f/mlgzqpal">PARTNERSHIP</a>
       </div>
     </footer>
   </div>
