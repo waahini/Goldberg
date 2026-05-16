@@ -1,40 +1,35 @@
-# **Goldberg Nodon: Project Blueprint (V8 - Ultra-Compact Workspace)**
+# **Goldberg Nodon: Project Blueprint (V9 - Modern Luxe & Full Functionality)**
 
 ## **1. Overview**
-A professional "Goldberg Machine" builder with an **ultra-compact tool strip** design. This version maximizes the user's creative space by shrinking the sidebar to a minimal width while maintaining high-fidelity object visibility.
+A high-end, modern "Goldberg Machine" builder with a focus on "Pretty" aesthetics and user-centric customization. This version moves away from educational vibes to a sleek, app-like experience.
 
 ## **2. Detailed Outline & Current State**
 
 ### **Architecture & Tech Stack**
 - **Physics Engine**: Matter.js.
-- **UI Architecture**: **Ultra-Slim Sidebar (80px)** + **Full-Screen Canvas**.
-- **Color System**: "Golden Prime" (Professional Yellow & Carbon Black).
+- **UI Architecture**: Customizable Sidebar (1 or 2 columns) + Seamless Full-Page Scroll.
+- **Color System**: "Modern Luxe" (Soft Neons, Deep Blurs, and High-Gloss Accents).
 
-### **Workspace Optimization (공간 극대화)**
-- **Tool Strip Design**: Sidebar shrunk to 80px, showing only high-quality object icons.
-- **Maximized Canvas**: Over 90% of the screen is dedicated to the building area.
-- **Floating Labels**: Object names appear on hover to keep the UI clean.
+### **Pretty & Modern Design (예쁘고 현대적인 디자인)**
+- **Aesthetic Shift**: Removed school-like colors and fonts. Using a premium "Glassmorphism" look with vibrant gradients.
+- **Polished Buttons**: All buttons feature multi-layered shadows, smooth transitions, and glossy finishes.
+- **Dynamic Layout**: Sidebar can toggle between **1-column (Slim)** and **2-columns (Wide)** for better object browsing.
 
-### **High-Fidelity Visuals**
-- **Detailed Sidebar Icons**: Every tool in the sidebar is a mini-version of the actual high-quality character skin.
-- **Character Rendering Engine**: Robust SVG skinning that persists through collisions and placement.
-
-### **Functional Upgrades**
-- **Precision Placement**: Calibrated drag-and-drop coordinates for the expanded workspace.
-- **AdSense Readiness**: Maintains all legal sections and educational content for approval.
-- **Pure Korean UI**: Professional localized terminology throughout.
+### **Functional Upgrades (완벽한 작동)**
+- **Full-Page Integration**: The site scrolls naturally to reveal the History, Comments, and Partnership sections.
+- **Button Audit**: Fixed all previously broken buttons (Play, Reset, Clear, Settings, etc.).
+- **Responsive Workspace**: Canvas resizes perfectly when the sidebar layout changes.
 
 ## **3. Implementation Roadmap**
 
-### **Phase 1: Ultra-Slim Layout**
-- [ ] **CSS Grid Refactoring**: Change `editor-container` to `80px 1fr`.
-- [ ] **Icon-Centric Sidebar**: Remove large text labels, focus on high-quality SVG/CSS icons.
+### **Phase 1: Visual Style & Buttons**
+- [x] **CSS Overhaul**: Replace "Golden Prime" with "Modern Luxe" variables.
+- [x] **Button Redesign**: Add glossy effects and better interaction states.
 
-### **Phase 2: Icon Fidelity**
-- [ ] **Mini-Skin Rendering**: Ensure sidebar icons look exactly like the objects.
-- [ ] **Hover Tooltips**: Show object names (공, 경사로 등) when hovering over the slim sidebar.
+### **Phase 2: Layout & Toggles**
+- [x] **Sidebar Column Toggle**: Add a button to switch between 1 and 2 column grids.
+- [x] **Scrolling Fix**: Change height constraints to allow natural page scrolling.
 
-### **Phase 3: Final Polish**
-- [ ] **Bug Verification**: Confirm objects never disappear and placement is seamless.
-- [ ] **AdSense Audit**: Final check of policy compliance sections.
-
+### **Phase 3: Final Functionality Check**
+- [x] **Event Listener Audit**: Ensure `btn-play`, `btn-reset`, `btn-clear`, and `btn-settings` work perfectly.
+- [x] **Community Sections**: Verify Disqus and Formspree are visible on scroll.
