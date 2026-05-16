@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-4555364222256220">
   <meta name="description" content="골드버그 노돈 빌더 - 최첨단 물리 시뮬레이션과 논리 설계를 위한 하이엔드 아틀리에. 창의적인 물리 장치를 설계하고 실험해보세요.">
-  <title>골드버그 노돈 빌더 | HONEY GOLDEN</title>
+  <title>허니 골든 빌더 | 교육용 골드버그 장치</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -17,7 +17,7 @@
       <div class="header-inner">
         <div class="logo">
           <i data-lucide="layout-dashboard"></i>
-          <span data-lang="app_title">HONEY GOLDEN</span>
+          <span data-lang="app_title">허니 골든 빌더</span>
         </div>
         <nav class="main-nav">
           <a href="#app" class="nav-link active" data-lang="nav_editor">빌더</a>
@@ -27,10 +27,7 @@
           <a href="#physics-section" class="nav-link" data-lang="nav_physics">물리법칙</a>
         </nav>
         <div class="header-controls">
-          <button id="btn-lang-toggle" class="btn btn-secondary" title="Switch Language">
-            <span class="lang-text">EN</span>
-          </button>
-          <button id="btn-settings" class="btn btn-icon" title="System Settings">
+          <button id="btn-settings" class="btn btn-icon" title="설정">
             <i data-lucide="sliders"></i>
           </button>
         </div>
@@ -38,76 +35,76 @@
     </header>
 
     <main class="editor-container" id="editor-view">
-      <button id="sidebar-toggle" class="sidebar-toggle-btn" title="Toggle Sidebar">
+      <button id="sidebar-toggle" class="sidebar-toggle-btn" title="사이드바 토글">
         <i data-lucide="chevron-left"></i>
       </button>
       
       <aside id="sidebar" class="sticky-sidebar">
         <div class="sidebar-scroll">
           <div class="sidebar-section">
-            <h3 data-lang="cat_phys">Physical Dynamics</h3>
+            <h3 data-lang="cat_phys">물리 오브젝트</h3>
             <div class="nodon-palette">
               <div class="nodon-item" data-type="ball" draggable="true">
                 <div class="nodon-icon ball"></div>
-                <span data-lang="nodon_ball">Ball</span>
+                <span data-lang="nodon_ball">공</span>
               </div>
               <div class="nodon-item" data-type="ramp" draggable="true">
                 <div class="nodon-icon ramp"></div>
-                <span data-lang="nodon_ramp">Ramp</span>
+                <span data-lang="nodon_ramp">경사로</span>
               </div>
               <div class="nodon-item" data-type="box" draggable="true">
                 <div class="nodon-icon box"></div>
-                <span data-lang="nodon_box">Box</span>
+                <span data-lang="nodon_box">상자</span>
               </div>
               <div class="nodon-item" data-type="floor" draggable="true">
                 <div class="nodon-icon floor"></div>
-                <span data-lang="nodon_floor">Floor</span>
+                <span data-lang="nodon_floor">바닥</span>
               </div>
               <div class="nodon-item" data-type="seesaw" draggable="true">
                 <div class="nodon-icon seesaw"></div>
-                <span data-lang="nodon_seesaw">Seesaw</span>
+                <span data-lang="nodon_seesaw">시소</span>
               </div>
               <div class="nodon-item" data-type="pendulum" draggable="true">
                 <div class="nodon-icon pendulum"></div>
-                <span data-lang="nodon_pendulum">Pendulum</span>
+                <span data-lang="nodon_pendulum">진공추</span>
               </div>
               <div class="nodon-item" data-type="domino" draggable="true">
                 <div class="nodon-icon domino"></div>
-                <span data-lang="nodon_domino">Domino</span>
+                <span data-lang="nodon_domino">도미노</span>
               </div>
               <div class="nodon-item" data-type="hammer" draggable="true">
                 <div class="nodon-icon hammer"></div>
-                <span data-lang="nodon_hammer">Hammer</span>
+                <span data-lang="nodon_hammer">망치</span>
               </div>
             </div>
           </div>
 
           <div class="sidebar-section">
-            <h3 data-lang="cat_logic">Logic Circuits</h3>
+            <h3 data-lang="cat_logic">논리 프로그래밍</h3>
             <div class="nodon-palette">
               <div class="nodon-item" data-type="sensor" draggable="true">
                 <div class="nodon-icon sensor"></div>
-                <span data-lang="nodon_sensor">Sensor</span>
+                <span data-lang="nodon_sensor">센서</span>
               </div>
               <div class="nodon-item" data-type="accelerator" draggable="true">
                 <div class="nodon-icon accelerator"></div>
-                <span data-lang="nodon_accelerator">Accelerator</span>
+                <span data-lang="nodon_accelerator">가속기</span>
               </div>
               <div class="nodon-item" data-type="gate-and" draggable="true">
                 <div class="nodon-icon gate-and"></div>
-                <span data-lang="nodon_gate_and">AND Gate</span>
+                <span data-lang="nodon_gate_and">AND 게이트</span>
               </div>
               <div class="nodon-item" data-type="gate-not" draggable="true">
                 <div class="nodon-icon gate-not"></div>
-                <span data-lang="nodon_gate_not">NOT Gate</span>
+                <span data-lang="nodon_gate_not">NOT 게이트</span>
               </div>
               <div class="nodon-item" data-type="timer" draggable="true">
                 <div class="nodon-icon timer"></div>
-                <span data-lang="nodon_timer">Timer</span>
+                <span data-lang="nodon_timer">타이머</span>
               </div>
               <div class="nodon-item" data-type="counter" draggable="true">
                 <div class="nodon-icon counter"></div>
-                <span data-lang="nodon_counter">Counter</span>
+                <span data-lang="nodon_counter">카운터</span>
               </div>
             </div>
           </div>
@@ -119,36 +116,36 @@
         <svg id="wiring-layer"></svg>
         
         <div class="editor-toolbar">
-          <button id="btn-play" class="btn-primary" title="Ignition">
+          <button id="btn-play" class="btn-primary" title="실행">
             <i data-lucide="play"></i>
           </button>
-          <button id="btn-reset" class="btn" title="System Reset">
+          <button id="btn-reset" class="btn" title="초기화">
             <i data-lucide="rotate-ccw"></i>
           </button>
-          <button id="btn-clear" class="btn" title="Purge Workspace">
+          <button id="btn-clear" class="btn" title="전체 삭제">
             <i data-lucide="trash-2"></i>
           </button>
-          <button id="btn-manual" class="btn btn-accent" title="Documentation">
+          <button id="btn-manual" class="btn btn-accent" title="설명서">
             <i data-lucide="book-open"></i>
           </button>
         </div>
 
         <div id="settings-panel" class="hidden glass-panel">
           <div class="panel-header">
-            <span id="node-name">Nodon</span>
+            <span id="node-name">오브젝트</span>
             <button id="node-delete"><i data-lucide="x"></i></button>
           </div>
           <div class="panel-body">
             <div class="prop-group" id="prop-restitution">
-              <label>Elasticity</label>
+              <label>탄성</label>
               <input type="range" min="0" max="1" step="0.1" id="input-restitution">
             </div>
             <div class="prop-group" id="prop-delay">
-              <label>Temporal Lag (s)</label>
+              <label>지연 시간 (초)</label>
               <input type="number" min="0" max="10" step="0.5" id="input-delay">
             </div>
             <div class="prop-group" id="prop-power">
-              <label>Impulse Power</label>
+              <label>밀어내는 힘</label>
               <input type="range" min="-0.2" max="0.2" step="0.05" id="input-power">
             </div>
           </div>
@@ -215,14 +212,14 @@
     </section>
 
     <footer class="main-footer">
-      <p>&copy; 2026 HONEY GOLDEN | THE WORLD-CLASS GOLDBERG BUILDER. All rights reserved.</p>
+      <p>&copy; 2026 허니 골든 | 세계 최고의 골드버그 빌더. All rights reserved.</p>
     </footer>
 
     <!-- Success Breach Toast -->
     <div id="success-msg" class="success-toast">
       <div class="toast-body">
-        <h4 data-lang="success_title">SYSTEM BREACH: SUCCESS</h4>
-        <p data-lang="success_msg">Your machine has reached its destiny.</p>
+        <h4 data-lang="success_title">미션 성공!</h4>
+        <p data-lang="success_msg">장치가 완벽하게 작동했습니다.</p>
       </div>
     </div>
   </div>

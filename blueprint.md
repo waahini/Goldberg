@@ -1,42 +1,36 @@
-# **Goldberg Machine Builder: Project Blueprint (V4 - Educational Rainbow Style)**
+# **Goldberg Machine Builder: Project Blueprint (V5 - Detailed Educational Style)**
 
 ## **1. Overview**
-A child-friendly, educational "Goldberg Machine" builder. This version transitions from the "Honey Golden" professional look to a vibrant, rounded, and playful "Educational Rainbow" design. It emphasizes ease of use, tactile feedback, and bilingual support (Korean/English).
+A child-friendly, educational "Goldberg Machine" builder with high-fidelity visual design. This version focuses on "delicate" object aesthetics and a "preview-before-placement" UX to make building more intuitive for young users.
 
 ## **2. Detailed Outline & Current State**
 
 ### **Architecture & Tech Stack**
 - **Physics Engine**: Matter.js.
-- **UI Architecture**: Integrated Sidebar + Canvas.
-- **Color System**: Vibrant primary colors (Yellow, Blue, Green, Pink) with soft gradients.
-- **Typography**: Rounded, friendly fonts (Pretendard with rounded settings or similar).
-- **Internationalization**: Dual-language support (KO/EN) with a toggle.
+- **UI Architecture**: Integrated Sidebar + Canvas with Ghost Preview.
+- **Color System**: Soft Rainbow Palette with gradients and subtle textures.
+- **Typography**: Rounded Korean fonts (Pretendard).
 
-### **Child-Friendly Design (A동 교육 느낌)**
-- **Ultra-Rounded**: All buttons, cards, and panels have large border-radii (20px+).
-- **Playful Palette**: Bright, energetic colors that appeal to children.
-- **Tactile Feedback**: Larger hit areas, bouncy hover effects, and clear visual cues.
-- **Side Workbench**: A functional sidebar where users can drag Nodons directly onto the canvas.
+### **Detailed Design (섬세한 디자인)**
+- **Nodon Skins**: Each physical object (Nodon) has a unique, detailed skin beyond simple shapes. This includes gradients, multi-layered SVG details, and expressive "eyes/mouth" animations.
+- **Visual Effects**: Soft glows, subtle particle effects on placement, and bouncy UI transitions.
 
 ### **Functional Upgrades**
-- **Language Switcher**: A prominent toggle to switch between Korean and English.
-- **Drag & Drop Fix**: Implementation of the missing `initDragAndDrop` logic to enable node placement.
-- **Visual Polish**: Animated transitions and "soft" shadows for a premium toy-like feel.
+- **Placement Preview (설치 전 미리보기)**: When dragging a Nodon from the sidebar, a semi-transparent "ghost" version follows the cursor on the canvas to show exactly where it will land.
+- **Pure Korean UI**: All text is localized to Korean for a seamless local experience.
 
 ## **3. Implementation Roadmap**
 
-### **Phase 1: Logic & Language**
-- [x] **Language Toggle**: Add UI for switching languages.
-- [x] **Drag & Drop Implementation**: Fix the missing `initDragAndDrop` method in `main.js`.
-- [x] **Translation Completion**: Ensure all UI strings are localized.
+### **Phase 1: Visual Enhancement**
+- [ ] **Nodon Skin Refinement**: Update `drawNodonSkins` in `main.js` to add more detail (shadows, highlights, unique patterns for each type).
+- [ ] **UI Polish**: Ensure all border-radii are consistent and colors are vibrant yet harmonious.
 
-### **Phase 2: Visual Overhaul (Rounded & Playful)**
-- [ ] **Global Rounding**: Apply `border-radius: 2rem` to all major components.
-- [ ] **Color Update**: Transition from pure yellow to a multi-colored educational palette.
-- [ ] **Soft UI**: Use softer shadows and subtle textures for a "toy" feel.
+### **Phase 2: Ghost Preview Logic**
+- [ ] **Drag Events**: Modify `initDragAndDrop` to track mouse position and render a preview object.
+- [ ] **Canvas Rendering**: Use the `wiring-layer` SVG or a separate preview layer to show the "ghost" Nodon.
 
 ### **Phase 3: Verification**
-- [ ] **Accessibility**: Ensure the UI is easy for children to navigate.
-- [ ] **Functionality**: Verify nodes can be dragged from the sidebar and placed accurately.
-- [ ] **Bilingual Check**: Confirm all text switches correctly between KO and EN.
+- [ ] **Visual Audit**: Do the objects look "detailed"?
+- [ ] **UX Check**: Is the preview accurate and helpful?
+- [ ] **Language Check**: Is every single piece of text in Korean?
 

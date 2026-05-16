@@ -1,6 +1,6 @@
 const I18N = {
   ko: {
-    app_title: "HONEY GOLDEN",
+    app_title: "허니 골든 빌더",
     btn_play: "실행하기", btn_reset: "초기화", btn_clear: "전체 삭제", btn_manual: "설명서",
     cat_phys: "물리 오브젝트", cat_logic: "논리 프로그래밍",
     nodon_ball: "공", nodon_ramp: "경사로", nodon_box: "상자", nodon_floor: "바닥",
@@ -24,32 +24,6 @@ const I18N = {
     phys_logic_desc: "센서와 게이트를 통한 신호 제어는 현대 컴퓨터 공학의 기초인 부울 논리(Boolean Logic)를 따릅니다.",
     nav_editor: "빌더", nav_history: "기록", nav_guide: "마스터클래스", nav_encyclo: "백과사전", nav_physics: "물리법칙",
     success_title: "미션 성공!", success_msg: "장치가 완벽하게 작동했습니다."
-  },
-  en: {
-    app_title: "HONEY GOLDEN",
-    btn_play: "RUN", btn_reset: "RESET", btn_clear: "CLEAR", btn_manual: "DOCS",
-    cat_phys: "PHYSICAL OBJECTS", cat_logic: "LOGIC PROGRAMMING",
-    nodon_ball: "BALL", nodon_ramp: "RAMP", nodon_box: "BOX", nodon_floor: "FLOOR",
-    nodon_seesaw: "SEESAW", nodon_pendulum: "PENDULUM", nodon_domino: "DOMINO", nodon_hammer: "HAMMER",
-    nodon_sensor: "SENSOR", nodon_accelerator: "ACCELERATOR", nodon_gate_and: "AND GATE", nodon_gate_not: "NOT GATE",
-    nodon_timer: "TIMER", nodon_counter: "COUNTER",
-    history_title: "HISTORY OF RUBE GOLDBERG",
-    history_p1: "Rube Goldberg was an American cartoonist and inventor known for his complex machines designed to perform simple tasks.",
-    history_p2: "HONEY GOLDEN reimagines this legacy as a digital atelier where anyone can become an engineer and experiment with physics.",
-    guide_title: "MASTERCLASS: TIPS FOR PERFECT MACHINES",
-    guide_step1_title: "ENERGY ARCHITECTURE",
-    guide_step1_desc_long: "The heart of every machine is potential energy. Place starting nodes at the highest point to maximize gravity.",
-    guide_step2_title: "NEURAL LOGIC CIRCUITS",
-    guide_step2_desc_long: "Go beyond simple collisions using logic nodes. AND gates allow for more intelligent and complex designs.",
-    guide_step3_title: "JOY OF EXPERIMENTATION",
-    guide_step3_desc_long: "Failure is just data. Analyze where the ball stops and tune timer delays by 0.1s increments.",
-    physics_title: "PHYSICS: THE SCIENCE BEHIND MACHINES",
-    phys_momentum: "CONSERVATION OF MOMENTUM",
-    phys_momentum_desc: "Momentum, defined as mass times velocity, is transferred to other objects upon collision.",
-    phys_logic: "BOOLEAN LOGIC & CONTROL",
-    phys_logic_desc: "Signal control via sensors and gates follows Boolean logic, the foundation of modern computer science.",
-    nav_editor: "BUILDER", nav_history: "ARCHIVES", nav_guide: "GUIDE", nav_encyclo: "LIBRARY", nav_physics: "SCIENCE",
-    success_title: "MISSION SUCCESS!", success_msg: "The contraption worked perfectly."
   }
 };
 
@@ -68,6 +42,7 @@ class GoldbergApp {
     this.wireStartPort = null;
     this.goalReached = false;
     this.isSidebarHidden = false;
+    this.dragPreview = null;
 
     this.initCanvas();
     this.initControls();
@@ -137,12 +112,24 @@ class GoldbergApp {
     items.forEach(item => {
       item.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('nodon-type', item.dataset.type);
+        this.dragPreview = { type: item.dataset.type, x: 0, y: 0 };
         item.classList.add('dragging');
       });
-      item.addEventListener('dragend', () => item.classList.remove('dragging'));
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        this.dragPreview = null;
+      });
     });
 
-    container.addEventListener('dragover', (e) => e.preventDefault());
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const rect = container.getBoundingClientRect();
+      if (this.dragPreview) {
+        this.dragPreview.x = e.clientX - rect.left;
+        this.dragPreview.y = e.clientY - rect.top;
+      }
+    });
+    
     container.addEventListener('drop', (e) => {
       e.preventDefault();
       const type = e.dataTransfer.getData('nodon-type');
@@ -150,20 +137,11 @@ class GoldbergApp {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       if (type) this.addNodon(type, x, y);
+      this.dragPreview = null;
     });
   }
 
   initControls() {
-    const langToggle = document.getElementById('btn-lang-toggle');
-    if (langToggle) {
-      langToggle.onclick = () => {
-        this.lang = this.lang === 'ko' ? 'en' : 'ko';
-        langToggle.querySelector('.lang-text').textContent = this.lang === 'ko' ? 'EN' : 'KO';
-        this.applyLanguage();
-        this.updateSettingsPanel();
-      };
-    }
-
     document.getElementById('btn-play').onclick = () => {
       this.isPlaying = !this.isPlaying;
       if (this.isPlaying) Runner.run(this.runner, this.engine);
@@ -180,6 +158,12 @@ class GoldbergApp {
       delay: document.getElementById('input-delay'),
       power: document.getElementById('input-power')
     };
+
+    const labels = document.querySelectorAll('.prop-group label');
+    if (labels[0]) labels[0].textContent = "탄성 (튕기는 정도)";
+    if (labels[1]) labels[1].textContent = "지연 시간 (초)";
+    if (labels[2]) labels[2].textContent = "밀어내는 힘";
+
     this.inputs.restitution.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.body.restitution = parseFloat(e.target.value); };
     this.inputs.delay.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.delay = parseFloat(e.target.value) * 1000; };
     this.inputs.power.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.power = parseFloat(e.target.value); };
@@ -189,38 +173,38 @@ class GoldbergApp {
     const id = Date.now();
     const color = this.getNodonColor(type);
     let body, constraint;
-    const common = { label: id.toString(), render: { fillStyle: color, strokeStyle: '#fff', lineWidth: 2 } };
+    const common = { label: id.toString(), render: { fillStyle: color, strokeStyle: '#fff', lineWidth: 4 } };
     
     switch(type) {
-      case 'ball': body = Bodies.circle(x, y, 20, { ...common, friction: 0.01, restitution: 0.75 }); break;
-      case 'ramp': body = Bodies.rectangle(x, y, 220, 20, { ...common, angle: Math.PI / 10, isStatic: true }); break;
-      case 'box': body = Bodies.rectangle(x, y, 64, 64, common); break;
-      case 'floor': body = Bodies.rectangle(x, y, 440, 24, { ...common, isStatic: true }); break;
+      case 'ball': body = Bodies.circle(x, y, 25, { ...common, friction: 0.01, restitution: 0.8 }); break;
+      case 'ramp': body = Bodies.rectangle(x, y, 240, 24, { ...common, angle: Math.PI / 10, isStatic: true }); break;
+      case 'box': body = Bodies.rectangle(x, y, 70, 70, { ...common, chamfer: { radius: 10 } }); break;
+      case 'floor': body = Bodies.rectangle(x, y, 500, 30, { ...common, isStatic: true, chamfer: { radius: 5 } }); break;
       case 'seesaw': 
-        body = Bodies.rectangle(x, y, 240, 12, common);
+        body = Bodies.rectangle(x, y, 260, 15, { ...common, chamfer: { radius: 5 } });
         constraint = Constraint.create({ pointA: { x, y }, bodyB: body, stiffness: 1, length: 0 });
         break;
       case 'pendulum':
-        body = Bodies.circle(x, y + 140, 28, { ...common, frictionAir: 0, restitution: 1 });
-        constraint = Constraint.create({ pointA: { x, y }, bodyB: body, stiffness: 0.9, length: 140 });
+        body = Bodies.circle(x, y + 150, 32, { ...common, frictionAir: 0, restitution: 1 });
+        constraint = Constraint.create({ pointA: { x, y }, bodyB: body, stiffness: 0.9, length: 150 });
         break;
-      case 'domino': body = Bodies.rectangle(x, y, 14, 56, { ...common, friction: 0.5, density: 0.01 }); break;
+      case 'domino': body = Bodies.rectangle(x, y, 16, 60, { ...common, friction: 0.5, density: 0.02, chamfer: { radius: 2 } }); break;
       case 'hammer':
-        body = Bodies.rectangle(x + 70, y, 140, 32, { ...common, density: 0.08 });
-        constraint = Constraint.create({ pointA: { x, y }, bodyB: body, pointB: { x: -70, y: 0 }, stiffness: 1, length: 0 });
+        body = Bodies.rectangle(x + 80, y, 160, 35, { ...common, density: 0.1, chamfer: { radius: 5 } });
+        constraint = Constraint.create({ pointA: { x, y }, bodyB: body, pointB: { x: -80, y: 0 }, stiffness: 1, length: 0 });
         break;
-      case 'sensor': body = Bodies.rectangle(x, y, 80, 80, { ...common, isStatic: true, isSensor: true, render: { ...common.render, fillStyle: 'transparent', strokeStyle: color, dash: [10, 10] } }); break;
-      case 'accelerator': body = Bodies.circle(x, y, 40, { ...common, isStatic: true, isSensor: true }); break;
-      case 'gate-and': body = Bodies.rectangle(x, y, 100, 60, { ...common, isStatic: true, isSensor: true }); break;
-      case 'gate-not': body = Bodies.circle(x, y, 40, { ...common, isStatic: true, isSensor: true }); break;
-      case 'timer': body = Bodies.circle(x, y, 40, { ...common, isStatic: true, isSensor: true }); break;
-      case 'counter': body = Bodies.rectangle(x, y, 80, 80, { ...common, isStatic: true }); break;
+      case 'sensor': body = Bodies.rectangle(x, y, 100, 100, { ...common, isStatic: true, isSensor: true, render: { ...common.render, fillStyle: 'transparent', strokeStyle: color, dash: [10, 10], lineWidth: 4 } }); break;
+      case 'accelerator': body = Bodies.circle(x, y, 45, { ...common, isStatic: true, isSensor: true }); break;
+      case 'gate-and': body = Bodies.rectangle(x, y, 110, 70, { ...common, isStatic: true, isSensor: true, chamfer: { radius: 10 } }); break;
+      case 'gate-not': body = Bodies.circle(x, y, 45, { ...common, isStatic: true, isSensor: true }); break;
+      case 'timer': body = Bodies.circle(x, y, 45, { ...common, isStatic: true, isSensor: true }); break;
+      case 'counter': body = Bodies.rectangle(x, y, 90, 90, { ...common, isStatic: true, chamfer: { radius: 10 } }); break;
     }
 
     if (body) {
       Composite.add(this.world, body);
       if (constraint) Composite.add(this.world, constraint);
-      const nodon = { id, type, body, constraint, initialPos: { x: body.position.x, y: body.position.y }, initialAngle: body.angle, power: 0.12, delay: 1000, isActive: false, signalInputs: new Set() };
+      const nodon = { id, type, body, constraint, initialPos: { x: body.position.x, y: body.position.y }, initialAngle: body.angle, power: 0.15, delay: 1000, isActive: false };
       this.nodons.push(nodon);
       this.selectedNodon = nodon;
       if (!this.isPlaying) Engine.update(this.engine, 16);
@@ -238,14 +222,6 @@ class GoldbergApp {
       const clickedBody = Matter.Query.point(Composite.allBodies(this.world), mousePos)[0];
       this.selectedNodon = clickedBody ? this.nodons.find(n => n.body === clickedBody) : null;
     });
-    window.addEventListener('keydown', (e) => {
-      if (!this.selectedNodon) return;
-      if (e.key.toLowerCase() === 'r') {
-        Matter.Body.setAngle(this.selectedNodon.body, this.selectedNodon.body.angle + Math.PI / 12);
-        this.selectedNodon.initialAngle = this.selectedNodon.body.angle;
-      }
-      if (e.key === 'Delete' || e.key === 'Backspace') this.removeNodon(this.selectedNodon);
-    });
   }
 
   handleCollisions(bodyA, bodyB) {
@@ -260,11 +236,9 @@ class GoldbergApp {
       source.isActive = true; setTimeout(() => source.isActive = false, 300);
       this.connections.filter(c => c.fromId === source.id).forEach(c => {
         const target = this.nodons.find(n => n.id === c.toId);
-        if (target) {
-          if (target.type === 'accelerator') {
-            Matter.Body.applyForce(targetBody, targetBody.position, { x: Math.cos(target.body.angle) * 1.5, y: Math.sin(target.body.angle) * 1.5 });
-            target.isActive = true; setTimeout(() => target.isActive = false, 300);
-          }
+        if (target && target.type === 'accelerator') {
+          Matter.Body.applyForce(targetBody, targetBody.position, { x: Math.cos(target.body.angle) * 2, y: Math.sin(target.body.angle) * 2 });
+          target.isActive = true; setTimeout(() => target.isActive = false, 300);
         }
       });
     };
@@ -278,22 +252,62 @@ class GoldbergApp {
       svg.innerHTML = '';
       this.drawWires();
       this.drawPorts();
+      this.drawDragPreview();
       this.drawNodonSkins();
     }
     requestAnimationFrame(() => this.animate());
   }
 
+  drawDragPreview() {
+    if (!this.dragPreview) return;
+    const { type, x, y } = this.dragPreview;
+    const svg = document.getElementById('wiring-layer');
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('transform', `translate(${x},${y})`);
+    g.setAttribute('opacity', '0.5');
+    
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('r', '35');
+    circle.setAttribute('fill', this.getNodonColor(type));
+    circle.setAttribute('stroke', '#fff');
+    circle.setAttribute('stroke-width', '4');
+    circle.setAttribute('stroke-dasharray', '8,8');
+    g.appendChild(circle);
+    
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('y', '60');
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', '#333');
+    text.setAttribute('font-weight', '900');
+    text.setAttribute('font-size', '14');
+    text.textContent = "여기에 놓으세요!";
+    g.appendChild(text);
+    
+    svg.appendChild(g);
+  }
+
   drawNodonSkins() {
-    const time = Date.now();
     this.nodons.forEach(nodon => {
       const { x, y } = nodon.body.position;
       const angle = nodon.body.angle;
       const svg = document.getElementById('wiring-layer');
       if (!svg) return;
+      
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('transform', `translate(${x},${y}) rotate(${angle * 180 / Math.PI})`);
+      
+      const color = this.getNodonColor(nodon.type);
       const isLogic = ['sensor', 'timer', 'accelerator', 'counter', 'gate-and', 'gate-not'].includes(nodon.type);
-      this.addFaceToGroup(g, isLogic ? 8 : 6, isLogic ? 14 : 10, time, nodon.isActive);
+      
+      // Detailed Highlight
+      const shine = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      shine.setAttribute('cx', '-12'); shine.setAttribute('cy', '-18'); shine.setAttribute('rx', '10'); shine.setAttribute('ry', '5');
+      shine.setAttribute('fill', 'rgba(255,255,255,0.5)'); shine.setAttribute('transform', 'rotate(-35)');
+      
+      // Face
+      this.addFaceToGroup(g, isLogic ? 10 : 8, isLogic ? 18 : 14, Date.now(), nodon.isActive);
+      g.appendChild(shine);
+      
       svg.appendChild(g);
     });
   }
@@ -301,21 +315,27 @@ class GoldbergApp {
   addFaceToGroup(g, size, offset, time, active) {
     [-offset, offset].forEach(ox => {
       const eye = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      eye.setAttribute('cx', ox); eye.setAttribute('cy', -5); eye.setAttribute('r', size);
-      eye.setAttribute('fill', active ? '#fff' : '#111'); g.appendChild(eye);
+      eye.setAttribute('cx', ox); eye.setAttribute('cy', -8); eye.setAttribute('r', size);
+      eye.setAttribute('fill', active ? '#fff' : '#222'); g.appendChild(eye);
+      if (!active) {
+        const iris = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        iris.setAttribute('cx', ox + Math.sin(time/500)*2); iris.setAttribute('cy', -8); iris.setAttribute('r', size/2);
+        iris.setAttribute('fill', '#fff'); g.appendChild(iris);
+      }
     });
     const mouth = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    mouth.setAttribute('d', `M ${-offset} 15 Q 0 ${15 + (active ? 15 : 5)} ${offset} 15`);
-    mouth.setAttribute('stroke', active ? '#fff' : '#111'); mouth.setAttribute('fill', 'none'); mouth.setAttribute('stroke-width', '4');
+    mouth.setAttribute('d', `M ${-offset} 15 Q 0 ${15 + (active ? 20 : 8)} ${offset} 15`);
+    mouth.setAttribute('stroke', active ? '#fff' : '#222'); mouth.setAttribute('fill', active ? '#ff6b6b' : 'none'); mouth.setAttribute('stroke-width', '5');
+    mouth.setAttribute('stroke-linecap', 'round');
     g.appendChild(mouth);
   }
 
   createPort(nodon, x, y, type) {
     const svg = document.getElementById('wiring-layer');
     const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', '12');
-    c.style.fill = type === 'output' ? 'oklch(0.6 0.3 25)' : 'oklch(0.8 0.2 80)';
-    c.style.stroke = '#fff'; c.style.strokeWidth = '3'; c.style.pointerEvents = 'auto'; c.style.cursor = 'crosshair';
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', '14');
+    c.style.fill = type === 'output' ? 'var(--accent)' : 'var(--secondary)';
+    c.style.stroke = '#fff'; c.style.strokeWidth = '4'; c.style.pointerEvents = 'auto'; c.style.cursor = 'crosshair';
     c.addEventListener('mousedown', (e) => {
       e.stopPropagation();
       if (type === 'output') { this.isWiring = true; this.wireStartPort = { nodon, x, y }; }
@@ -328,8 +348,8 @@ class GoldbergApp {
     if (this.isPlaying) return;
     this.nodons.forEach(n => {
       if (['sensor', 'timer', 'counter', 'accelerator', 'gate-and', 'gate-not'].includes(n.type)) {
-        this.createPort(n, n.body.position.x + 50, n.body.position.y, 'output');
-        this.createPort(n, n.body.position.x - 50, n.body.position.y, 'input');
+        this.createPort(n, n.body.position.x + 60, n.body.position.y, 'output');
+        this.createPort(n, n.body.position.x - 60, n.body.position.y, 'input');
       }
     });
   }
@@ -340,9 +360,10 @@ class GoldbergApp {
       const f = this.nodons.find(n => n.id === conn.fromId), t = this.nodons.find(n => n.id === conn.toId);
       if (f && t) {
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        const p1 = { x: f.body.position.x + 50, y: f.body.position.y }, p2 = { x: t.body.position.x - 50, y: t.body.position.y };
-        path.setAttribute('d', `M ${p1.x} ${p1.y} C ${p1.x+60} ${p1.y} ${p2.x-60} ${p2.y} ${p2.x} ${p2.y}`);
-        path.setAttribute('stroke', 'oklch(0.6 0.3 25)'); path.setAttribute('fill', 'none'); path.setAttribute('stroke-width', '6');
+        const p1 = { x: f.body.position.x + 60, y: f.body.position.y }, p2 = { x: t.body.position.x - 60, y: t.body.position.y };
+        path.setAttribute('d', `M ${p1.x} ${p1.y} C ${p1.x+80} ${p1.y} ${p2.x-80} ${p2.y} ${p2.x} ${p2.y}`);
+        path.setAttribute('stroke', 'var(--accent)'); path.setAttribute('fill', 'none'); path.setAttribute('stroke-width', '8');
+        path.setAttribute('stroke-linecap', 'round');
         svg.appendChild(path);
       }
     });
@@ -350,19 +371,19 @@ class GoldbergApp {
       const p1 = this.wireStartPort, p2 = this.mouseConstraint.mouse.position;
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('d', `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`);
-      path.setAttribute('stroke', 'oklch(0.6 0.3 25)'); path.setAttribute('stroke-dasharray', '8,8'); path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', 'var(--accent)'); path.setAttribute('stroke-dasharray', '10,10'); path.setAttribute('fill', 'none'); path.setAttribute('stroke-width', '4');
       svg.appendChild(path);
     }
   }
 
   getNodonColor(type) {
     const palette = { 
-      ball: 'oklch(0.8 0.25 85)', ramp: 'oklch(0.3 0.05 85)', box: 'oklch(0.65 0.3 40)', 
-      floor: 'oklch(0.5 0.03 85)', seesaw: 'oklch(0.8 0.25 85)', pendulum: 'oklch(0.2 0.02 85)', 
-      domino: 'oklch(0.65 0.3 40)', hammer: 'oklch(0.2 0.02 85)', sensor: 'oklch(0.8 0.25 85 / 0.2)',
-      accelerator: 'oklch(0.7 0.25 60)', 'gate-and': 'oklch(0.6 0.2 140)', 'gate-not': 'oklch(0.6 0.2 20)'
+      ball: 'var(--primary)', ramp: 'var(--text)', box: 'var(--accent)', 
+      floor: 'var(--text)', seesaw: 'var(--primary)', pendulum: 'var(--text)', 
+      domino: 'var(--accent)', hammer: 'var(--text)', sensor: 'rgba(255,255,255,0.3)',
+      accelerator: 'var(--success)', 'gate-and': 'var(--secondary)', 'gate-not': 'var(--accent)'
     };
-    return palette[type] || 'oklch(0.8 0.25 85)';
+    return palette[type] || 'var(--primary)';
   }
 
   applyLanguage() {
@@ -377,7 +398,7 @@ class GoldbergApp {
     const panel = document.getElementById('settings-panel');
     if (!this.selectedNodon) { panel.classList.add('hidden'); return; }
     panel.classList.remove('hidden');
-    document.getElementById('node-name').textContent = I18N[this.lang][`nodon_${this.selectedNodon.type.replace('-', '_')}`] || "NODON";
+    document.getElementById('node-name').textContent = I18N[this.lang][`nodon_${this.selectedNodon.type.replace('-', '_')}`] || "오브젝트";
     const type = this.selectedNodon.type;
     document.getElementById('prop-restitution').style.display = ['ball', 'box', 'seesaw', 'pendulum', 'domino'].includes(type) ? 'block' : 'none';
     document.getElementById('prop-delay').style.display = (type === 'timer') ? 'block' : 'none';
