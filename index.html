@@ -22,7 +22,8 @@
         <nav class="main-nav">
           <a href="#app" class="nav-link active" data-lang="nav_editor">빌더</a>
           <a href="#history-section" class="nav-link" data-lang="nav_history">기록</a>
-          <a href="#guide-section" class="nav-link" data-lang="nav_guide">마스터클래스</a>
+          <a href="#partnership-section" class="nav-link">제휴문의</a>
+          <a href="#comment-section" class="nav-link">댓글</a>
           <a href="#physics-section" class="nav-link" data-lang="nav_physics">물리법칙</a>
         </nav>
         <div class="header-controls">
@@ -159,6 +160,57 @@
           <p data-lang="history_p1">루브 골드버그(Rube Goldberg)는 미국의 만화가이자 발명가로, 아주 간단한 일을 처리하기 위해 수십 가지의 복잡한 과정을 거치는 기계 장치를 고안한 것으로 유명합니다.</p>
           <p data-lang="history_p2">골드버그 노돈 빌더는 이러한 역사적 유산을 현대적인 디지털 아틀리에로 재해석하여, 누구나 엔지니어가 되어 자신만의 물리 법칙을 설계하고 실험할 수 있는 공간을 제공합니다.</p>
         </div>
+      </div>
+    </section>
+
+    <!-- Partnership Inquiry Section -->
+    <section id="partnership-section" class="content-section alternate-bg">
+      <div class="section-container">
+        <h2 class="section-title">제휴문의</h2>
+        <div class="glass-panel partnership-form-container">
+          <p class="form-desc">골드버그 노돈과의 협업 또는 제휴를 원하시나요? 아래 양식을 작성해 주세요.</p>
+          <form action="https://formspree.io/f/mlgzqpal" method="POST" class="partnership-form">
+            <div class="form-group">
+              <label>성함 / 기업명</label>
+              <input type="text" name="name" required placeholder="예: 홍길동 (주식회사 골드버그)">
+            </div>
+            <div class="form-group">
+              <label>이메일 주소</label>
+              <input type="email" name="email" required placeholder="contact@example.com">
+            </div>
+            <div class="form-group">
+              <label>문의 내용</label>
+              <textarea name="message" required placeholder="제휴하고 싶은 내용을 자유롭게 적어주세요."></textarea>
+            </div>
+            <button type="submit" class="btn-primary form-submit-btn">문의하기</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comment Section -->
+    <section id="comment-section" class="content-section">
+      <div class="section-container">
+        <h2 class="section-title">자유 게시판</h2>
+        <div id="disqus_thread"></div>
+        <script>
+            /**
+            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+            /*
+            var disqus_config = function () {
+            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://goldberg.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       </div>
     </section>
 

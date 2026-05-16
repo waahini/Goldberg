@@ -1,37 +1,36 @@
-# **Goldberg Nodon: Project Blueprint (V6 - Unique & Vibrant Style)**
+# **Goldberg Nodon: Project Blueprint (V7 - Premium Professional Style)**
 
 ## **1. Overview**
-A playful and high-quality "Goldberg Machine" builder. This version focuses on individual character for each "Nodon" (object), a cohesive "Hyper-Yellow" design system, and a bug-free building experience.
+A high-end, professionally designed "Goldberg Machine" builder. This version moves away from amateurish shapes to **illustration-grade character skins** and a polished, premium UI.
 
 ## **2. Detailed Outline & Current State**
 
 ### **Architecture & Tech Stack**
-- **Physics Engine**: Matter.js.
-- **UI Architecture**: Integrated Sidebar + Canvas with robust character rendering.
-- **Color System**: Hyper-Yellow Palette (Vibrant yellows, ambers, and warm blacks).
-- **Naming**: Unified branding as "골드버그 노돈" (Goldberg Nodon).
+- **Physics Engine**: Matter.js (optimized synchronization).
+- **UI Architecture**: Premium Sidebar + Canvas with high-fidelity SVG skin engine.
+- **Color System**: "Golden Prime" (Professional high-contrast yellow, deep carbon black, and vibrant secondary accents).
 
-### **Unique Character Design (개성 있는 디자인)**
-- **Distinct Personas**: Each Nodon type has a different facial expression and visual style (e.g., the ball is energetic, the ramp is cool, the sensor is alert).
-- **High-Fidelity Icons**: Sidebar buttons feature detailed representations of the actual objects instead of generic boxes.
-- **Visual Stability**: Fixed rendering issues where objects would disappear upon placement.
+### **High-Fidelity Character Design (전문적인 캐릭터 디자인)**
+- **Illustration-Grade Skins**: Each Nodon is a detailed SVG illustration with internal shadows, highlights, and unique expressive features.
+- **Dynamic Faces**: Eyes with pupils that follow movement, expressive eyebrows, and varied mouth shapes.
+- **Sidebar Overhaul**: Palette items are styled as high-quality cards with glossy, semi-3D representations of the objects.
 
 ### **Functional Upgrades**
-- **Hyper-Yellow UI**: A more intense and cheerful yellow-centric theme.
-- **Enhanced Drag-Preview**: Clearer ghost preview during placement.
-- **Character Rendering Engine**: A dedicated JS module for drawing detailed, unique SVG skins for each physics body.
+- **Zero-Glitch Rendering**: Fundamental fix for the "disappearing object" bug by re-architecting the SVG-to-Physics sync.
+- **Smooth Interaction**: Bouncy animations and tactile feedback that feels premium.
+- **Pure Korean Localized Experience**: Professional terminology and clear typography.
 
 ## **3. Implementation Roadmap**
 
-### **Phase 1: Branding & Palette**
-- [ ] **Naming Overhaul**: Change all instances of "Honey Golden" to "Goldberg Nodon".
-- [ ] **Hyper-Yellow CSS**: Update variables to push for a more vibrant yellow aesthetic.
+### **Phase 1: Premium UI & Style**
+- [ ] **CSS Overhaul**: Implement `box-shadow` depth and rich gradients.
+- [ ] **Palette Cards**: Transform sidebar items into professional tool cards.
 
-### **Phase 2: Unique Object Skins**
-- [ ] **Sidebar Icon Update**: Use CSS/SVG to show real object previews in the sidebar.
-- [ ] **Nodon Skin Engine**: Refactor `drawNodonSkins` to provide unique faces and decorations per type.
+### **Phase 2: Character Skin Engine**
+- [ ] **Advanced SVG Skins**: Rewrite `renderSkin` with complex paths and multi-layered detail.
+- [ ] **Persona Logic**: Ensure each object type has a distinct, high-quality personality.
 
-### **Phase 3: Bug Fixing & Stability**
-- [ ] **Rendering Audit**: Fix the "disappearing images" bug by ensuring the SVG layer and Matter.js synchronization is rock-solid.
-- [ ] **Cleanup**: Remove unused bilingual logic and focus on the core Korean experience.
+### **Phase 3: Final Polish & Fixes**
+- [ ] **Bug Eradication**: Verify objects never disappear and placement is pixel-perfect.
+- [ ] **Responsiveness**: Ensure the high-fidelity UI works perfectly on all screen sizes.
 
