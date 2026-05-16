@@ -6,10 +6,11 @@ const I18N = {
     btn_play: "실행하기", btn_reset: "되돌리기", btn_clear: "전체 삭제",
     cat_phys: "물리 노돈", cat_logic: "논리 노돈",
     nodon_ball: "탱탱공", nodon_ramp: "미끄럼틀", nodon_box: "상자", nodon_floor: "바닥",
-    nodon_seesaw: "시소", nodon_pendulum: "진공추", nodon_domino: "도미노", nodon_hammer: "뿅망치",
+    nodon_seesaw: "시소", nodon_pendulum: "흔들추", nodon_domino: "도미노", nodon_hammer: "뿅망치",
     nodon_sensor: "감지센서", nodon_accelerator: "부스터", nodon_gate_and: "AND 로봇", nodon_gate_not: "NOT 로봇",
     nodon_timer: "알람시계", nodon_counter: "숫자봇",
     nav_builder: "빌더", nav_history: "탄생일기", nav_manual: "설명서", nav_comment: "댓글",
+    prop_bounce: "탄성 (Bounce)", prop_angle: "기울기 (Angle)",
     success_title: "미션 클리어!", success_msg: "장치가 완벽하게 작동했습니다!"
   },
   en: {
@@ -21,6 +22,7 @@ const I18N = {
     nodon_sensor: "Sensor", nodon_accelerator: "Booster", nodon_gate_and: "AND Gate", nodon_gate_not: "NOT Gate",
     nodon_timer: "Timer", nodon_counter: "Counter",
     nav_builder: "BUILDER", nav_history: "HISTORY", nav_manual: "DOCS", nav_comment: "FORUM",
+    prop_bounce: "Elasticity", prop_angle: "Rotation",
     success_title: "MISSION CLEAR!", success_msg: "The contraption worked perfectly!"
   }
 };
@@ -34,7 +36,7 @@ class GoldbergApp {
     this.connections = [];
     this._selectedNodon = null;
     this.dragPreview = null;
-    this.sidebarColumns = 2; // Default to 2 columns as requested
+    this.sidebarColumns = 2;
     this.lang = 'ko';
 
     this.initCanvas();
@@ -75,6 +77,13 @@ class GoldbergApp {
       constraint: { stiffness: 0.1, render: { visible: false } }
     });
     Composite.add(this.world, this.mouseConstraint);
+
+    window.addEventListener('resize', () => {
+      if (this.render.canvas) {
+        this.render.canvas.width = container.clientWidth;
+        this.render.canvas.height = container.clientHeight;
+      }
+    });
   }
 
   initSidebar() {
@@ -142,9 +151,18 @@ class GoldbergApp {
     document.getElementById('node-delete').onclick = () => this.removeNodon(this.selectedNodon);
     
     this.inputs = {
-      restitution: document.getElementById('input-restitution')
+      restitution: document.getElementById('input-restitution'),
+      angle: document.getElementById('input-angle')
     };
+    
     this.inputs.restitution.oninput = (e) => { if (this.selectedNodon) this.selectedNodon.body.restitution = parseFloat(e.target.value); };
+    this.inputs.angle.oninput = (e) => {
+      if (this.selectedNodon) {
+        const angle = parseFloat(e.target.value) * (Math.PI / 180);
+        Matter.Body.setAngle(this.selectedNodon.body, angle);
+        this.selectedNodon.initialAngle = angle;
+      }
+    };
   }
 
   addNodon(type, x, y) {
@@ -240,8 +258,8 @@ class GoldbergApp {
     const svg = document.getElementById('wiring-layer');
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.setAttribute('transform', `translate(${x},${y})`);
-    g.setAttribute('opacity', '0.4');
-    this.renderSkin(g, type, true);
+    g.setAttribute('opacity', '0.5');
+    this.renderPremiumSkin(g, type, true);
     svg.appendChild(g);
   }
 
@@ -252,33 +270,39 @@ class GoldbergApp {
       const angle = nodon.body.angle;
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('transform', `translate(${x},${y}) rotate(${angle * 180 / Math.PI})`);
-      this.renderSkin(g, nodon.type, nodon.isActive);
+      this.renderPremiumSkin(g, nodon.type, nodon.isActive);
       svg.appendChild(g);
     });
   }
 
-  renderSkin(g, type, active) {
+  renderPremiumSkin(g, type, active) {
     const color = this.getNodonColor(type);
-    let shape;
-    if (['ball', 'accelerator', 'timer', 'pendulum'].includes(type)) {
-      shape = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      shape.setAttribute('r', type === 'ball' ? '30' : '50');
+    const main = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    let d = "";
+    if (['ball', 'accelerator', 'gate-not', 'timer', 'pendulum'].includes(type)) {
+      const r = type === 'ball' ? 30 : 50;
+      d = `M ${-r},0 a ${r},${r} 0 1,0 ${r*2},0 a ${r},${r} 0 1,0 ${-r*2},0`;
     } else {
-      shape = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       let w = 80, h = 80;
       if (type === 'ramp') { w = 260; h = 30; }
       else if (type === 'floor') { w = 600; h = 40; }
       else if (type === 'seesaw') { w = 300; h = 20; }
       else if (type === 'domino') { w = 20; h = 70; }
       else if (type === 'hammer') { w = 180; h = 40; }
-      shape.setAttribute('x', -w/2); shape.setAttribute('y', -h/2);
-      shape.setAttribute('width', w); shape.setAttribute('height', h);
-      shape.setAttribute('rx', '15');
+      const r = 15;
+      d = `M ${-w/2+r},${-h/2} h ${w-r*2} a ${r},${r} 0 0,1 ${r},${r} v ${h-r*2} a ${r},${r} 0 0,1 ${-r},${r} h ${-w+r*2} a ${r},${r} 0 0,1 ${-r},${-r} v ${-h+r*2} a ${r},${r} 0 0,1 ${r},${-r} z`;
     }
-    shape.setAttribute('fill', color);
-    shape.setAttribute('stroke', '#fff');
-    shape.setAttribute('stroke-width', '6');
-    g.appendChild(shape);
+    main.setAttribute('d', d);
+    main.setAttribute('fill', color);
+    main.setAttribute('stroke', '#fff');
+    main.setAttribute('stroke-width', '6');
+    g.appendChild(main);
+    
+    // Add Gloss
+    const shine = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+    shine.setAttribute('cx', '-15'); shine.setAttribute('cy', '-20'); shine.setAttribute('rx', '15'); shine.setAttribute('ry', '8');
+    shine.setAttribute('fill', 'rgba(255,255,255,0.3)'); shine.setAttribute('transform', 'rotate(-30)');
+    g.appendChild(shine);
 
     this.addFace(g, type, active);
   }
@@ -298,7 +322,6 @@ class GoldbergApp {
       e.setAttribute('cx', x); e.setAttribute('cy', c.y); e.setAttribute('r', c.size);
       e.setAttribute('fill', active ? '#fff' : '#1A1A1B');
       g.appendChild(e);
-
       if (!active) {
         const iris = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         iris.setAttribute('cx', x + Math.sin(time/400)*3); iris.setAttribute('cy', c.y); iris.setAttribute('r', c.size/2);
@@ -361,7 +384,7 @@ class GoldbergApp {
   }
 
   getNodonColor(type) {
-    const p = { ball: '#FFD43B', ramp: '#495057', box: '#FF922B', floor: '#212529', seesaw: '#FFD43B', pendulum: '#343A40', domino: '#FF922B', hammer: '#495057', sensor: '#FFFFFF', accelerator: '#51CF66', 'gate-and': '#4DABF7', 'gate-not': '#FF6B6B', timer: '#4DABF7', counter: '#212529' };
+    const p = { ball: '#FFD43B', ramp: '#4dabf7', box: '#ff922b', floor: '#495057', seesaw: '#51cf66', pendulum: '#f06595', domino: '#cc5de8', hammer: '#343a40', sensor: '#ffffff', accelerator: '#20c997', 'gate-and': '#6741d9', 'gate-not': '#ff6b6b', timer: '#ff6b6b', counter: '#212529' };
     return p[type] || '#FFD43B';
   }
 
@@ -378,6 +401,8 @@ class GoldbergApp {
     if (!this.selectedNodon) { panel.classList.add('hidden'); return; }
     panel.classList.remove('hidden');
     document.getElementById('node-name').textContent = I18N[this.lang][`nodon_${this.selectedNodon.type.replace('-', '_')}`] || "오브젝트";
+    this.inputs.restitution.value = this.selectedNodon.body.restitution;
+    this.inputs.angle.value = (this.selectedNodon.body.angle * 180 / Math.PI) % 360;
   }
 
   resetSimulation() {
