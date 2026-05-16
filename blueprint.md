@@ -1,42 +1,40 @@
-# **Goldberg Nodon: Project Blueprint (V7 - AdSense Ready & Compact UI)**
+# **Goldberg Nodon: Project Blueprint (V8 - Ultra-Compact Workspace)**
 
 ## **1. Overview**
-A professional educational "Goldberg Machine" builder. This version focuses on **AdSense approval readiness**, higher workspace density with a **compact sidebar**, and **compliance with content policies**.
+A professional "Goldberg Machine" builder with an **ultra-compact tool strip** design. This version maximizes the user's creative space by shrinking the sidebar to a minimal width while maintaining high-fidelity object visibility.
 
 ## **2. Detailed Outline & Current State**
 
 ### **Architecture & Tech Stack**
 - **Physics Engine**: Matter.js.
-- **UI Architecture**: Compact Sidebar (140px) + Expanded Canvas.
+- **UI Architecture**: **Ultra-Slim Sidebar (80px)** + **Full-Screen Canvas**.
 - **Color System**: "Golden Prime" (Professional Yellow & Carbon Black).
 
-### **AdSense Readiness (에드센스 승인 최적화)**
-- **Policy Compliance**: Added Privacy Policy, Terms of Service, and About sections.
-- **Original Content**: Structured educational descriptions about physics laws (Newton's laws, energy conservation).
-- **Navigation**: Clear, user-friendly footer navigation and anchor links.
-- **Professional Layout**: High-density workspace without excessive whitespace.
+### **Workspace Optimization (공간 극대화)**
+- **Tool Strip Design**: Sidebar shrunk to 80px, showing only high-quality object icons.
+- **Maximized Canvas**: Over 90% of the screen is dedicated to the building area.
+- **Floating Labels**: Object names appear on hover to keep the UI clean.
 
-### **Compact UI Design**
-- **Efficient Sidebar**: Shrunk to 140px to maximize the building area.
-- **Visual Feedback**: Real-time ghost preview of the premium object skins during drag-and-drop.
-- **Detailed Icons**: Sidebar icons represent the high-fidelity characters.
+### **High-Fidelity Visuals**
+- **Detailed Sidebar Icons**: Every tool in the sidebar is a mini-version of the actual high-quality character skin.
+- **Character Rendering Engine**: Robust SVG skinning that persists through collisions and placement.
 
 ### **Functional Upgrades**
-- **Robust Placement**: Improved `addNodon` logic to ensure all object types are correctly instantiated.
-- **Community Integration**: Partnership form and Disqus comments for user engagement.
-- **Fixed Scaling**: Synchronized SVG layers for perfect visual-to-physics alignment.
+- **Precision Placement**: Calibrated drag-and-drop coordinates for the expanded workspace.
+- **AdSense Readiness**: Maintains all legal sections and educational content for approval.
+- **Pure Korean UI**: Professional localized terminology throughout.
 
 ## **3. Implementation Roadmap**
 
-### **Phase 1: AdSense Compliance**
-- [x] **Legal Sections**: Privacy Policy & Terms of Service content implementation.
-- [x] **Educational Value**: Elaborated descriptions of physics principles.
+### **Phase 1: Ultra-Slim Layout**
+- [ ] **CSS Grid Refactoring**: Change `editor-container` to `80px 1fr`.
+- [ ] **Icon-Centric Sidebar**: Remove large text labels, focus on high-quality SVG/CSS icons.
 
-### **Phase 2: UI Shrinking & Polish**
-- [x] **Sidebar Compression**: Reduced width to 140px.
-- [x] **Card Refinement**: Compacted tool cards with smaller icons.
+### **Phase 2: Icon Fidelity**
+- [ ] **Mini-Skin Rendering**: Ensure sidebar icons look exactly like the objects.
+- [ ] **Hover Tooltips**: Show object names (공, 경사로 등) when hovering over the slim sidebar.
 
-### **Phase 3: Verification**
-- [x] **Installability Check**: Verified all objects can be dragged and placed.
-- [x] **Visual Consistency**: High-fidelity skins remain visible and high-quality.
+### **Phase 3: Final Polish**
+- [ ] **Bug Verification**: Confirm objects never disappear and placement is seamless.
+- [ ] **AdSense Audit**: Final check of policy compliance sections.
 
