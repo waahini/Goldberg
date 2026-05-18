@@ -327,57 +327,97 @@ class GoldbergApp {
     const baseColor = color || this.getNodonColor(type);
     const main = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     let d = "";
-    if (['ball', 'accelerator', 'timer', 'pendulum', 'gate-not', 'portal', 'random', 'delay', 'explosion', 'black-hole', 'gravity-inv', 'windmill', 'pulley'].includes(type)) {
-      const r = type === 'ball' ? 28 : (type === 'black-hole' ? 80 : 45); d = `M ${-r},0 a ${r},${r} 0 1,0 ${r*2},0 a ${r},${r} 0 1,0 ${-r*2},0`;
-    } else {
-      let w = 100, h = 100;
-      if (type === 'ramp') { w = 260; h = 22; } else if (type === 'floor') { w = 600; h = 30; } else if (type === 'seesaw') { w = 300; h = 18; } else if (type === 'domino') { w = 18; h = 70; } else if (type === 'hammer') { w = 180; h = 35; } else if (type === 'trampoline') { w = 150; h = 40; } else if (type === 'conveyor') { w = 300; h = 35; } else if (type === 'cannon') { w = 120; h = 80; }
-      const r = 12; d = `M ${-w/2+r},${-h/2} h ${w-r*2} a ${r},${r} 0 0,1 ${r},${r} v ${h-r*2} a ${r},${r} 0 0,1 ${-r},${r} h ${-w+r*2} a ${r},${r} 0 0,1 ${-r},${-r} v ${-h+r*2} a ${r},${r} 0 0,1 ${r},${-r} z`;
+    
+    // 1. UNIQUE SILHOUETTE DESIGN
+    switch(type) {
+      case 'ball': d = "M -28,0 a 28,28 0 1,0 56,0 a 28,28 0 1,0 -56,0"; break;
+      case 'ramp': d = "M -130,-11 L 130,-11 L 130,11 L -130,11 Z"; break;
+      case 'box': d = "M -40,-40 h 80 v 80 h -80 z"; break;
+      case 'floor': d = "M -300,-15 L 300,-15 L 300,15 L -300,15 Z"; break;
+      case 'seesaw': d = "M -150,-9 L 150,-9 L 150,9 L -150,9 Z"; break;
+      case 'pendulum': d = "M -35,0 a 35,35 0 1,0 70,0 a 35,35 0 1,0 -70,0"; break;
+      case 'domino': d = "M -9,-35 L 9,-35 L 9,35 L -9,35 Z"; break;
+      case 'hammer': d = "M -90,-17.5 L 90,-17.5 L 90,17.5 L -90,17.5 Z"; break;
+      
+      case 'magnet': // Classic U-Shape
+        d = "M -40,-40 h 20 v 40 a 20,20 0 0,0 40,0 v -40 h 20 v 40 a 40,40 0 0,1 -80,0 Z"; break;
+      case 'trampoline': // Spring bed look
+        d = "M -75,-10 h 150 v 10 h -150 Z M -65,0 v 20 M 65,0 v 20 M -20,0 v 20 M 20,0 v 20"; break;
+      case 'conveyor': // Rounded belt
+        d = "M -130,-17.5 h 260 a 17.5,17.5 0 0,1 0,35 h -260 a 17.5,17.5 0 0,1 0,-35 Z"; break;
+      case 'portal': // Swirling vortex silhouette
+        d = "M -45,0 a 45,45 0 1,0 90,0 a 45,45 0 1,0 -90,0"; break;
+      case 'cannon': // Heavy barrel
+        d = "M -40,-30 h 60 l 20,10 v 40 l -20,10 h -60 a 40,40 0 0,1 0,-60 Z"; break;
+      case 'pulley': d = "M -35,0 a 35,35 0 1,0 70,0 a 35,35 0 1,0 -70,0"; break;
+      
+      case 'explosion': // Spiky star
+        d = "M 0,-60 L 15,-20 L 55,-30 L 30,5 L 60,40 L 10,25 L 0,60 L -10,25 L -60,40 L -30,5 L -55,-30 L -15,-20 Z"; break;
+      case 'black-hole': d = "M -80,0 a 80,80 0 1,0 160,0 a 80,80 0 1,0 -160,0"; break;
+      case 'windmill': d = "M -15,-15 h 30 v 30 h -30 z"; break;
+      default: d = "M -45,-45 h 90 v 90 h -90 z";
     }
-    main.setAttribute('d', d); main.setAttribute('fill', baseColor); main.setAttribute('stroke', active ? '#fff' : 'rgba(255,255,255,0.8)'); main.setAttribute('stroke-width', active ? '8' : '4');
+
+    main.setAttribute('d', d); 
+    main.setAttribute('fill', baseColor); 
+    main.setAttribute('stroke', '#fff'); 
+    main.setAttribute('stroke-width', active ? '6' : '3');
     if (type === 'black-hole') main.setAttribute('fill', '#000');
     g.appendChild(main);
 
-    // V12 Decorative Features
+    // 2. MECHANICAL DETAILS AND ANIMATIONS
     if (type === 'magnet') {
+      const redPole = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      redPole.setAttribute('d', "M -40,-40 h 20 v 30 h -20 Z"); redPole.setAttribute('fill', '#e03131'); g.appendChild(redPole);
+      const bluePole = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      bluePole.setAttribute('d', "M 20,-40 h 20 v 30 h -20 Z"); bluePole.setAttribute('fill', '#1971c2'); g.appendChild(bluePole);
       if (active) {
-        const field = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        field.setAttribute('r', 100 + Math.sin(Date.now()/100)*10);
-        field.setAttribute('fill', 'rgba(25, 113, 194, 0.1)');
-        field.setAttribute('stroke', 'rgba(25, 113, 194, 0.3)');
-        field.setAttribute('stroke-dasharray', '5,5');
-        g.appendChild(field);
+        const waves = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        waves.setAttribute('r', 80 + Math.sin(Date.now()/50)*10); waves.setAttribute('fill', 'none'); waves.setAttribute('stroke', '#4dabf7'); waves.setAttribute('stroke-width', '2'); waves.setAttribute('opacity', '0.5'); g.appendChild(waves);
       }
-      const pole = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      pole.setAttribute('x', '-50'); pole.setAttribute('y', '-50'); pole.setAttribute('width', '100'); pole.setAttribute('height', '30'); pole.setAttribute('fill', '#1971c2'); g.appendChild(pole);
-      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text'); label.textContent = active ? "S" : "N"; label.setAttribute('text-anchor', 'middle'); label.setAttribute('y', '30'); label.setAttribute('fill', '#fff'); label.setAttribute('font-size', '40'); label.setAttribute('font-weight', '900'); g.appendChild(label);
-    } else if (type === 'portal') {
-      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); ring.setAttribute('r', active ? 55 : 35); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', '#fff'); ring.setAttribute('stroke-width', active ? '8' : '4'); ring.setAttribute('stroke-dasharray', '5,5'); g.appendChild(ring);
-    } else if (type === 'cannon') {
-      const barrel = document.createElementNS('http://www.w3.org/2000/svg', 'path'); barrel.setAttribute('d', 'M 20 -30 L 60 -20 L 60 20 L 20 30 Z'); barrel.setAttribute('fill', '#343a40'); g.appendChild(barrel);
-      if (active) {
-        const flash = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); flash.setAttribute('cx', '70'); flash.setAttribute('r', '30'); flash.setAttribute('fill', '#fab005'); g.appendChild(flash);
+    } else if (type === 'trampoline') {
+      for(let x=-65; x<=65; x+=42) {
+        const spring = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        spring.setAttribute('d', `M ${x},0 q 5,5 0,10 q -5,5 0,10`); spring.setAttribute('stroke', '#adb5bd'); spring.setAttribute('fill', 'none'); spring.setAttribute('stroke-width', '3'); g.appendChild(spring);
       }
     } else if (type === 'conveyor') {
-      const offset = (Date.now() / 20) % 30;
-      for(let i=-130-offset; i<150; i+=30) { 
-        if (i < -140 || i > 140) continue;
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); line.setAttribute('x1', i); line.setAttribute('y1', '-10'); line.setAttribute('x2', i+10); line.setAttribute('y2', '10'); line.setAttribute('stroke', '#fff'); line.setAttribute('stroke-width', '4'); g.appendChild(line); 
+      const gearRot = (Date.now() / 10) % 360;
+      [-110, 0, 110].forEach(gx => {
+        const gear = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        gear.setAttribute('cx', gx); gear.setAttribute('r', '12'); gear.setAttribute('fill', 'none'); gear.setAttribute('stroke', '#fff'); gear.setAttribute('stroke-dasharray', '4,2'); gear.setAttribute('transform', `rotate(${gearRot}, ${gx}, 0)`); g.appendChild(gear);
+      });
+    } else if (type === 'portal') {
+      const swirl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const rot = (Date.now() / 5) % 360;
+      swirl.setAttribute('d', "M -30,0 a 30,30 0 1,0 60,0 a 30,30 0 1,0 -60,0 M -20,0 a 20,20 0 1,1 40,0 a 20,20 0 1,1 -40,0");
+      swirl.setAttribute('fill', 'none'); swirl.setAttribute('stroke', '#fff'); swirl.setAttribute('stroke-width', '2'); swirl.setAttribute('stroke-dasharray', '10,5'); swirl.setAttribute('transform', `rotate(${rot})`); g.appendChild(swirl);
+    } else if (type === 'cannon') {
+      const hole = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      hole.setAttribute('cx', '40'); hole.setAttribute('r', '25'); hole.setAttribute('fill', '#1a1a1b'); g.appendChild(hole);
+      if (active) {
+        const sparks = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        sparks.setAttribute('d', "M 50,-20 L 80,-40 M 60,0 L 100,0 M 50,20 L 80,40"); sparks.setAttribute('stroke', '#ffd43b'); sparks.setAttribute('stroke-width', '4'); g.appendChild(sparks);
       }
     } else if (type === 'windmill') {
       const bladesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      bladesGroup.setAttribute('transform', `rotate(${(state || 0) * 50})`);
-      const blades = document.createElementNS('http://www.w3.org/2000/svg', 'path'); blades.setAttribute('d', 'M 0 0 L 10 -40 L 40 -10 Z M 0 0 L 40 10 L 10 40 Z M 0 0 L -10 40 L -40 10 Z M 0 0 L -40 -10 L -10 -40 Z'); blades.setAttribute('fill', '#fff'); 
-      bladesGroup.appendChild(blades); g.appendChild(bladesGroup);
+      bladesGroup.setAttribute('transform', `rotate(${(state || 0) * 100})`);
+      for(let i=0; i<4; i++) {
+        const blade = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        blade.setAttribute('d', "M 0,0 L 15,-60 L 45,-50 Z"); blade.setAttribute('fill', '#fff'); blade.setAttribute('opacity', '0.9'); blade.setAttribute('transform', `rotate(${i*90})`); bladesGroup.appendChild(blade);
+      }
+      g.appendChild(bladesGroup);
+      const hub = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); hub.setAttribute('r', '10'); hub.setAttribute('fill', '#dee2e6'); g.appendChild(hub);
     } else if (type === 'black-hole') {
-      const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); glow.setAttribute('r', 90 + Math.sin(Date.now()/200)*10); glow.setAttribute('fill', 'none'); glow.setAttribute('stroke', '#ae3ec9'); glow.setAttribute('stroke-width', '4'); glow.setAttribute('stroke-dasharray', '10,5'); g.appendChild(glow);
-      const core = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); core.setAttribute('r', 70); core.setAttribute('fill', '#000'); core.setAttribute('transform', `rotate(${Date.now()/10})`); core.setAttribute('stroke', '#ae3ec9'); core.setAttribute('stroke-dasharray', '20,10'); g.appendChild(core);
-    } else if (type === 'toggle') {
-      const switchBtn = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); switchBtn.setAttribute('cx', state === 1 ? 20 : -20); switchBtn.setAttribute('r', '20'); switchBtn.setAttribute('fill', state === 1 ? '#51cf66' : '#f03e3e'); g.appendChild(switchBtn);
-    } else if (type === 'counter') {
-      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text'); txt.textContent = state; txt.setAttribute('text-anchor', 'middle'); txt.setAttribute('y', '15'); txt.setAttribute('fill', '#fff'); txt.setAttribute('font-size', '40'); txt.setAttribute('font-weight', '900'); g.appendChild(txt);
-    } else if (type === 'splitter') {
-      const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path'); arrow.setAttribute('d', 'M -20 0 L 20 -20 M -20 0 L 20 20'); arrow.setAttribute('stroke', '#fff'); arrow.setAttribute('stroke-width', '6'); g.appendChild(arrow);
+      for(let i=0; i<3; i++) {
+        const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        ring.setAttribute('r', 50 + i*15); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', '#ae3ec9'); ring.setAttribute('stroke-width', '2'); ring.setAttribute('opacity', 0.8 - i*0.2); ring.setAttribute('stroke-dasharray', `${20 + i*10}, ${10}`); ring.setAttribute('transform', `rotate(${Date.now()/(10+i*5)})`); g.appendChild(ring);
+      }
+    } else if (type === 'gravity-inv') {
+      const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      arrow.setAttribute('d', "M 0,-25 L 15,-5 H -15 Z M 0,25 L 15,5 H -15 Z"); arrow.setAttribute('fill', '#fff'); g.appendChild(arrow);
+    } else if (type === 'color-gate') {
+      const rainbow = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rainbow.setAttribute('x', '-40'); rainbow.setAttribute('y', '-40'); rainbow.setAttribute('width', '80'); rainbow.setAttribute('height', '80'); rainbow.setAttribute('fill', 'url(#rainbowGradient)'); rainbow.setAttribute('opacity', '0.6'); g.appendChild(rainbow);
     }
 
     this.addFace(g, type, active);
