@@ -163,31 +163,46 @@ class GoldbergApp {
     Events.on(this.engine, 'beforeUpdate', () => {
       if (!this.isPlaying) return;
       this.nodons.forEach(n => {
-        if (n.type === 'magnet' || n.type === 'black-hole' || n.type === 'windmill') {
+        if (n.type === 'magnet' || n.type === 'black-hole' || n.type === 'windmill' || n.type === 'conveyor') {
           const bodies = Composite.allBodies(this.world);
           bodies.forEach(b => {
             if (b.isStatic || b === n.body) return;
             const dist = Vector.magnitude(Vector.sub(b.position, n.body.position));
-            const range = n.type === 'black-hole' ? 400 : 250;
-            if (dist < range) {
-              let force;
-              if (n.type === 'magnet') {
-                const strength = 0.005 * (1 - dist/range);
-                const dir = Vector.normalise(Vector.sub(b.position, n.body.position));
-                force = Vector.mult(dir, n.isActive ? strength : -strength);
-              } else if (n.type === 'black-hole') {
+            
+            if (n.type === 'magnet') {
+              const range = 300;
+              if (dist < range) {
                 const strength = 0.008 * (1 - dist/range);
                 const dir = Vector.normalise(Vector.sub(n.body.position, b.position));
-                force = Vector.mult(dir, strength);
-                if (dist < 30) Matter.Composite.remove(this.world, b);
-              } else if (n.type === 'windmill') {
-                const angle = n.body.angle;
-                force = { x: Math.cos(angle) * 0.003, y: Math.sin(angle) * 0.003 };
+                // N pulls (state 0/inactive-ish), S pushes (active)
+                const force = Vector.mult(dir, n.isActive ? -strength : strength);
+                Matter.Body.applyForce(b, b.position, force);
               }
-              if (force) Matter.Body.applyForce(b, b.position, force);
+            } else if (n.type === 'black-hole') {
+              const range = 400;
+              if (dist < range) {
+                const strength = 0.012 * (1 - dist/range);
+                const dir = Vector.normalise(Vector.sub(n.body.position, b.position));
+                Matter.Body.applyForce(b, b.position, Vector.mult(dir, strength));
+                // Spin effect as it gets closer
+                if (dist < 100) Matter.Body.setAngularVelocity(b, b.angularVelocity + 0.1);
+                if (dist < 25) Matter.Composite.remove(this.world, b);
+              }
+            } else if (n.type === 'windmill') {
+              const range = 350;
+              const angle = n.body.angle;
+              const effectDir = { x: Math.cos(angle), y: Math.sin(angle) };
+              const toBody = Vector.normalise(Vector.sub(b.position, n.body.position));
+              const dot = Vector.dot(effectDir, toBody);
+              if (dist < range && dot > 0.7) { // Wind cone
+                const strength = 0.005 * dot * (1 - dist/range);
+                Matter.Body.applyForce(b, b.position, Vector.mult(effectDir, strength));
+              }
             }
           });
         }
+        // Windmill blade rotation
+        if (n.type === 'windmill') n.state = (n.state || 0) + 0.1;
       });
     });
 
@@ -200,15 +215,20 @@ class GoldbergApp {
     const nA = this.nodons.find(n => n.body === bodyA), nB = this.nodons.find(n => n.body === bodyB);
     if (!nA || !nB) return;
     
-    // Physics interaction logic
-    if (nA.type === 'conveyor') Matter.Body.setVelocity(nB.body, { x: Math.cos(nA.body.angle) * 5, y: Math.sin(nA.body.angle) * 5 });
-    if (nB.type === 'conveyor') Matter.Body.setVelocity(nA.body, { x: Math.cos(nB.body.angle) * 5, y: Math.sin(nB.body.angle) * 5 });
+    // Trampoline: Instant elastic impulse
+    if (nA.type === 'trampoline') { Matter.Body.setVelocity(nB.body, { x: nB.body.velocity.x, y: -22 }); nA.isActive = true; setTimeout(() => nA.isActive = false, 200); }
+    if (nB.type === 'trampoline') { Matter.Body.setVelocity(nA.body, { x: nA.body.velocity.x, y: -22 }); nB.isActive = true; setTimeout(() => nB.isActive = false, 200); }
+
+    // Conveyor: Constant surface velocity
+    if (nA.type === 'conveyor') { const speed = 8; const angle = nA.body.angle; Matter.Body.setVelocity(nB.body, { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed }); }
+    if (nB.type === 'conveyor') { const speed = 8; const angle = nB.body.angle; Matter.Body.setVelocity(nA.body, { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed }); }
     
+    // Portal: Smart cooldown teleport
     if (nA.type === 'portal' && !nA.isActive) this.teleport(nA, nB.body);
     if (nB.type === 'portal' && !nB.isActive) this.teleport(nB, nA.body);
 
-    if (nA.type === 'color-gate') nB.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
-    if (nB.type === 'color-gate') nA.color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+    if (nA.type === 'color-gate') nB.body.render.strokeStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    if (nB.type === 'color-gate') nA.body.render.strokeStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
 
     if (nA.type === 'explosion') this.explode(nA);
     if (nB.type === 'explosion') this.explode(nB);
@@ -223,25 +243,31 @@ class GoldbergApp {
 
   teleport(source, body) {
     const other = this.nodons.find(n => n.type === 'portal' && n !== source);
-    if (other) {
+    if (other && !other.isActive) {
       source.isActive = true; other.isActive = true;
       Matter.Body.setPosition(body, { x: other.body.position.x, y: other.body.position.y });
-      setTimeout(() => { source.isActive = false; other.isActive = false; }, 1000);
+      // Teleportation effect: keep speed but align with output portal angle
+      const speed = Math.max(Vector.magnitude(body.velocity), 5);
+      Matter.Body.setVelocity(body, { x: Math.cos(other.body.angle) * speed, y: Math.sin(other.body.angle) * speed });
+      setTimeout(() => { source.isActive = false; other.isActive = false; }, 1500);
     }
   }
 
   explode(source) {
+    if (source.isActive) return;
     source.isActive = true;
     const bodies = Composite.allBodies(this.world);
     bodies.forEach(b => {
       if (b.isStatic) return;
-      const dist = Vector.magnitude(Vector.sub(b.position, source.body.position));
-      if (dist < 200) {
-        const force = Vector.mult(Vector.normalise(Vector.sub(b.position, source.body.position)), 0.5 * (1 - dist/200));
+      const vec = Vector.sub(b.position, source.body.position);
+      const dist = Vector.magnitude(vec);
+      if (dist < 250) {
+        const strength = 0.8 * (1 - dist/250);
+        const force = Vector.mult(Vector.normalise(vec), strength);
         Matter.Body.applyForce(b, b.position, force);
       }
     });
-    setTimeout(() => source.isActive = false, 500);
+    setTimeout(() => source.isActive = false, 800);
   }
 
   triggerLogic(source, targetBody) {
@@ -261,12 +287,14 @@ class GoldbergApp {
         if (source.type === 'counter' && source.state % 3 !== 0) return;
 
         if (target.type === 'accelerator') { 
-          Matter.Body.applyForce(targetBody, targetBody.position, { x: Math.cos(target.body.angle) * 3, y: Math.sin(target.body.angle) * 3 }); 
+          Matter.Body.applyForce(targetBody, targetBody.position, { x: Math.cos(target.body.angle) * 4.5, y: Math.sin(target.body.angle) * 4.5 }); 
           target.isActive = true; setTimeout(() => target.isActive = false, 350); 
         }
         if (target.type === 'cannon') {
-          Matter.Body.setVelocity(targetBody, { x: Math.cos(target.body.angle) * 15, y: Math.sin(target.body.angle) * 15 });
-          target.isActive = true; setTimeout(() => target.isActive = false, 350);
+          // Cannon: Powerful directional blast
+          const angle = target.body.angle;
+          Matter.Body.setVelocity(targetBody, { x: Math.cos(angle) * 25, y: Math.sin(angle) * 25 });
+          target.isActive = true; setTimeout(() => target.isActive = false, 500);
         }
         if (target.type === 'magnet') target.isActive = !target.isActive;
         if (['sensor', 'timer', 'toggle', 'splitter', 'random', 'delay', 'counter'].includes(target.type)) this.triggerLogic(target, targetBody);
@@ -312,23 +340,42 @@ class GoldbergApp {
 
     // V12 Decorative Features
     if (type === 'magnet') {
+      if (active) {
+        const field = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        field.setAttribute('r', 100 + Math.sin(Date.now()/100)*10);
+        field.setAttribute('fill', 'rgba(25, 113, 194, 0.1)');
+        field.setAttribute('stroke', 'rgba(25, 113, 194, 0.3)');
+        field.setAttribute('stroke-dasharray', '5,5');
+        g.appendChild(field);
+      }
       const pole = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       pole.setAttribute('x', '-50'); pole.setAttribute('y', '-50'); pole.setAttribute('width', '100'); pole.setAttribute('height', '30'); pole.setAttribute('fill', '#1971c2'); g.appendChild(pole);
-      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text'); label.textContent = active ? "N" : "S"; label.setAttribute('text-anchor', 'middle'); label.setAttribute('y', '30'); label.setAttribute('fill', '#fff'); label.setAttribute('font-size', '40'); label.setAttribute('font-weight', '900'); g.appendChild(label);
+      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text'); label.textContent = active ? "S" : "N"; label.setAttribute('text-anchor', 'middle'); label.setAttribute('y', '30'); label.setAttribute('fill', '#fff'); label.setAttribute('font-size', '40'); label.setAttribute('font-weight', '900'); g.appendChild(label);
     } else if (type === 'portal') {
-      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); ring.setAttribute('r', '35'); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', '#fff'); ring.setAttribute('stroke-width', '4'); ring.setAttribute('stroke-dasharray', '5,5'); g.appendChild(ring);
+      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); ring.setAttribute('r', active ? 55 : 35); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', '#fff'); ring.setAttribute('stroke-width', active ? '8' : '4'); ring.setAttribute('stroke-dasharray', '5,5'); g.appendChild(ring);
     } else if (type === 'cannon') {
       const barrel = document.createElementNS('http://www.w3.org/2000/svg', 'path'); barrel.setAttribute('d', 'M 20 -30 L 60 -20 L 60 20 L 20 30 Z'); barrel.setAttribute('fill', '#343a40'); g.appendChild(barrel);
+      if (active) {
+        const flash = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); flash.setAttribute('cx', '70'); flash.setAttribute('r', '30'); flash.setAttribute('fill', '#fab005'); g.appendChild(flash);
+      }
     } else if (type === 'conveyor') {
-      for(let i=-130; i<130; i+=30) { const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); line.setAttribute('x1', i); line.setAttribute('y1', '-10'); line.setAttribute('x2', i+10); line.setAttribute('y2', '10'); line.setAttribute('stroke', '#fff'); line.setAttribute('stroke-width', '4'); g.appendChild(line); }
+      const offset = (Date.now() / 20) % 30;
+      for(let i=-130-offset; i<150; i+=30) { 
+        if (i < -140 || i > 140) continue;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); line.setAttribute('x1', i); line.setAttribute('y1', '-10'); line.setAttribute('x2', i+10); line.setAttribute('y2', '10'); line.setAttribute('stroke', '#fff'); line.setAttribute('stroke-width', '4'); g.appendChild(line); 
+      }
+    } else if (type === 'windmill') {
+      const bladesGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      bladesGroup.setAttribute('transform', `rotate(${(state || 0) * 50})`);
+      const blades = document.createElementNS('http://www.w3.org/2000/svg', 'path'); blades.setAttribute('d', 'M 0 0 L 10 -40 L 40 -10 Z M 0 0 L 40 10 L 10 40 Z M 0 0 L -10 40 L -40 10 Z M 0 0 L -40 -10 L -10 -40 Z'); blades.setAttribute('fill', '#fff'); 
+      bladesGroup.appendChild(blades); g.appendChild(bladesGroup);
+    } else if (type === 'black-hole') {
+      const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); glow.setAttribute('r', 90 + Math.sin(Date.now()/200)*10); glow.setAttribute('fill', 'none'); glow.setAttribute('stroke', '#ae3ec9'); glow.setAttribute('stroke-width', '4'); glow.setAttribute('stroke-dasharray', '10,5'); g.appendChild(glow);
+      const core = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); core.setAttribute('r', 70); core.setAttribute('fill', '#000'); core.setAttribute('transform', `rotate(${Date.now()/10})`); core.setAttribute('stroke', '#ae3ec9'); core.setAttribute('stroke-dasharray', '20,10'); g.appendChild(core);
     } else if (type === 'toggle') {
       const switchBtn = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); switchBtn.setAttribute('cx', state === 1 ? 20 : -20); switchBtn.setAttribute('r', '20'); switchBtn.setAttribute('fill', state === 1 ? '#51cf66' : '#f03e3e'); g.appendChild(switchBtn);
     } else if (type === 'counter') {
       const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text'); txt.textContent = state; txt.setAttribute('text-anchor', 'middle'); txt.setAttribute('y', '15'); txt.setAttribute('fill', '#fff'); txt.setAttribute('font-size', '40'); txt.setAttribute('font-weight', '900'); g.appendChild(txt);
-    } else if (type === 'black-hole') {
-      const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); glow.setAttribute('r', '90'); glow.setAttribute('fill', 'none'); glow.setAttribute('stroke', '#ae3ec9'); glow.setAttribute('stroke-width', '4'); glow.setAttribute('stroke-dasharray', '10,5'); g.appendChild(glow);
-    } else if (type === 'windmill') {
-      const blades = document.createElementNS('http://www.w3.org/2000/svg', 'path'); blades.setAttribute('d', 'M 0 0 L 10 -40 L 40 -10 Z M 0 0 L 40 10 L 10 40 Z M 0 0 L -10 40 L -40 10 Z M 0 0 L -40 -10 L -10 -40 Z'); blades.setAttribute('fill', '#fff'); g.appendChild(blades);
     } else if (type === 'splitter') {
       const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path'); arrow.setAttribute('d', 'M -20 0 L 20 -20 M -20 0 L 20 20'); arrow.setAttribute('stroke', '#fff'); arrow.setAttribute('stroke-width', '6'); g.appendChild(arrow);
     }
